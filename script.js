@@ -2,7 +2,7 @@
 
 var ctx = document.getElementById("ctx").getContext("2d");
 
-ctx.font = '40px Arial';
+ctx.font = '40px Helvetica';
 
 //canvas size
 var HEIGHT = 400
@@ -18,7 +18,7 @@ var player = {
         y:40,
         spdY:50,
         name:'P',
-        hp: 10,
+        hp: 20,
         width: 20,
         height: 20,
         color: 'green'
@@ -26,10 +26,6 @@ var player = {
 
 //enemy specs
 var enemyList = {};
-
-enemy('E1',5,80,10,0,30,30)
-enemy('E2',5,300,10,0,5,5)
-enemy('E3',495,200,-10,0,10,20)
 
 //test for collision
 function getDistance(object1,object2){     //return distance (number)
@@ -101,11 +97,22 @@ drawEnemy(something);
 }
 
 document.onmousemove = function(mouse){
-  var mouseX = mouse.clientX;
-  var mouseY = mouse.clientY;
+  var mouseX = mouse.clientX-300;
+  var mouseY = mouse.clientY-180;
+
+  if(mouseX < player.width/2)
+                mouseX = player.width/2;
+        if(mouseX > WIDTH-player.width/2)
+                mouseX = WIDTH - player.width/2;
+        if(mouseY < player.height/2)
+                mouseY = player.height/2;
+        if(mouseY > HEIGHT - player.height/2)
+                mouseY = HEIGHT - player.height/2;
 
   player.x = mouseX;
   player.y = mouseY;
+
+
 }
 
 //final update to run everything
@@ -125,7 +132,7 @@ for (var key in enemyList) {
     var timeSurvived = Date.now() - startTime;
     console.log("You Lost! You survived" + timeSurvived + "ms");
     startTime = Date.now();
-    player.hp = 10
+    player.hp = 20
   }
 
    }
@@ -134,5 +141,10 @@ for (var key in enemyList) {
 drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 300, 36)
 }
+
+enemy('E1',5,80,10,0,30,30)
+enemy('E2',5,300,10,0,5,5)
+enemy('E3',495,200,-10,0,10,20)
+
 
 setInterval(update,100);

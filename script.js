@@ -17,38 +17,22 @@ name: 'P',
 
 var enemyList = {};
 
-var enemy = {
-x: 130,
-spdX :30,
-y: 80,
-spdY: 20,
-name: 'E',
-id: 'E1',
+function enemy(id,x,y,spdX,spdY){
+  // var id = 'E3'
+  var enemy = {
+    x: x,
+    spdX :spdX,
+    y: y,
+    spdY: spdY,
+    name: 'E',
+    id: id,
+  }
+  enemyList[id] = enemy
 }
 
-enemyList.E1 = enemy
-
-var enemy2 = {
-x: 230,
-spdX :40,
-y: 100,
-spdY: 70,
-name: 'E',
-id: 'E2',
-}
-
-enemyList.E2 = enemy2
-
-var enemy3 = {
-x: 130,
-spdX :10,
-y: 140,
-spdY: 40,
-name: 'E',
-id: 'E3',
-}
-
-enemyList.E3 = enemy2
+enemy('E1',130,80,30,20)
+enemy('E2',230,100,40,70)
+enemy('E3',400,300,-50,-20)
 
 
 //canvas size
@@ -56,41 +40,6 @@ var HEIGHT = 400
 var WIDTH = 700
 
 var message = 'bouncing'
-
-// function updatePlayer(){
-//   //player
-//    player.x += player.spdX;
-//    player.y += player.spdY;
-//    ctx.fillText(player.name,player.x,player.y);
-//    console.log('hello',player.x);
-//
-//    if(player.x > WIDTH || player.x < 0){
-//    console.log(message);
-//    player.spdX = -player.spdX
-//    }
-//    if(player.y > HEIGHT || player.y < 0){
-//    console.log(message);
-//    player.spdY = -player.spdY
-//  }
-// }
-
-// function updateEnemy(){
-//
-//    //enemy
-//    enemy.x += enemy.spdX;
-//    enemy.y += enemy.spdY;
-//    ctx.fillText(enemy.name,enemy.x,enemy.y);
-//    console.log('hello',enemy.x)
-//
-//    if(enemy.x > WIDTH || enemy.x < 0){
-//    console.log(message);
-//    enemy.spdX = -enemy.spdX
-//    }
-//    if(enemy.y > HEIGHT || enemy.y < 0){
-//    console.log(message);
-//    enemy.spdY = -enemy.spdY
-//   }
-// }
 
 function updateObject(something){
 

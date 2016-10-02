@@ -61,23 +61,38 @@ function updatePosition(something){
    something.y += something.spdY;
   //  console.log('hello',something.x)
 
-   if(something.x > WIDTH || something.x < 0){
+   if(something.x > 670 || something.x < 0){
    something.spdX = -something.spdX
    //  console.log(message);
    }
-   if(something.y > HEIGHT || something.y < 0){
-   something.spdY = -something.spdY
-   //  console.log(message);
-  }
+  //  if(something.y > 380 || something.y < 0){
+  //  something.spdY = -something.spdY
+  //  //  console.log(message);
+  // }
 }
 
-function drawObject(something){
-  ctx.fillText(something.name,something.x,something.y);
+// testCollisionRectRect = function(rect1,rect2){
+//         return rect1.x <= rect2.x+rect2.width
+//                 && rect2.x <= rect1.x+rect1.width
+//                 && rect1.y <= rect2.y + rect2.height
+//                 && rect2.y <= rect1.y + rect1.height;
+// }
+
+function drawPlayer(something){
+  ctx.fillStyle = 'green';
+  ctx.fillRect(something.x,something.y,20,20);
+  ctx.fillStyle = 'black';
+}
+
+function drawEnemy(something){
+  ctx.fillStyle = 'red';
+  ctx.fillRect(something.x,something.y,30,30);
 }
 
 function updateObject(something){
 updatePosition(something);
-drawObject(something);
+drawPlayer(something)
+drawEnemy(something);
 }
 
 document.onmousemove = function(mouse){
@@ -111,7 +126,7 @@ for (var key in enemyList) {
    }
 }
 
-drawObject(player);
+drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 300, 36)
 }
 

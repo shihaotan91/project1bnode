@@ -41,37 +41,46 @@ var WIDTH = 700
 
 var message = 'bouncing'
 
-function update(){
+function updatePlayer(){
+  //player
+   player.x += player.spdX;
+   player.y += player.spdY;
+   ctx.fillText(player.name,player.x,player.y);
+   console.log('hello',player.x);
 
-       //player
-        player.x += player.spdX;
-        player.y += player.spdY;
-        ctx.fillText(player.name,player.x,player.y);
-        console.log('hello',player.x);
-
-        if(player.x > WIDTH || player.x < 0){
-        console.log(message);
-        player.spdX = -player.spdX
-        }
-        if(player.y > HEIGHT || player.y < 0){
-        console.log(message);
-        player.spdY = -player.spdY
-        }
-
-        //enemy
-        enemy.x += enemy.spdX;
-        enemy.y += enemy.spdY;
-        ctx.fillText(enemy.name,enemy.x,enemy.y);
-        console.log('hello',enemy.x);
-
-        if(enemy.x > WIDTH || enemy.x < 0){
-        console.log(message);
-        enemy.spdX = -enemy.spdX
-        }
-        if(enemy.y > HEIGHT || enemy.y < 0){
-        console.log(message);
-        enemy.spdY = -enemy.spdY
-        }
+   if(player.x > WIDTH || player.x < 0){
+   console.log(message);
+   player.spdX = -player.spdX
+   }
+   if(player.y > HEIGHT || player.y < 0){
+   console.log(message);
+   player.spdY = -player.spdY
+ }
 }
+
+function updateEnemy(){
+
+   //enemy
+   enemy.x += enemy.spdX;
+   enemy.y += enemy.spdY;
+   ctx.fillText(enemy.name,enemy.x,enemy.y);
+   console.log('hello',enemy.x)
+
+   if(enemy.x > WIDTH || enemy.x < 0){
+   console.log(message);
+   enemy.spdX = -enemy.spdX
+   }
+   if(enemy.y > HEIGHT || enemy.y < 0){
+   console.log(message);
+   enemy.spdY = -enemy.spdY
+  }
+}
+
+function update(){
+updatePlayer();
+updateEnemy();
+}
+
+update();
 
 setInterval(update,40);

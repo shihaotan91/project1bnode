@@ -2,7 +2,7 @@
 
 var ctx = document.getElementById("ctx").getContext("2d");
 
-ctx.font = '40px Helvetica';
+ctx.font = '30px Helvetica';
 
 //canvas size
 var HEIGHT = 400
@@ -12,6 +12,9 @@ var startTime = Date.now();
 // var message = 'bouncing'
 
 var frameCount = 0;
+var score = 0;
+
+
 
 //player specs
 var player = {
@@ -124,9 +127,10 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 
 frameCount++
 
-if(frameCount % 40 === 0)
+if(frameCount % 40 === 0) {
 randomGenerator1();
-
+score++
+}
 
 for (var key in enemyList) {
   updateObject(enemyList[key]);
@@ -145,7 +149,8 @@ for (var key in enemyList) {
  }
 
 drawPlayer(player);
-ctx.fillText(player.hp + 'HP', 300, 36)
+ctx.fillText(player.hp + 'HP', 150, 32)
+ctx.fillText("Score:" + score, 420, 32)
 }
 
 //Create a new game whenever the game ends
@@ -154,6 +159,7 @@ function newGame(){
     player.hp = 20;
     startTime = Date.now();
     frameCount = 0;
+    score = 0
     enemyList = {};
     randomGenerator1();
     randomGenerator1();

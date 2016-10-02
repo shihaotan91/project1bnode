@@ -1,0 +1,13 @@
+#ctx {
+  margin: 0 auto;
+  margin-top: 170px;
+  background-image: url("images/grass.png");
+  background-size: cover;
+  width: inherit;
+  display: block;
+}
+
+body {
+  background-image: url("images/background_final.png");
+  background-size: cover;
+}

@@ -9,7 +9,9 @@ var HEIGHT = 400
 var WIDTH = 700
 var startTime = Date.now();
 
-var message = 'bouncing'
+// var message = 'bouncing'
+
+var frameCount = 0;
 
 //player specs
 var player = {
@@ -120,6 +122,12 @@ document.onmousemove = function(mouse){
 function update(){
 ctx.clearRect(0,0,WIDTH,HEIGHT);
 
+frameCount++
+
+if(frameCount % 40 === 0)
+randomGenerator1();
+
+
 for (var key in enemyList) {
   updateObject(enemyList[key]);
 
@@ -130,25 +138,33 @@ for (var key in enemyList) {
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    console.log("You Lost! You survived" + timeSurvived + "ms");
-    startTime = Date.now();
-    player.hp = 20
-  }
-
-   }
-}
+    alert("You Lost! You survived" + timeSurvived + "ms");
+    newGame();
+      }
+    }
+ }
 
 drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 300, 36)
 }
 
-// enemy('E1',5,80,10,0,30,30)
-// enemy('E2',5,300,10,0,5,5)
-// enemy('E3',5,200,10,0,10,20)
+//Create a new game whenever the game ends
 
-function randomGenerator() {
+function newGame(){
+    player.hp = 20;
+    startTime = Date.now();
+    frameCount = 0;
+    enemyList = {};
+    randomGenerator1();
+    randomGenerator1();
+    randomGenerator1();
+}
+
+//Randomly generate an enemy
+
+function randomGenerator1() {
   var x = 0;
-  var y = Math.random()* HEIGHT;
+  var y = Math.random()* HEIGHT - 10;
   var height = 30;
   var width = 30;
   var id = Math.random();
@@ -157,9 +173,6 @@ function randomGenerator() {
   enemy(id,x,y,spdX,spdY,width,height)
 }
 
-randomGenerator();
-randomGenerator();
-randomGenerator();
-
+newGame();
 
 setInterval(update,100);

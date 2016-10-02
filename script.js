@@ -19,14 +19,17 @@ var player = {
         spdY:50,
         name:'P',
         hp: 10,
+        width: 20,
+        height: 20,
+        color: 'green'
 };
 
 //enemy specs
 var enemyList = {};
 
-enemy('E1',5,80,10,0)
-enemy('E2',5,300,10,0)
-enemy('E3',495,200,-10,0)
+enemy('E1',5,80,10,0,30,30)
+enemy('E2',5,300,10,0,5,5)
+enemy('E3',495,200,-10,0,10,20)
 
 //test for collision
 function getDistance(object1,object2){     //return distance (number)
@@ -41,14 +44,16 @@ function testCollision(object1,object2){  //return if colliding (true/false)
 }
 
 //enemy constructor
-function enemy(id,x,y,spdX,spdY){
+function enemy(id,x,y,spdX,spdY,width,height){
   var enemy3 = {
-    x: x,
-    spdX :spdX,
-    y: y,
-    spdY: spdY,
-    name: 'E',
     id: id,
+    x: x,
+    y: y,
+    spdX :spdX,
+    spdY: spdY,
+    width: width,
+    height: height,
+    color: 'red',
   }
   enemyList[id] = enemy3
 }
@@ -79,13 +84,13 @@ function updatePosition(something){
 // }
 
 function drawPlayer(something){
-  ctx.fillStyle = 'green';
+  ctx.fillStyle = something.color;
   ctx.fillRect(something.x,something.y,20,20);
   ctx.fillStyle = 'black';
 }
 
 function drawEnemy(something){
-  ctx.fillStyle = 'red';
+  ctx.fillStyle = something.color;
   ctx.fillRect(something.x,something.y,30,30);
 }
 

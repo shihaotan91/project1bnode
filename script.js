@@ -5,12 +5,6 @@ var ctx = document.getElementById("ctx").getContext("2d");
 ctx.font = '40px Arial';
 
 //player specs
-// var x = 30;
-// var spdX = 50;
-// var y = 40;
-// var spdY = 10;
-// var name = 'P'
-
 var player = {
 x: 30,
 spdX :50,
@@ -20,11 +14,8 @@ name: 'P',
 }
 
 //enemy specs
-// var enemy_x = 130;
-// var enemy_spdX = 30;
-// var enemy_y = 80;
-// var enemy_spdY = 20;
-// var enemy_name = 'E'
+
+var enemyList = {};
 
 var enemy = {
 x: 130,
@@ -32,7 +23,10 @@ spdX :30,
 y: 80,
 spdY: 20,
 name: 'E',
+id: 'E1',
 }
+
+enemyList.E1 = enemy
 
 var enemy2 = {
 x: 230,
@@ -40,7 +34,21 @@ spdX :40,
 y: 100,
 spdY: 70,
 name: 'E',
+id: 'E2',
 }
+
+enemyList.E2 = enemy2
+
+var enemy3 = {
+x: 130,
+spdX :10,
+y: 140,
+spdY: 40,
+name: 'E',
+id: 'E3',
+}
+
+enemyList.E3 = enemy2
 
 
 //canvas size
@@ -84,27 +92,31 @@ var message = 'bouncing'
 //   }
 // }
 
-function updateObject(object){
+function updateObject(something){
 
    //enemy
-   object.x += object.spdX;
-   object.y += object.spdY;
-   ctx.fillText(object.name,object.x,object.y);
-   console.log('hello',object.x)
+   something.x += something.spdX;
+   something.y += something.spdY;
+   ctx.fillText(something.name,something.x,something.y);
+   console.log('hello',something.x)
 
-   if(object.x > WIDTH || object.x < 0){
+   if(something.x > WIDTH || something.x < 0){
    console.log(message);
-   object.spdX = -object.spdX
+   something.spdX = -something.spdX
    }
-   if(object.y > HEIGHT || object.y < 0){
+   if(something.y > HEIGHT || something.y < 0){
    console.log(message);
-   object.spdY = -object.spdY
+   something.spdY = -something.spdY
   }
 }
 
 function update(){
-updateObject(enemy);
-updateObject(enemy2);
+ctx.clearRect(0,0,WIDTH,HEIGHT);
+
+for (var key in enemyList) {
+  updateObject(enemyList[key]);
+}
+
 updateObject(player);
 }
 

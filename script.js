@@ -142,9 +142,24 @@ drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 300, 36)
 }
 
-enemy('E1',5,80,10,0,30,30)
-enemy('E2',5,300,10,0,5,5)
-enemy('E3',495,200,-10,0,10,20)
+// enemy('E1',5,80,10,0,30,30)
+// enemy('E2',5,300,10,0,5,5)
+// enemy('E3',5,200,10,0,10,20)
+
+function randomGenerator() {
+  var x = 0;
+  var y = Math.random()* HEIGHT;
+  var height = 30;
+  var width = 30;
+  var id = Math.random();
+  var spdX = 10
+  var spdY = 0
+  enemy(id,x,y,spdX,spdY,width,height)
+}
+
+randomGenerator();
+randomGenerator();
+randomGenerator();
 
 
 setInterval(update,100);

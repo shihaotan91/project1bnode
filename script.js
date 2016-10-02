@@ -7,14 +7,11 @@ ctx.font = '30px Helvetica';
 //canvas size
 var HEIGHT = 400
 var WIDTH = 700
-var startTime = Date.now();
 
-// var message = 'bouncing'
-
+//counters
 var frameCount = 0;
 var score = 0;
-
-
+var startTime = Date.now();
 
 //player specs
 var player = {
@@ -23,14 +20,15 @@ var player = {
         y:40,
         spdY:50,
         name:'P',
-        hp: 20,
+        hp: 100,
         width: 20,
         height: 20,
         color: 'green'
 };
 
-//enemy specs
+//list
 var enemyList = {};
+var upgradeList = {};
 
 //test for collision
 function getDistance(object1,object2){     //return distance (number)
@@ -45,18 +43,48 @@ function testCollision(object1,object2){  //return if colliding (true/false)
 }
 
 //enemy constructor
-function enemy(id,x,y,spdX,spdY,width,height){
-  var enemy3 = {
+// function enemy(id,x,y,spdX,spdY,width,height,color){
+//   var enemy = {
+//     id: id,
+//     x: x,
+//     y: y,
+//     width: width,
+//     height: height,
+//     spdX :spdX,
+//     spdY: spdY,
+//     color: 'red',
+//   }
+//   enemyList[id] = enemy
+// }
+
+function enemy (id,x,y,spdX,spdY,width,height){
+        var enemy3 = {
+                x:x,
+                spdX:spdX,
+                y:y,
+                spdY:spdY,
+                name:'E',
+                id:id,
+                width:100,
+                height:100,
+                color:'red',
+        };
+        enemyList[id] = enemy3;
+  }
+
+//upgrade constructor
+function upgrade(id,x,y,width,height,spdX,spdY,color){
+  var upgrade = {
     id: id,
     x: x,
     y: y,
-    spdX :spdX,
-    spdY: spdY,
     width: width,
     height: height,
-    color: 'red',
+    spdX: spdX,
+    spdY: spdY,
+    color: 'orange',
   }
-  enemyList[id] = enemy3
+  upgradeList[id] = upgrade
 }
 
 //draw and update object position
@@ -92,7 +120,12 @@ function drawPlayer(something){
 
 function drawEnemy(something){
   ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,30,30);
+  ctx.fillRect(something.x,something.y,20,20);
+}
+
+function drawUpgrade(something){
+  ctx.fillStyle = something.color;
+  ctx.fillRect(something.x,something.y,10,10);
 }
 
 function updateObject(something){
@@ -106,13 +139,13 @@ document.onmousemove = function(mouse){
   var mouseY = mouse.clientY-180;
 
   if(mouseX < player.width/2)
-                mouseX = player.width/2;
+                mouseX = player.width/2 - 10;
         if(mouseX > WIDTH-player.width/2)
-                mouseX = WIDTH - player.width/2;
+                mouseX = WIDTH - player.width/2 - 10;
         if(mouseY < player.height/2)
-                mouseY = player.height/2;
+                mouseY = player.height/2 - 10;
         if(mouseY > HEIGHT - player.height/2)
-                mouseY = HEIGHT - player.height/2;
+                mouseY = HEIGHT - player.height/2 - 10;
 
   player.x = mouseX;
   player.y = mouseY;
@@ -123,18 +156,43 @@ document.onmousemove = function(mouse){
 //final update to run everything
 
 function update(){
+
+//clear canvas
 ctx.clearRect(0,0,WIDTH,HEIGHT);
 
+//add frameCount
 frameCount++
 
+//generate stuff
 if(frameCount % 40 === 0) {
 randomGenerator1();
 score++
 }
 
+if(frameCount % 200 === 0) {
+upgradeGenerator();
+}
+
+//loop through list and draw items
+for (var key in upgradeList) {
+  updateObject(upgradeList[key]);
+
+  var isColliding = testCollision(player, upgradeList[key]);
+  if(isColliding){
+    //  console.log('Colliding!');
+    player.hp += 10
+
+    if(player.hp > 100)
+    {
+      player.hp = 100
+    }
+  }
+}
+
 for (var key in enemyList) {
   updateObject(enemyList[key]);
 
+  //check for collision
   var isColliding = testCollision(player, enemyList[key]);
   if(isColliding){
     //  console.log('Colliding!');
@@ -142,7 +200,7 @@ for (var key in enemyList) {
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    alert("You Lost! You survived" + timeSurvived + "ms");
+    // alert("You Lost! You survived" + timeSurvived + "ms");
     newGame();
       }
     }
@@ -156,11 +214,12 @@ ctx.fillText("Score:" + score, 420, 32)
 //Create a new game whenever the game ends
 
 function newGame(){
-    player.hp = 20;
+    player.hp = 100;
     startTime = Date.now();
     frameCount = 0;
     score = 0
     enemyList = {};
+    upgradeList = {};
     randomGenerator1();
     randomGenerator1();
     randomGenerator1();
@@ -171,14 +230,38 @@ function newGame(){
 function randomGenerator1() {
   var x = 0;
   var y = Math.random()* HEIGHT - 10;
-  var height = 30;
-  var width = 30;
+  var width = this.width;
+  var height = this.height;
   var id = Math.random();
-  var spdX = 10
-  var spdY = 0
-  enemy(id,x,y,spdX,spdY,width,height)
+  var spdX = 10;
+  var spdY = 0;
+  enemy(id,x,y,spdX,spdY,width,height);
+}
+
+// randomlyGenerateEnemy = function(){
+//         //Math.random() returns a number between 0 and 1
+//         var x = Math.random()*WIDTH;
+//         var y = Math.random()*HEIGHT;
+//         var height = 10 + Math.random()*30;     //between 10 and 40
+//         var width = 10 + Math.random()*30;
+//         var id = Math.random();
+//         var spdX = 5 + Math.random() * 5;
+//         var spdY = 5 + Math.random() * 5;
+//         Enemy(id,x,y,spdX,spdY,width,height);
+//
+// }
+
+function upgradeGenerator() {
+  var id = Math.random();
+  var x = Math.random()* WIDTH;
+  var y = Math.random()* HEIGHT;
+  var width = 0;
+  var height = 0;
+  var spdX = 0;
+  var spdY = 0;
+  upgrade(id,x,y,width,height,spdX,spdY);
 }
 
 newGame();
 
-setInterval(update,100);
+setInterval(update,40);

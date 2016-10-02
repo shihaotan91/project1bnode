@@ -7,6 +7,7 @@ ctx.font = '40px Arial';
 //canvas size
 var HEIGHT = 400
 var WIDTH = 700
+var startTime = Date.now();
 
 var message = 'bouncing'
 
@@ -17,16 +18,17 @@ var player = {
         y:40,
         spdY:50,
         name:'P',
+        hp: 10,
 };
 
 //enemy specs
-
 var enemyList = {};
 
-enemy('E1',5,80,30,0)
-enemy('E2',5,300,40,0)
-enemy('E3',495,200,-50,0)
+enemy('E1',5,80,10,0)
+enemy('E2',5,300,10,0)
+enemy('E3',495,200,-10,0)
 
+//test for collision
 function getDistance(object1,object2){     //return distance (number)
         var vx = object1.x - object2.x;
         var vy = object1.y - object2.y;
@@ -38,6 +40,7 @@ function testCollision(object1,object2){  //return if colliding (true/false)
         return distance < 30;
 }
 
+//enemy constructor
 function enemy(id,x,y,spdX,spdY){
   var enemy3 = {
     x: x,
@@ -50,23 +53,42 @@ function enemy(id,x,y,spdX,spdY){
   enemyList[id] = enemy3
 }
 
-function updateObject(something){
+//draw and update object position
 
-   //enemy
+function updatePosition(something){
+
    something.x += something.spdX;
    something.y += something.spdY;
-   ctx.fillText(something.name,something.x,something.y);
   //  console.log('hello',something.x)
 
    if(something.x > WIDTH || something.x < 0){
-  //  console.log(message);
    something.spdX = -something.spdX
+   //  console.log(message);
    }
    if(something.y > HEIGHT || something.y < 0){
-  //  console.log(message);
    something.spdY = -something.spdY
+   //  console.log(message);
   }
 }
+
+function drawObject(something){
+  ctx.fillText(something.name,something.x,something.y);
+}
+
+function updateObject(something){
+updatePosition(something);
+drawObject(something);
+}
+
+document.onmousemove = function(mouse){
+  var mouseX = mouse.clientX;
+  var mouseY = mouse.clientY;
+
+  player.x = mouseX;
+  player.y = mouseY;
+}
+
+//final update to run everything
 
 function update(){
 ctx.clearRect(0,0,WIDTH,HEIGHT);
@@ -76,12 +98,21 @@ for (var key in enemyList) {
 
   var isColliding = testCollision(player, enemyList[key]);
   if(isColliding){
-     console.log('Colliding!');
+    //  console.log('Colliding!');
+    player.hp -= 1
+
+  if(player.hp<=0) {
+    var timeSurvived = Date.now() - startTime;
+    console.log("You Lost! You survived" + timeSurvived + "ms");
+    startTime = Date.now();
+    player.hp = 10
+  }
+
    }
 }
 
-updateObject(player);
-
+drawObject(player);
+ctx.fillText(player.hp + 'HP', 300, 36)
 }
 
 setInterval(update,100);

@@ -7,9 +7,9 @@ ctx.font = '40px Arial';
 //player specs
 var player = {
 x: 30,
-spdX :50,
+spdX :150,
 y: 40,
-spdY: 10,
+spdY: 160,
 name: 'P',
 }
 
@@ -30,9 +30,22 @@ function enemy(id,x,y,spdX,spdY){
   enemyList[id] = enemy
 }
 
-enemy('E1',130,80,30,20)
-enemy('E2',230,100,40,70)
-enemy('E3',400,300,-50,-20)
+enemy('E1',5,80,30,0)
+enemy('E2',5,300,40,0)
+enemy('E3',495,200,-50,0)
+
+function getDistance(object1, object2){
+var vx = object1.x = object2.x
+var vy = object1.y = object2.y
+
+return Math.sqrt(vx*vx+vy*vy)
+}
+
+function testCollision(object1, object2){
+var distance = getDistance(object1, object2);
+return distance < 10
+
+}
 
 
 //canvas size

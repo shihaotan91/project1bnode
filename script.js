@@ -13,8 +13,20 @@ var img = {};
   img.char1 = new Image();
   img.char1.src = "images/char1.png";
 
+  img.char2 = new Image();
+  img.char2.src = "images/char2.png";
+
+  img.char3 = new Image();
+  img.char3.src = "images/char3.png";
+
   img.bellsprout = new Image();
   img.bellsprout.src = "images/bell.png";
+
+  img.weepin = new Image();
+  img.weepin.src = "images/weepin.png";
+
+  img.victree = new Image();
+  img.victree.src = "images/victree.png";
 
   img.potion = new Image();
   img.potion.src = "images/potion.png";
@@ -22,16 +34,13 @@ var img = {};
   img.fire = new Image();
   img.fire.src = "images/fire.png";
 
-  img.char2 = new Image();
-  img.char2.src = "images/char2.png";
-
-  img.char3 = new Image();
-  img.char3.src = "images/char3.png";
 
   var charmander = img.char1
   var charmeleon = img.char2
   var charizard = img.char3
   var bellsprout = img.bellsprout
+  var weepin = img.weepin
+  var victree = img.victree
   var potion = img.potion
   var fireball = img.fire
 
@@ -120,7 +129,7 @@ function testCollision (object1,object2){
 
 //ENEMY CONSTRUCTOR
 function enemy (id,x,y,spdX,spdY,width,height){
-        var enemy3 = {
+        var enemy = {
    x:x,
    spdX:spdX,
    y:y,
@@ -130,10 +139,27 @@ function enemy (id,x,y,spdX,spdY,width,height){
    width:40,
    height:40,
    color:'red',
+   timer: 0,
    img:bellsprout
         };
-        enemyList[id] = enemy3;
+        enemyList[id] = enemy;
   }
+
+  function enemy2 (id,x,y,spdX,spdY,width,height){
+          var enemy = {
+     x:x,
+     spdX:spdX,
+     y:y,
+     spdY:spdY,
+     name:'E',
+     id:id,
+     width:40,
+     height:40,
+     color:'red',
+     img:weepin
+          };
+          enemyList[id] = enemy;
+    }
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -177,10 +203,10 @@ function updatePosition(something){
    something.y += something.spdY;
   //  console.log('hello',something.x)
 
-   if(something.x > 670 || something.x < 0){
-   something.spdX = -something.spdX
+  //  if(something.x > 670 || something.x < 0){
+  //  something.spdX = -something.spdX
    //  console.log(message);
-   }
+  //  }
  }
 
 //DRAW OBJECT
@@ -200,19 +226,37 @@ function drawPlayer(something){
   }
 }
 
+// function drawEnemy(something){
+//   if (player.lvl < 5) {
+//   ctx.drawImage(bellsprout,something.x,something.y,something.width,something.height);
+//   // ctx.fillStyle = 'black';
+// }
+//   if (player.lvl >= 5 && player.lvl < 36) {
+//   ctx.drawImage(weepin,something.x,something.y,something.width,something.height);
+//   // ctx.fillStyle = 'black';
+// }
+//   if (player.lvl >= 36) {
+//   ctx.drawImage(victree,something.x,something.y,something.width,something.height);
+//   // ctx.fillStyle = 'black';
+//   }
+// }
+
 function drawObject(something){
-  ctx.fillStyle = something.color;
+  // ctx.fillStyle = something.color;
   ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
+  // ctx.drawImage(potion,something.x,something.y,something.width,something.height);
   // ctx.fillRect(something.x,something.y,something.width,something.height);
 }
+
 
 
 function updateObject(something){
 updatePosition(something);
 drawObject(something);
+// drawFire(something)
+// drawUpgrade(something)
 // drawPlayer(something);
 // drawEnemy(something);
-// drawUpgrade(upgrade)
 }
 
 document.onmousemove = function(mouse){
@@ -245,8 +289,8 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 frameCount++
 
 //generate stuff
-if(frameCount % 10 === 0) {
-randomGenerator1();
+if(frameCount % 5 === 0) {
+enemyGenerator1();
 score++
 }
 
@@ -257,6 +301,13 @@ upgradeGenerator();
 if(frameCount % 40 === 0) {
 fireGenerator();
 }
+
+if(player.lvl > 5) {
+  if(frameCount % 5 === 0) {
+    enemyGenerator2()
+  }
+}
+
 
 //loop through list and draw items
 
@@ -315,14 +366,17 @@ for (var key in enemyList) {
     var timeSurvived = Date.now() - startTime;
     alert("You Lost! You died at level" + player.lvl);
     newGame();
+
       }
     }
  }
 
-
-
-//connected to player
+//update player and enemy appearance
+// drawEnemy(enemy);
 drawPlayer(player);
+// drawUpgrade(upgrade);
+// drawFire(fire);
+
 ctx.fillText(player.hp + 'HP', 150, 32)
 ctx.fillText("Level" + player.lvl, 420, 32)
 }
@@ -336,16 +390,17 @@ function newGame(){
     startTime = Date.now();
     frameCount = 0;
     score = 0
+    player.lvl = 0
     enemyList = {};
     upgradeList = {};
-    randomGenerator1();
-    randomGenerator1();
-    randomGenerator1();
+    enemyGenerator1();
+    enemyGenerator1();
+    enemyGenerator1();
 }
 
 //GENERATE STUFF
 
-function randomGenerator1() {
+function enemyGenerator1() {
   var x = 0;
   var y = Math.random()* HEIGHT - 10;
   var width = 30;
@@ -354,6 +409,17 @@ function randomGenerator1() {
   var spdX = 10;
   var spdY = 0;
   enemy(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator2() {
+  var x = Math.random()* WIDTH - 10;
+  var y = 0;
+  var width = 30;
+  var height = 30;
+  var id = Math.random();
+  var spdX = 0;
+  var spdY = 15;
+  enemy2(id,x,y,spdX,spdY,width,height);
 }
 
 function upgradeGenerator() {

@@ -29,6 +29,7 @@ var player = {
 //list
 var enemyList = {};
 var upgradeList = {};
+var bulletList = {};
 
 //test for collision
 function getDistance(object1,object2){     //return distance (number)
@@ -43,31 +44,17 @@ function testCollision(object1,object2){  //return if colliding (true/false)
 }
 
 //enemy constructor
-// function enemy(id,x,y,spdX,spdY,width,height,color){
-//   var enemy = {
-//     id: id,
-//     x: x,
-//     y: y,
-//     width: width,
-//     height: height,
-//     spdX :spdX,
-//     spdY: spdY,
-//     color: 'red',
-//   }
-//   enemyList[id] = enemy
-// }
-
 function enemy (id,x,y,spdX,spdY,width,height){
         var enemy3 = {
-                x:x,
-                spdX:spdX,
-                y:y,
-                spdY:spdY,
-                name:'E',
-                id:id,
-                width:100,
-                height:100,
-                color:'red',
+   x:x,
+   spdX:spdX,
+   y:y,
+   spdY:spdY,
+   name:'E',
+   id:id,
+   width:width,
+   height:height,
+   color:'red',
         };
         enemyList[id] = enemy3;
   }
@@ -87,7 +74,21 @@ function upgrade(id,x,y,width,height,spdX,spdY,color){
   upgradeList[id] = upgrade
 }
 
-//draw and update object position
+function bullet(id,x,y,width,height,spdX,spdY,color){
+  var bullet = {
+    id: id,
+    x: player.x,
+    y: player.y,
+    width: 10,
+    height: 10,
+    spdX: 0,
+    spdY: 0,
+    color: 'black',
+  }
+  bulletList[id] = bullet
+}
+
+//update object position
 
 function updatePosition(something){
 
@@ -112,26 +113,30 @@ function updatePosition(something){
 //                 && rect2.y <= rect1.y + rect1.height;
 // }
 
+//draw object position
+
 function drawPlayer(something){
   ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,20,20);
+  ctx.fillRect(something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
 
-function drawEnemy(something){
+function drawObject(something){
   ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,20,20);
+  ctx.fillRect(something.x,something.y,something.width,something.height);
 }
 
-function drawUpgrade(something){
-  ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,10,10);
-}
+// function drawEnemy(something){
+//   ctx.fillStyle = something.color;
+//   ctx.fillRect(something.x,something.y,something.width,something.height);
+// }
 
 function updateObject(something){
 updatePosition(something);
 drawPlayer(something)
-drawEnemy(something);
+drawObject(something)
+// drawEnemy(something);
+// drawUpgrade(upgrade)
 }
 
 document.onmousemove = function(mouse){
@@ -186,6 +191,8 @@ for (var key in upgradeList) {
     {
       player.hp = 100
     }
+
+    delete upgradeList[key];
   }
 }
 
@@ -230,8 +237,8 @@ function newGame(){
 function randomGenerator1() {
   var x = 0;
   var y = Math.random()* HEIGHT - 10;
-  var width = this.width;
-  var height = this.height;
+  var width = 30;
+  var height = 30;
   var id = Math.random();
   var spdX = 10;
   var spdY = 0;
@@ -255,8 +262,8 @@ function upgradeGenerator() {
   var id = Math.random();
   var x = Math.random()* WIDTH;
   var y = Math.random()* HEIGHT;
-  var width = 0;
-  var height = 0;
+  var width = 10;
+  var height = 10;
   var spdX = 0;
   var spdY = 0;
   upgrade(id,x,y,width,height,spdX,spdY);

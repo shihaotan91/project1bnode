@@ -11,7 +11,21 @@ var WIDTH = 700
 //image list
 var img = {};
 img.player = new Image();
-img.player.src = "images/man1.png";
+img.player.src = "images/char1.png";
+
+img.bellsprout = new Image();
+img.bellsprout.src = "images/bell.png";
+
+img.potion = new Image();
+img.potion.src = "images/potion.png";
+
+img.fire = new Image();
+img.fire.src = "images/fire.png";
+
+var charmander = img.player
+var bellsprout = img.bellsprout
+var potion = img.potion
+var fireball = img.fire
 
 //counters
 var frameCount = 0;
@@ -26,10 +40,10 @@ var player = {
         spdY:50,
         name:'P',
         hp: 20,
-        width: 20,
-        height: 20,
+        width: 50,
+        height: 50,
         color: 'green',
-        img:img.player
+        img:charmander
 };
 
 //list
@@ -103,9 +117,10 @@ function enemy (id,x,y,spdX,spdY,width,height){
    spdY:spdY,
    name:'E',
    id:id,
-   width:width,
-   height:height,
+   width:40,
+   height:40,
    color:'red',
+   img:bellsprout
         };
         enemyList[id] = enemy3;
   }
@@ -116,11 +131,12 @@ function upgrade(id,x,y,width,height,spdX,spdY,color){
     id: id,
     x: x,
     y: y,
-    width: width,
-    height: height,
+    width:20,
+    height:30,
     spdX: spdX,
     spdY: spdY,
     color: 'pink',
+    img:potion
   }
   upgradeList[id] = upgrade
 }
@@ -133,10 +149,11 @@ function fire (id,x,y,spdX,spdY,width,height){
     spdY:spdY,
     name:'E',
     id:id,
-    width:width,
-    height:height,
-    color:'black',
+    width:20,
+    height:20,
+    color:'orange',
     timer: 0,
+    img:fireball,
       };
     fireList[id] = fire;
 }
@@ -176,15 +193,26 @@ function updatePosition(something){
 //draw object position
 
 function drawPlayer(something){
-  ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,something.width,something.height);
+  ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
 
 function drawObject(something){
   ctx.fillStyle = something.color;
-  ctx.fillRect(something.x,something.y,something.width,something.height);
+  ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
+  // ctx.fillRect(something.x,something.y,something.width,something.height);
 }
+
+// function drawPlayer(something){
+//   ctx.fillStyle = 'blue';
+//   ctx.fillRect(something.x,something.y,something.width,something.height);
+//   ctx.fillStyle = 'black';
+// }
+//
+// function drawObject(something){
+//   ctx.fillStyle = something.color;
+//   ctx.fillRect(something.x,something.y,something.width,something.height);
+// }
 
 // function drawEnemy(something){
 //   ctx.fillStyle = something.color;
@@ -193,7 +221,7 @@ function drawObject(something){
 
 function updateObject(something){
 updatePosition(something);
-drawPlayer(something)
+// drawPlayer(something)
 drawObject(something)
 // drawEnemy(something);
 // drawUpgrade(upgrade)
@@ -317,6 +345,7 @@ for (var key in enemyList) {
     }
  }
 
+//connected to player
 drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 150, 32)
 ctx.fillText("Score:" + score, 420, 32)

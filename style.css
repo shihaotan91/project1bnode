@@ -11,3 +11,7 @@ body {
   background-image: url("images/background_final.png");
   background-size: cover;
 }
+
+#char {
+  display: none;
+}

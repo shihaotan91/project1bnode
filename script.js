@@ -8,6 +8,11 @@ ctx.font = '30px Helvetica';
 var HEIGHT = 400
 var WIDTH = 700
 
+//image list
+var img = {};
+img.player = new Image();
+img.player.src = "images/man1.png";
+
 //counters
 var frameCount = 0;
 var score = 0;
@@ -23,7 +28,8 @@ var player = {
         hp: 20,
         width: 20,
         height: 20,
-        color: 'green'
+        color: 'green',
+        img:img.player
 };
 
 //list
@@ -31,16 +37,45 @@ var enemyList = {};
 var upgradeList = {};
 var fireList = {};
 
-//test for collision BUG
-function getDistance(object1,object2){     //return distance (number)
-        var vx = object1.x - object2.x;
-        var vy = object1.y - object2.y;
-        return Math.sqrt(vx*vx+vy*vy);
+//test for collision
+// function getDistance(object1,object2){     //return distance (number)
+//         var vx = object1.x - object2.x;
+//         var vy = object1.y - object2.y;
+//         return Math.sqrt(vx*vx+vy*vy);
+// }
+//
+// function testCollision(object1,object2){  //return if colliding (true/false)
+//         var distance = getDistance(object1,object2);
+//         return distance < 30;
+// }
+
+// getDistance = function (object1,object2){  //return distance (number)
+//         var vx = object1.x - object2.x;
+//         var vy = object1.y - object2.y;
+//         return Math.sqrt(vx*vx+vy*vy);
+// }
+
+testCollision = function (object1,object2){       //return if colliding (true/false)
+        var rect1 = {
+                x:object1.x-object1.width/2,
+                y:object1.y-object1.height/2,
+                width:object1.width,
+                height:object1.height,
+        }
+        var rect2 = {
+                x:object2.x-object2.width/2,
+                y:object2.y-object2.height/2,
+                width:object2.width,
+                height:object2.height,
+        }
+        return testCollisionRectRect(rect1,rect2);
 }
 
-function testCollision(object1,object2){  //return if colliding (true/false)
-        var distance = getDistance(object1,object2);
-        return distance < 30;
+testCollisionRectRect = function(rect1,rect2){
+        return rect1.x <= rect2.x+rect2.width
+                && rect2.x <= rect1.x+rect1.width
+                && rect1.y <= rect2.y + rect2.height
+                && rect2.y <= rect1.y + rect1.height;
 }
 
 // function testCollision (object1,object2){       //return if colliding (true/false)
@@ -101,6 +136,7 @@ function fire (id,x,y,spdX,spdY,width,height){
     width:width,
     height:height,
     color:'black',
+    timer: 0,
       };
     fireList[id] = fire;
 }
@@ -136,13 +172,6 @@ function updatePosition(something){
   //  //  console.log(message);
   // }
 }
-
-// testCollisionRectRect = function(rect1,rect2){
-//         return rect1.x <= rect2.x+rect2.width
-//                 && rect2.x <= rect1.x+rect1.width
-//                 && rect1.y <= rect2.y + rect2.height
-//                 && rect2.y <= rect1.y + rect1.height;
-// }
 
 //draw object position
 
@@ -200,7 +229,7 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 frameCount++
 
 //generate stuff
-if(frameCount % 40 === 0) {
+if(frameCount % 10 === 0) {
 randomGenerator1();
 score++
 }
@@ -215,9 +244,41 @@ fireGenerator();
 
 //loop through list and draw items
 
-for (var key in fireList) {
-  updateObject(fireList[key]);
-}
+// for (var key in fireList) {
+//   updateObject(fireList[key]);
+
+ //  for (var key2 in enemyList) {
+ //    updateObject(enemyList[key2])
+ //
+ //    var isColliding = testCollision(fireList[key], enemyList[key2]);
+ //    if(isColliding){
+ //      delete fireList[key];
+ //      delete enemyList[key2]
+ //   }
+ // }
+
+// }
+
+for(var key in fireList){
+                updateObject(fireList[key]);
+
+                var toRemove = false;
+                fireList[key].timer++;
+                if(fireList[key].timer > 20){
+                        toRemove = true;
+                }
+
+                for(var key2 in enemyList){
+                        var isColliding = testCollision(fireList[key],enemyList[key2]);
+                        if(isColliding){
+                                toRemove = true;
+                                delete enemyList[key2];
+                        }
+                }
+                if(toRemove){
+                        delete fireList[key];
+                }
+        }
 //
 
 for (var key in upgradeList) {
@@ -236,16 +297,6 @@ for (var key in upgradeList) {
     delete upgradeList[key];
   }
 }
-
-// for (var key2 in enemyList) {
-//   updateObject(enemyList[key2])
-//
-//   var isColliding = testCollision(fireList[key], enemyList[key2]);
-//   if(isColliding){
-//     delete fireList[key];
-//     delete enemyList[key2]
-//  }
-// }
 
 
 for (var key in enemyList) {

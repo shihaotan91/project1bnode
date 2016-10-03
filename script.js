@@ -34,6 +34,12 @@ var img = {};
   img.fire = new Image();
   img.fire.src = "images/fire.png";
 
+  img.bluefire = new Image();
+  img.bluefire.src = "images/bluefire.png";
+
+  img.mega = new Image();
+  img.mega.src = "images/mega-char.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -43,6 +49,8 @@ var img = {};
   var victree = img.victree
   var potion = img.potion
   var fireball = img.fire
+  var bluefire = img.bluefire
+  var mega = img.mega
 
 //COUNTERS//
 var frameCount = 0;
@@ -161,6 +169,22 @@ function enemy (id,x,y,spdX,spdY,width,height){
           enemyList[id] = enemy;
     }
 
+    function enemy3 (id,x,y,spdX,spdY,width,height){
+            var enemy = {
+       x:x,
+       spdX:spdX,
+       y:y,
+       spdY:spdY,
+       name:'E',
+       id:id,
+       width:60,
+       height:60,
+       color:'red',
+       img:victree
+            };
+            enemyList[id] = enemy;
+      }
+
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
   var upgrade = {
@@ -186,13 +210,31 @@ function fire (id,x,y,spdX,spdY,width,height){
     spdY:spdY,
     name:'E',
     id:id,
-    width:20,
-    height:20,
+    width:30,
+    height:30,
     color:'orange',
     timer: 0,
     img:fireball,
       };
     fireList[id] = fire;
+}
+
+//FIRE CONSTRUCTOR
+function blueFire (id,x,y,spdX,spdY,width,height){
+ var blueFire = {
+    x:x,
+    spdX:spdX,
+    y:y,
+    spdY:spdY,
+    name:'E',
+    id:id,
+    width:50,
+    height:50,
+    color:'blue',
+    timer: 0,
+    img:bluefire,
+      };
+    fireList[id] = blueFire;
 }
 
 //UPDATE OBJECT POSITION
@@ -212,16 +254,20 @@ function updatePosition(something){
 //DRAW OBJECT
 
 function drawPlayer(something){
-  if (player.lvl < 16) {
+  if (player.lvl < 5) {
   ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
-  if (player.lvl >= 16 && player.lvl < 36) {
+  if (player.lvl >= 5 && player.lvl < 10) {
   ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
-  if (player.lvl >= 36) {
+  if (player.lvl >= 10) {
   ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+  }
+  if (player.lvl >= 20) {
+  ctx.drawImage(mega,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
   }
 }
@@ -294,17 +340,45 @@ enemyGenerator1();
 score++
 }
 
-if(frameCount % 200 === 0) {
+if(frameCount % 120 === 0) {
 upgradeGenerator();
 }
 
-if(frameCount % 40 === 0) {
+if(frameCount % 20 === 0) {
 fireGenerator();
 }
 
-if(player.lvl > 5) {
+if(player.lvl >= 5) {
+  if(frameCount % 20 === 0) {
+    fireGenerator2()
+  }
+}
+
+if(player.lvl >= 10) {
+  if(frameCount % 20 === 0) {
+    fireGenerator3()
+    fireGenerator4()
+  }
+}
+
+if(player.lvl >= 20) {
+  if(frameCount % 20 === 0) {
+    fireGenerator5()
+    fireGenerator6()
+    fireGenerator7()
+    fireGenerator8()
+  }
+}
+
+if(player.lvl >= 5) {
   if(frameCount % 5 === 0) {
     enemyGenerator2()
+  }
+}
+
+if(player.lvl >= 10) {
+  if(frameCount % 2 === 0) {
+    enemyGenerator3()
   }
 }
 
@@ -316,7 +390,7 @@ for(var key in fireList){
 
   var toRemove = false;
   fireList[key].timer++;
-  if(fireList[key].timer > 20) {
+  if(fireList[key].timer > 40) {
   toRemove = true;
    }
 
@@ -340,7 +414,7 @@ for (var key in upgradeList) {
   var isColliding = testCollision(player, upgradeList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp += 20
+    player.hp += 10
 
     if(player.hp > 100)
     {
@@ -422,6 +496,17 @@ function enemyGenerator2() {
   enemy2(id,x,y,spdX,spdY,width,height);
 }
 
+function enemyGenerator3() {
+  var x = Math.random()*WIDTH;;
+  var y = Math.random()*HEIGHT;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = 10;
+  var spdY = 10;
+  enemy3(id,x,y,spdX,spdY,width,height);
+}
+
 function upgradeGenerator() {
   var id = Math.random();
   var x = Math.random()* WIDTH;
@@ -434,7 +519,6 @@ function upgradeGenerator() {
 }
 
 function fireGenerator(){
-        //Math.random() returns a number between 0 and 1
     var x = player.x;
     var y = player.y;
     var height = 10;
@@ -446,6 +530,105 @@ function fireGenerator(){
     var spdY = 0 //Math.sin(angle/180*Math.PI)*5;
     fire(id,x,y,spdX,spdY,width,height);
 }
+
+function fireGenerator2(){
+        //Math.random() returns a number between 0 and 1
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 0 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = -10 //Math.sin(angle/180*Math.PI)*5;
+    fire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator3(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 0 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 10 //Math.sin(angle/180*Math.PI)*5;
+    fire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator4(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 0 //Math.sin(angle/180*Math.PI)*5;
+    fire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator5(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 10 //Math.sin(angle/180*Math.PI)*5;
+    blueFire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator6(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = -10 //Math.sin(angle/180*Math.PI)*5;
+    blueFire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator7(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 10 //Math.sin(angle/180*Math.PI)*5;
+    blueFire(id,x,y,spdX,spdY,width,height);
+}
+
+function fireGenerator8(){
+
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = -10 //Math.sin(angle/180*Math.PI)*5;
+    blueFire(id,x,y,spdX,spdY,width,height);
+}
+
 
 newGame();
 

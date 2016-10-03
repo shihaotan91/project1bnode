@@ -20,7 +20,7 @@ var player = {
         y:40,
         spdY:50,
         name:'P',
-        hp: 100,
+        hp: 20,
         width: 20,
         height: 20,
         color: 'green'
@@ -29,9 +29,9 @@ var player = {
 //list
 var enemyList = {};
 var upgradeList = {};
-var bulletList = {};
+var fireList = {};
 
-//test for collision
+//test for collision BUG
 function getDistance(object1,object2){     //return distance (number)
         var vx = object1.x - object2.x;
         var vy = object1.y - object2.y;
@@ -42,6 +42,22 @@ function testCollision(object1,object2){  //return if colliding (true/false)
         var distance = getDistance(object1,object2);
         return distance < 30;
 }
+
+// function testCollision (object1,object2){       //return if colliding (true/false)
+//         var object1 = {
+//                 x:object1.x-object1.width/2,
+//                 y:object1.y-object1.height/2,
+//                 width:object1.width,
+//                 height:object1.height,
+//         }
+//         var object2 = {
+//                 x:object2.x-object2.width/2,
+//                 y:object2.y-object2.height/2,
+//                 width:object2.width,
+//                 height:object2.height,
+//      }
+//      return testCollision(object1,object2);
+//   }
 
 //enemy constructor
 function enemy (id,x,y,spdX,spdY,width,height){
@@ -69,24 +85,39 @@ function upgrade(id,x,y,width,height,spdX,spdY,color){
     height: height,
     spdX: spdX,
     spdY: spdY,
-    color: 'orange',
+    color: 'pink',
   }
   upgradeList[id] = upgrade
 }
 
-function bullet(id,x,y,width,height,spdX,spdY,color){
-  var bullet = {
-    id: id,
-    x: player.x,
-    y: player.y,
-    width: 10,
-    height: 10,
-    spdX: 0,
-    spdY: 0,
-    color: 'black',
-  }
-  bulletList[id] = bullet
+function fire (id,x,y,spdX,spdY,width,height){
+ var fire = {
+    x:x,
+    spdX:spdX,
+    y:y,
+    spdY:spdY,
+    name:'E',
+    id:id,
+    width:width,
+    height:height,
+    color:'black',
+      };
+    fireList[id] = fire;
 }
+
+// function fire(id,x,y,width,height,spdX,spdY,angle,color){
+//   var fire = {
+//     id: id,
+//     x: player.x,
+//     y: player.y,
+//     width: 10,
+//     height: 10,
+//     spdX: spdX,
+//     spdY: spdY,
+//     color: 'orange',
+//   }
+//   fireList[id] = fire
+// }
 
 //update object position
 
@@ -178,23 +209,44 @@ if(frameCount % 200 === 0) {
 upgradeGenerator();
 }
 
+if(frameCount % 40 === 0) {
+fireGenerator();
+}
+
 //loop through list and draw items
+
+for (var key in fireList) {
+  updateObject(fireList[key]);
+}
+//
+
 for (var key in upgradeList) {
   updateObject(upgradeList[key]);
 
   var isColliding = testCollision(player, upgradeList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp += 10
+    player.hp += 2
 
-    if(player.hp > 100)
+    if(player.hp > 20)
     {
-      player.hp = 100
+      player.hp = 20
     }
 
     delete upgradeList[key];
   }
 }
+
+// for (var key2 in enemyList) {
+//   updateObject(enemyList[key2])
+//
+//   var isColliding = testCollision(fireList[key], enemyList[key2]);
+//   if(isColliding){
+//     delete fireList[key];
+//     delete enemyList[key2]
+//  }
+// }
+
 
 for (var key in enemyList) {
   updateObject(enemyList[key]);
@@ -204,10 +256,11 @@ for (var key in enemyList) {
   if(isColliding){
     //  console.log('Colliding!');
     player.hp -= 1
+    delete enemyList[key]
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    // alert("You Lost! You survived" + timeSurvived + "ms");
+    alert("You Lost! You survived" + timeSurvived + "ms");
     newGame();
       }
     }
@@ -221,7 +274,7 @@ ctx.fillText("Score:" + score, 420, 32)
 //Create a new game whenever the game ends
 
 function newGame(){
-    player.hp = 100;
+    player.hp = 20;
     startTime = Date.now();
     frameCount = 0;
     score = 0
@@ -245,19 +298,6 @@ function randomGenerator1() {
   enemy(id,x,y,spdX,spdY,width,height);
 }
 
-// randomlyGenerateEnemy = function(){
-//         //Math.random() returns a number between 0 and 1
-//         var x = Math.random()*WIDTH;
-//         var y = Math.random()*HEIGHT;
-//         var height = 10 + Math.random()*30;     //between 10 and 40
-//         var width = 10 + Math.random()*30;
-//         var id = Math.random();
-//         var spdX = 5 + Math.random() * 5;
-//         var spdY = 5 + Math.random() * 5;
-//         Enemy(id,x,y,spdX,spdY,width,height);
-//
-// }
-
 function upgradeGenerator() {
   var id = Math.random();
   var x = Math.random()* WIDTH;
@@ -268,6 +308,35 @@ function upgradeGenerator() {
   var spdY = 0;
   upgrade(id,x,y,width,height,spdX,spdY);
 }
+
+function fireGenerator(){
+        //Math.random() returns a number between 0 and 1
+    var x = player.x;
+    var y = player.y;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 0 //Math.sin(angle/180*Math.PI)*5;
+    fire(id,x,y,spdX,spdY,width,height);
+}
+
+// function fireGenerator() {
+//         //Math.random() returns a number between 0 and 1
+//   var id = Math.random();
+//   var x = player.x;
+//   var y = player.y;
+//   var height = 10;
+//   var width = 10;
+//
+//   var angle = 166 // Math.random()*360;
+//
+//   var spdX = 20 // Math.cos(angle/180*Math.PI)*5;
+//   var spdY = 0 // Math.sin(angle/180*Math.PI)*5;
+//   fire(id,x,y,width,height,spdX,spdY);
+// }
 
 newGame();
 

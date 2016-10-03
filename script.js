@@ -1,52 +1,61 @@
-//canvas
+//CANVAS//
 
 var ctx = document.getElementById("ctx").getContext("2d");
 
 ctx.font = '30px Helvetica';
 
-//canvas size
+//CANVAS SIZE//
 var HEIGHT = 400
 var WIDTH = 700
 
-//image list
+//IMAGE LIST//
 var img = {};
-img.player = new Image();
-img.player.src = "images/char1.png";
+  img.char1 = new Image();
+  img.char1.src = "images/char1.png";
 
-img.bellsprout = new Image();
-img.bellsprout.src = "images/bell.png";
+  img.bellsprout = new Image();
+  img.bellsprout.src = "images/bell.png";
 
-img.potion = new Image();
-img.potion.src = "images/potion.png";
+  img.potion = new Image();
+  img.potion.src = "images/potion.png";
 
-img.fire = new Image();
-img.fire.src = "images/fire.png";
+  img.fire = new Image();
+  img.fire.src = "images/fire.png";
 
-var charmander = img.player
-var bellsprout = img.bellsprout
-var potion = img.potion
-var fireball = img.fire
+  img.char2 = new Image();
+  img.char2.src = "images/char2.png";
 
-//counters
+  img.char3 = new Image();
+  img.char3.src = "images/char3.png";
+
+  var charmander = img.char1
+  var charmeleon = img.char2
+  var charizard = img.char3
+  var bellsprout = img.bellsprout
+  var potion = img.potion
+  var fireball = img.fire
+
+//COUNTERS//
 var frameCount = 0;
 var score = 0;
 var startTime = Date.now();
 
-//player specs
+//PLAYER SPECS//
 var player = {
-        x:50,
-        spdX:120,
-        y:40,
-        spdY:50,
-        name:'P',
-        hp: 20,
-        width: 50,
-        height: 50,
-        color: 'green',
-        img:charmander
+    x:50,
+    spdX:120,
+    y:40,
+    spdY:50,
+    name:'P',
+    hp: 100,
+    width: 50,
+    height: 50,
+    color: 'green',
+    img:charmander,
+    lvl: 0
 };
 
-//list
+//LIST
 var enemyList = {};
 var upgradeList = {};
 var fireList = {};
@@ -69,7 +78,14 @@ var fireList = {};
 //         return Math.sqrt(vx*vx+vy*vy);
 // }
 
-testCollision = function (object1,object2){       //return if colliding (true/false)
+testCollisionRectRect = function(rect1,rect2){
+  return rect1.x <= rect2.x+rect2.width
+  && rect2.x <= rect1.x+rect1.width
+  && rect1.y <= rect2.y + rect2.height
+  && rect2.y <= rect1.y + rect1.height;
+}
+
+function testCollision (object1,object2){
         var rect1 = {
                 x:object1.x-object1.width/2,
                 y:object1.y-object1.height/2,
@@ -85,12 +101,6 @@ testCollision = function (object1,object2){       //return if colliding (true/fa
         return testCollisionRectRect(rect1,rect2);
 }
 
-testCollisionRectRect = function(rect1,rect2){
-        return rect1.x <= rect2.x+rect2.width
-                && rect2.x <= rect1.x+rect1.width
-                && rect1.y <= rect2.y + rect2.height
-                && rect2.y <= rect1.y + rect1.height;
-}
 
 // function testCollision (object1,object2){       //return if colliding (true/false)
 //         var object1 = {
@@ -108,7 +118,7 @@ testCollisionRectRect = function(rect1,rect2){
 //      return testCollision(object1,object2);
 //   }
 
-//enemy constructor
+//ENEMY CONSTRUCTOR
 function enemy (id,x,y,spdX,spdY,width,height){
         var enemy3 = {
    x:x,
@@ -125,7 +135,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
         enemyList[id] = enemy3;
   }
 
-//upgrade constructor
+//UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
   var upgrade = {
     id: id,
@@ -141,6 +151,7 @@ function upgrade(id,x,y,width,height,spdX,spdY,color){
   upgradeList[id] = upgrade
 }
 
+//FIRE CONSTRUCTOR
 function fire (id,x,y,spdX,spdY,width,height){
  var fire = {
     x:x,
@@ -158,21 +169,7 @@ function fire (id,x,y,spdX,spdY,width,height){
     fireList[id] = fire;
 }
 
-// function fire(id,x,y,width,height,spdX,spdY,angle,color){
-//   var fire = {
-//     id: id,
-//     x: player.x,
-//     y: player.y,
-//     width: 10,
-//     height: 10,
-//     spdX: spdX,
-//     spdY: spdY,
-//     color: 'orange',
-//   }
-//   fireList[id] = fire
-// }
-
-//update object position
+//UPDATE OBJECT POSITION
 
 function updatePosition(something){
 
@@ -184,17 +181,23 @@ function updatePosition(something){
    something.spdX = -something.spdX
    //  console.log(message);
    }
-  //  if(something.y > 380 || something.y < 0){
-  //  something.spdY = -something.spdY
-  //  //  console.log(message);
-  // }
-}
+ }
 
-//draw object position
+//DRAW OBJECT
 
 function drawPlayer(something){
-  ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
+  if (player.lvl < 16) {
+  ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
+}
+  if (player.lvl >= 16 && player.lvl < 36) {
+  ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+}
+  if (player.lvl >= 36) {
+  ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+  }
 }
 
 function drawObject(something){
@@ -203,33 +206,18 @@ function drawObject(something){
   // ctx.fillRect(something.x,something.y,something.width,something.height);
 }
 
-// function drawPlayer(something){
-//   ctx.fillStyle = 'blue';
-//   ctx.fillRect(something.x,something.y,something.width,something.height);
-//   ctx.fillStyle = 'black';
-// }
-//
-// function drawObject(something){
-//   ctx.fillStyle = something.color;
-//   ctx.fillRect(something.x,something.y,something.width,something.height);
-// }
-
-// function drawEnemy(something){
-//   ctx.fillStyle = something.color;
-//   ctx.fillRect(something.x,something.y,something.width,something.height);
-// }
 
 function updateObject(something){
 updatePosition(something);
-// drawPlayer(something)
-drawObject(something)
+drawObject(something);
+// drawPlayer(something);
 // drawEnemy(something);
 // drawUpgrade(upgrade)
 }
 
 document.onmousemove = function(mouse){
-  var mouseX = mouse.clientX-300;
-  var mouseY = mouse.clientY-180;
+  var mouseX = mouse.clientX-310;
+  var mouseY = mouse.clientY-195;
 
   if(mouseX < player.width/2)
                 mouseX = player.width/2 - 10;
@@ -246,7 +234,7 @@ document.onmousemove = function(mouse){
 
 }
 
-//final update to run everything
+//UPDATE TO RUN EVERYTHING
 
 function update(){
 
@@ -272,42 +260,28 @@ fireGenerator();
 
 //loop through list and draw items
 
-// for (var key in fireList) {
-//   updateObject(fireList[key]);
-
- //  for (var key2 in enemyList) {
- //    updateObject(enemyList[key2])
- //
- //    var isColliding = testCollision(fireList[key], enemyList[key2]);
- //    if(isColliding){
- //      delete fireList[key];
- //      delete enemyList[key2]
- //   }
- // }
-
-// }
-
 for(var key in fireList){
-                updateObject(fireList[key]);
+  updateObject(fireList[key]);
 
-                var toRemove = false;
-                fireList[key].timer++;
-                if(fireList[key].timer > 20){
-                        toRemove = true;
-                }
+  var toRemove = false;
+  fireList[key].timer++;
+  if(fireList[key].timer > 20) {
+  toRemove = true;
+   }
 
-                for(var key2 in enemyList){
-                        var isColliding = testCollision(fireList[key],enemyList[key2]);
-                        if(isColliding){
-                                toRemove = true;
-                                delete enemyList[key2];
-                        }
-                }
-                if(toRemove){
-                        delete fireList[key];
-                }
-        }
-//
+    for(var key2 in enemyList){
+      var isColliding = testCollision(fireList[key],enemyList[key2]);
+      if(isColliding){
+      toRemove = true;
+      player.lvl ++
+      delete enemyList[key2];
+            }
+         }
+        if(toRemove){
+        delete fireList[key];
+         }
+    }
+
 
 for (var key in upgradeList) {
   updateObject(upgradeList[key]);
@@ -315,11 +289,11 @@ for (var key in upgradeList) {
   var isColliding = testCollision(player, upgradeList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp += 2
+    player.hp += 20
 
-    if(player.hp > 20)
+    if(player.hp > 100)
     {
-      player.hp = 20
+      player.hp = 100
     }
 
     delete upgradeList[key];
@@ -334,27 +308,31 @@ for (var key in enemyList) {
   var isColliding = testCollision(player, enemyList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp -= 1
+    player.hp -= 3
     delete enemyList[key]
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    alert("You Lost! You survived" + timeSurvived + "ms");
+    alert("You Lost! You died at level" + player.lvl);
     newGame();
       }
     }
  }
 
+
+
 //connected to player
 drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 150, 32)
-ctx.fillText("Score:" + score, 420, 32)
+ctx.fillText("Level" + player.lvl, 420, 32)
 }
+
+//END OF UPDATE//
 
 //Create a new game whenever the game ends
 
 function newGame(){
-    player.hp = 20;
+    player.hp = 100;
     startTime = Date.now();
     frameCount = 0;
     score = 0
@@ -365,7 +343,7 @@ function newGame(){
     randomGenerator1();
 }
 
-//Randomly generate an enemy
+//GENERATE STUFF
 
 function randomGenerator1() {
   var x = 0;
@@ -402,21 +380,6 @@ function fireGenerator(){
     var spdY = 0 //Math.sin(angle/180*Math.PI)*5;
     fire(id,x,y,spdX,spdY,width,height);
 }
-
-// function fireGenerator() {
-//         //Math.random() returns a number between 0 and 1
-//   var id = Math.random();
-//   var x = player.x;
-//   var y = player.y;
-//   var height = 10;
-//   var width = 10;
-//
-//   var angle = 166 // Math.random()*360;
-//
-//   var spdX = 20 // Math.cos(angle/180*Math.PI)*5;
-//   var spdY = 0 // Math.sin(angle/180*Math.PI)*5;
-//   fire(id,x,y,width,height,spdX,spdY);
-// }
 
 newGame();
 

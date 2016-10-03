@@ -40,6 +40,9 @@ var img = {};
   img.mega = new Image();
   img.mega.src = "images/mega-char.png";
 
+  img.blast = new Image();
+  img.blast.src = "images/blast.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -51,6 +54,7 @@ var img = {};
   var fireball = img.fire
   var bluefire = img.bluefire
   var mega = img.mega
+  var blast = img.blast
 
 //COUNTERS//
 var frameCount = 0;
@@ -74,6 +78,7 @@ var player = {
 
 //LIST
 var enemyList = {};
+var enemyList2 = {};
 var upgradeList = {};
 var fireList = {};
 
@@ -184,6 +189,24 @@ function enemy (id,x,y,spdX,spdY,width,height){
             };
             enemyList[id] = enemy;
       }
+
+      function enemy4 (id,x,y,spdX,spdY,width,height){
+              var enemy2 = {
+         x:x,
+         spdX:spdX,
+         y:y,
+         spdY:spdY,
+         name:'E',
+         id:id,
+         width:80,
+         height:80,
+         color:'red',
+         timer: 0,
+         hp: 3,
+         img:blast
+              };
+              enemyList2[id] = enemy2;
+        }
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -370,6 +393,12 @@ if(player.lvl >= 20) {
   }
 }
 
+if(player.lvl >= 20) {
+  if(frameCount % 80 === 0) {
+   enemyGenerator4n5()
+  }
+}
+
 if(player.lvl >= 5) {
   if(frameCount % 5 === 0) {
     enemyGenerator2()
@@ -433,7 +462,7 @@ for (var key in enemyList) {
   var isColliding = testCollision(player, enemyList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp -= 3
+    // player.hp -= 3
     delete enemyList[key]
 
   if(player.hp<=0) {
@@ -444,6 +473,25 @@ for (var key in enemyList) {
       }
     }
  }
+
+ for (var key in enemyList2) {
+   updateObject(enemyList2[key]);
+
+   //check for collision
+   var isColliding = testCollision(player, enemyList2[key]);
+   if(isColliding){
+     //  console.log('Colliding!');
+     player.hp -= 6
+     delete enemyList2[key]
+
+   if(player.hp<=0) {
+     var timeSurvived = Date.now() - startTime;
+     alert("You Lost! You died at level" + player.lvl);
+     newGame();
+
+       }
+     }
+  }
 
 //update player and enemy appearance
 // drawEnemy(enemy);
@@ -466,6 +514,7 @@ function newGame(){
     score = 0
     player.lvl = 0
     enemyList = {};
+    enemyList2 = {};
     upgradeList = {};
     enemyGenerator1();
     enemyGenerator1();
@@ -505,6 +554,37 @@ function enemyGenerator3() {
   var spdX = 10;
   var spdY = 10;
   enemy3(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator4() {
+  var x = 0;
+  var y = 240;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = 5;
+  var spdY = 0;
+  enemy4(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator5() {
+  var x = WIDTH - 10;
+  var y = 120;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = -5;
+  var spdY = 0;
+  enemy4(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator4n5() {
+enemyGenerator4()
+enemyGenerator4()
+enemyGenerator4()
+enemyGenerator5()
+enemyGenerator5()
+enemyGenerator5()
 }
 
 function upgradeGenerator() {

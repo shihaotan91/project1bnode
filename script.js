@@ -43,6 +43,9 @@ var img = {};
   img.blast = new Image();
   img.blast.src = "images/blast.png";
 
+  img.gay = new Image();
+  img.gay.src = "images/gay.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -55,6 +58,7 @@ var img = {};
   var bluefire = img.bluefire
   var mega = img.mega
   var blast = img.blast
+  var gay = img.gay
 
 //COUNTERS//
 var frameCount = 0;
@@ -207,6 +211,23 @@ function enemy (id,x,y,spdX,spdY,width,height){
               };
               enemyList2[id] = enemy2;
         }
+        function enemy5 (id,x,y,spdX,spdY,width,height){
+                var enemy2 = {
+           x:x,
+           spdX:spdX,
+           y:y,
+           spdY:spdY,
+           name:'E',
+           id:id,
+           width:80,
+           height:80,
+           color:'red',
+           timer: 0,
+           hp: 3,
+           img:gay
+                };
+                enemyList2[id] = enemy2;
+          }
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -277,19 +298,19 @@ function updatePosition(something){
 //DRAW OBJECT
 
 function drawPlayer(something){
-  if (player.lvl < 5) {
+  if (player.lvl < 16) {
   ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
-  if (player.lvl >= 5 && player.lvl < 10) {
+  if (player.lvl >= 16 && player.lvl < 36) {
   ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
 }
-  if (player.lvl >= 10) {
+  if (player.lvl >= 36 && player.lvl < 60) {
   ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
   }
-  if (player.lvl >= 20) {
+  if (player.lvl >= 60) {
   ctx.drawImage(mega,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
   }
@@ -356,36 +377,31 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 
 //add frameCount
 frameCount++
-
 //generate stuff
-if(frameCount % 5 === 0) {
-enemyGenerator1();
-score++
-}
 
-if(frameCount % 120 === 0) {
+if(frameCount % 200 === 0) {
 upgradeGenerator();
 }
 
-if(frameCount % 20 === 0) {
+if(frameCount % 30 === 0) {
 fireGenerator();
 }
 
-if(player.lvl >= 5) {
-  if(frameCount % 20 === 0) {
+if(player.lvl >= 16) {
+  if(frameCount % 30 === 0) {
     fireGenerator2()
   }
 }
 
-if(player.lvl >= 10) {
-  if(frameCount % 20 === 0) {
+if(player.lvl >= 36) {
+  if(frameCount % 30 === 0) {
     fireGenerator3()
     fireGenerator4()
   }
 }
 
-if(player.lvl >= 20) {
-  if(frameCount % 20 === 0) {
+if(player.lvl >= 60) {
+  if(frameCount % 30 === 0) {
     fireGenerator5()
     fireGenerator6()
     fireGenerator7()
@@ -393,23 +409,34 @@ if(player.lvl >= 20) {
   }
 }
 
-if(player.lvl >= 20) {
-  if(frameCount % 80 === 0) {
-   enemyGenerator4n5()
-  }
+if(frameCount % 5 === 0) {
+enemyGenerator1();
+score++
 }
 
-if(player.lvl >= 5) {
+if(player.lvl >= 16) {
   if(frameCount % 5 === 0) {
     enemyGenerator2()
   }
 }
 
-if(player.lvl >= 10) {
+if(player.lvl >= 36) {
   if(frameCount % 2 === 0) {
     enemyGenerator3()
   }
 }
+if(player.lvl >= 100) {
+  if(frameCount % 40 === 0) {
+   enemyGenerator4n5()
+  }
+}
+
+if(player.lvl >= 200) {
+  if(frameCount % 40 === 0) {
+   enemyGenerator6n7()
+  }
+}
+
 
 
 //loop through list and draw items
@@ -462,7 +489,7 @@ for (var key in enemyList) {
   var isColliding = testCollision(player, enemyList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    // player.hp -= 3
+    player.hp -= 2
     delete enemyList[key]
 
   if(player.hp<=0) {
@@ -481,7 +508,7 @@ for (var key in enemyList) {
    var isColliding = testCollision(player, enemyList2[key]);
    if(isColliding){
      //  console.log('Colliding!');
-     player.hp -= 6
+     player.hp -= 5
      delete enemyList2[key]
 
    if(player.hp<=0) {
@@ -578,13 +605,36 @@ function enemyGenerator5() {
   enemy4(id,x,y,spdX,spdY,width,height);
 }
 
+function enemyGenerator6() {
+  var x = 200;
+  var y = 380;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = 0;
+  var spdY = -5;
+  enemy5(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator7() {
+  var x = 400;
+  var y = 0;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = 0;
+  var spdY = 5;
+  enemy5(id,x,y,spdX,spdY,width,height);
+}
+
 function enemyGenerator4n5() {
 enemyGenerator4()
-enemyGenerator4()
-enemyGenerator4()
 enemyGenerator5()
-enemyGenerator5()
-enemyGenerator5()
+}
+
+function enemyGenerator6n7() {
+enemyGenerator6()
+enemyGenerator7()
 }
 
 function upgradeGenerator() {

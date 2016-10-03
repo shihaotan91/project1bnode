@@ -49,6 +49,9 @@ var img = {};
   img.speed = new Image();
   img.speed.src = "images/speed.png";
 
+  img.lap = new Image();
+  img.lap.src = "images/lapras.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -63,6 +66,7 @@ var img = {};
   var blast = img.blast
   var gay = img.gay
   var speed = img.speed
+  var lap = img.lap
 
 //COUNTERS//
 var frameCount = 0;
@@ -234,6 +238,23 @@ function enemy (id,x,y,spdX,spdY,width,height){
                 };
                 enemyList2[id] = enemy2;
           }
+          function enemy6 (id,x,y,spdX,spdY,width,height){
+                  var enemy3 = {
+             x:x,
+             spdX:spdX,
+             y:y,
+             spdY:spdY,
+             name:'E',
+             id:id,
+             width:80,
+             height:80,
+             color:'red',
+             timer: 0,
+             hp: 3,
+             img:lap
+                  };
+                  enemyList2[id] = enemy3;
+            }
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -241,8 +262,8 @@ function upgrade(id,x,y,width,height,spdX,spdY,color){
     id: id,
     x: x,
     y: y,
-    width:30,
-    height:40,
+    width:25,
+    height:35,
     spdX: spdX,
     spdY: spdY,
     color: 'pink',
@@ -256,7 +277,7 @@ function atkSpd(id,x,y,width,height,spdX,spdY,color){
     id: id,
     x: x,
     y: y,
-    width:50,
+    width:40,
     height:50,
     spdX: spdX,
     spdY: spdY,
@@ -398,13 +419,14 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 
 //add frameCount
 frameCount++
-//generate stuff
+//generate stu
+ff
 
-if(frameCount % 150 === 0) {
+if(frameCount % 200 === 0) {
 upgradeGenerator();
 }
 
-if(frameCount % 200 === 0) {
+if(frameCount % 150 === 0) {
 atkSpdGenerator();
 }
 
@@ -450,19 +472,25 @@ if(player.lvl >= 36) {
     enemyGenerator3()
   }
 }
-if(player.lvl >= 100) {
+if(player.lvl >= 150) {
   if(frameCount % 60 === 0) {
    enemyGenerator4n5()
   }
 }
 
-if(player.lvl >= 150) {
+if(player.lvl >= 250) {
   if(frameCount % 60 === 0) {
    enemyGenerator6n7()
   }
 }
 
-if(player.lvl >= 300){
+if(player.lvl >= 350) {
+  if(frameCount % 10 === 0) {
+   enemyGenerator8()
+  }
+}
+
+if(player.lvl >= 500){
   alert("You are a Pokemon Master!")
   newGame();
 }
@@ -490,7 +518,7 @@ for(var key in fireList){
          }
         if(toRemove){
         delete fireList[key];
-         }
+        }
     }
 
 
@@ -500,7 +528,7 @@ for (var key in upgradeList) {
   var isColliding = testCollision(player, upgradeList[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.hp += 10
+    player.hp += 20
 
     if(player.hp > 100)
     {
@@ -588,12 +616,14 @@ function newGame(){
     frameCount = 0;
     score = 0
     player.lvl = 0
+    player.atkSpd = 0
     enemyList = {};
     enemyList2 = {};
     upgradeList = {};
-    enemyGenerator1();
-    enemyGenerator1();
-    enemyGenerator1();
+    upgradeList2 = {};
+    // enemyGenerator1();
+    // enemyGenerator1();
+    // enemyGenerator1();
 }
 
 //GENERATE STUFF
@@ -673,6 +703,17 @@ function enemyGenerator7() {
   var spdX = 0;
   var spdY = 5;
   enemy5(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator8() {
+  var x = Math.random()*WIDTH;;
+  var y = Math.random()*HEIGHT;;
+  var width = width;
+  var height = height;
+  var id = Math.random();
+  var spdX = 5;
+  var spdY = 5;
+  enemy6(id,x,y,spdX,spdY,width,height);
 }
 
 function enemyGenerator4n5() {

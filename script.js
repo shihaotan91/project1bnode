@@ -419,8 +419,7 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 
 //add frameCount
 frameCount++
-//generate stu
-ff
+//generate stuff
 
 if(frameCount % 200 === 0) {
 upgradeGenerator();

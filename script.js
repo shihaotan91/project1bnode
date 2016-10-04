@@ -1,3 +1,13 @@
+//INSTRUCTIONS HOVER
+
+$("#instruct").hover(
+  function() {
+    $("#play").show();
+  }, function() {
+    $("#play").hide();
+  }
+);
+
 //CANVAS//
 
 var ctx = document.getElementById("ctx").getContext("2d");
@@ -1046,4 +1056,6 @@ function mewFireGenerator2(){
 
 newGame();
 
-setInterval(update,40);
+// setInterval(update,40);
+
+drawPlayer(player);

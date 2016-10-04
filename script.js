@@ -90,6 +90,7 @@ var frameCount = 0;
 var score = 0;
 var startTime = Date.now();
 var health = 100
+var pause = false
 
 //PLAYER SPECS//
 var player = {
@@ -360,7 +361,6 @@ function blueFire (id,x,y,spdX,spdY,width,height){
 }
 
 //DRAW OBJECTS
-
 function drawPlayer(something){
   if (player.lvl < 16) {
   ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
@@ -1003,7 +1003,12 @@ function mewFireGenerator2(){
     plasmaFire(id,x,y,spdX,spdY,width,height);
 }
 
+// START BUTTON
+document.onkeydown = function(event){
+  if(event.keyCode === 83)
+  setInterval(update,40);
+}
 
-// newGame();
+// startGame();
 
-setInterval(update,40);
+// setInterval(update,40);

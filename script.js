@@ -362,23 +362,23 @@ function blueFire (id,x,y,spdX,spdY,width,height){
 
 //DRAW OBJECTS
 function drawPlayer(something){
-  if (player.lvl < 16) {
+  if (player.lvl < 20) {
   ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
-}
-   if (player.lvl >= 16 && player.lvl < 36) {
+    }
+   if (player.lvl >= 20 && player.lvl < 60) {
    ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
    ctx.fillStyle = 'black';
     }
-  if (player.lvl >= 36 && player.lvl < 60) {
-  ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-  }
-  if (player.lvl >= 60) {
-  ctx.drawImage(mega,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-  }
-}
+    if (player.lvl >= 60 && player.lvl < 120) {
+     ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
+     ctx.fillStyle = 'black';
+     }
+      if (player.lvl >= 120) {
+      ctx.drawImage(mega,something.x,something.y,something.width,something.height);
+      ctx.fillStyle = 'black';
+       }
+     }
 
 function drawObject(something){
   ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
@@ -404,7 +404,7 @@ function updatePosition(something){
   //  console.log('hello',something.x)
 }
 
- function updatePosition2(something) {
+function updatePosition2(something) {
 
    something.x += something.spdX;
    something.y += something.spdY;
@@ -451,6 +451,37 @@ if(paused){
   return;
 }
 
+//EVOLUTION EFFECTS
+if(player.lvl == 20){
+  player.width = 80
+  player.height = 80
+}
+
+if(player.lvl == 25){
+  player.width = 50
+  player.height = 50
+}
+
+if(player.lvl == 60){
+  player.width = 80
+  player.height = 80
+}
+
+if(player.lvl == 65){
+  player.width = 50
+  player.height = 50
+}
+
+if(player.lvl == 120){
+  player.width = 80
+  player.height = 80
+}
+
+if(player.lvl >= 130){
+  player.width = 50
+  player.height = 50
+}
+
 //CLEAR CANVAS TO AVOID DUPLICATES
 ctx.clearRect(0,0,WIDTH,HEIGHT);
 
@@ -473,20 +504,20 @@ if(frameCount % (30 - player.atkSpd) === 0) {
  fireGenerator();
  }
 
-if(player.lvl >= 16) {
+if(player.lvl >= 20) {
   if(frameCount % (30 - player.atkSpd) === 0) {
     fireGenerator2()
   }
 }
 
-if(player.lvl >= 36) {
+if(player.lvl >= 60) {
   if(frameCount % (30 - player.atkSpd) === 0) {
     fireGenerator3()
     fireGenerator4()
   }
 }
 
-if(player.lvl >= 60) {
+if(player.lvl >= 120) {
   if(frameCount % (30 - player.atkSpd) === 0) {
     fireGenerator5()
     fireGenerator6()
@@ -502,13 +533,13 @@ if(player.lvl < 500 && frameCount % 5 === 0) {
  score++
 }
 
-if(player.lvl < 500 && player.lvl >= 16) {
+if(player.lvl < 500 && player.lvl >= 20) {
   if(frameCount % 5 === 0) {
     enemyGenerator2()
   }
 }
 
-if(player.lvl < 500 && player.lvl >= 36) {
+if(player.lvl < 500 && player.lvl >= 60) {
   if(frameCount % 3 === 0) {
     enemyGenerator3()
   }
@@ -546,7 +577,7 @@ if(player.lvl >= 500 && player.mewtwo == 0) {
 }
 
 if(player.lvl >= 500) {
-  if(frameCount % 80 === 0) {
+  if(frameCount % 50 === 0) {
    mewFireGenerator()
    mewFireGenerator2()
   }
@@ -568,7 +599,7 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 3
+      player.lvl += 50
       delete enemyList[key2];
             }
          }
@@ -597,7 +628,7 @@ for(var key in enemyList3){
     // for(var key2 in fireList){
       var isColliding = testCollision(player,enemyList3[key]);
       if(isColliding){
-      player.hp -= 3
+      player.hp -= 2
 
       if(player.hp<=0) {
         var timeSurvived = Date.now() - startTime;
@@ -630,9 +661,9 @@ for (var key in upgradeList2) {
   updateObject(upgradeList2[key]);
 
   var isColliding = testCollision(player, upgradeList2[key]);
-  if(isColliding){
+   if(isColliding){
     //  console.log('Colliding!');
-    player.atkSpd += 3
+    player.atkSpd += 1
 
     if(player.atkSpd > 30)
     {
@@ -670,20 +701,20 @@ for (var key in enemyList2) {
    //check for collision
    var isColliding = testCollision(player, enemyList2[key]);
    if(isColliding){
-     //  console.log('Colliding!');
-     player.hp -= 5
+    //  console.log('Colliding!');
+    player.hp -= 5
      delete enemyList2[key]
 
    if(player.hp<=0) {
      var timeSurvived = Date.now() - startTime;
      alert("You Lost! You died at level " + player.lvl);
      newGame();
-          }
-       }
+      }
     }
+  }
 
-
-  for (var key in fireList2) {
+//LOGIC TO PLASMA BALL
+for (var key in fireList2) {
     updateObject2(fireList2[key])
 
     var isColliding = testCollision(player, fireList2[key]);
@@ -844,8 +875,8 @@ function enemyGenerator9() {
 
 function upgradeGenerator() {
   var id = Math.random();
-  var x = Math.random()* WIDTH - 30;
-  var y = Math.random()* HEIGHT - 30;
+  var x = Math.random()* WIDTH - 20;
+  var y = Math.random()* HEIGHT - 20;
   var width = 10;
   var height = 10;
   var spdX = 0;
@@ -855,8 +886,8 @@ function upgradeGenerator() {
 
 function atkSpdGenerator() {
   var id = Math.random();
-  var x = Math.random()* WIDTH - 30;
-  var y = Math.random()* HEIGHT - 30;
+  var x = Math.random()* WIDTH - 20;
+  var y = Math.random()* HEIGHT - 20;
   var width = 30;
   var height = 10;
   var spdX = 0;
@@ -872,8 +903,6 @@ function fireGenerator(){
     var height = 10;
     var width = 10;
     var id = Math.random();
-
-    var angle = Math.random()*360;
     var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
     var spdY = 0 //Math.sin(angle/180*Math.PI)*5;
     fire(id,x,y,spdX,spdY,width,height);
@@ -983,6 +1012,7 @@ function mewFireGenerator(){
 
     var x = Math.random() * WIDTH;
     var y = Math.random() * HEIGHT;
+
     var height = height;
     var width = width;
     var id = Math.random();
@@ -995,22 +1025,20 @@ function mewFireGenerator(){
 
 function mewFireGenerator2(){
 
-  // var mewtwoObject = enemyGenerator9()
-  // console.log(mewtwoObject)
-
     var x = Math.random() * WIDTH;
     var y = Math.random() * HEIGHT;
+
     var height = height;
     var width = width;
     var id = Math.random();
 
     var angle = Math.random()*360;
-    var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
-    var spdY = 10 //Math.sin(angle/180*Math.PI)*5;
+    var spdX = -5 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 5 //Math.sin(angle/180*Math.PI)*5;
     plasmaFire(id,x,y,spdX,spdY,width,height);
 }
 
-// START BUTTON
+// START AND PAUSE BUTTON
 
 var start = 0
 
@@ -1023,7 +1051,3 @@ document.onkeydown = function(event){
   paused = !paused
   }
 }
-
-// startGame();
-
-// setInterval(update,40);

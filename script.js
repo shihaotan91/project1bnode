@@ -90,7 +90,7 @@ var frameCount = 0;
 var score = 0;
 var startTime = Date.now();
 var health = 100
-var pause = false
+var paused = false
 
 //PLAYER SPECS//
 var player = {
@@ -444,6 +444,13 @@ document.onmousemove = function(mouse){
 
 function update(){
 
+//PAUSE BUTTON
+if(paused){
+   ctx.fillStyle = 'red'
+   ctx.fillText('PAUSED',290,200)
+  return;
+}
+
 //CLEAR CANVAS TO AVOID DUPLICATES
 ctx.clearRect(0,0,WIDTH,HEIGHT);
 
@@ -571,7 +578,7 @@ for(var key in fireList){
     }
 
 //LOGIC OF FIGHTING WITH MEWTWO
-  for(var key in enemyList3){
+for(var key in enemyList3){
     updateObject2(enemyList3[key]);
 
     for(var key2 in fireList){
@@ -703,7 +710,7 @@ ctx.fillText(player.hp + 'HP', 80, 32)
 
 if (player.lvl >= 500){
  ctx.fillStyle = 'red';
- ctx.fillText('Mewtwo HP:' + health, 230, 380)
+ ctx.fillText('Mewtwo HP:' + health, 230, 60)
  }
 }
 
@@ -1004,9 +1011,17 @@ function mewFireGenerator2(){
 }
 
 // START BUTTON
+
+var start = 0
+
 document.onkeydown = function(event){
-  if(event.keyCode === 83)
-  setInterval(update,40);
+  if(event.keyCode === 83 && start === 0){
+  setInterval(update,40)
+  start++;
+  }
+  else if(event.keyCode === 80){
+  paused = !paused
+  }
 }
 
 // startGame();

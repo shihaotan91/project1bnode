@@ -52,6 +52,12 @@ var img = {};
   img.lap = new Image();
   img.lap.src = "images/lapras.png";
 
+  img.mewtwo = new Image();
+  img.mewtwo.src = "images/mewtwo.png";
+
+  img.plasma = new Image();
+  img.plasma.src = "images/plasma.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -67,6 +73,8 @@ var img = {};
   var gay = img.gay
   var speed = img.speed
   var lap = img.lap
+  var mewtwo = img.mewtwo
+  var plasma = img.plasma
 
 //COUNTERS//
 var frameCount = 0;
@@ -86,15 +94,18 @@ var player = {
     color: 'green',
     img:charmander,
     lvl: 0,
-    atkSpd: 0
+    atkSpd: 0,
+    mewtwo: 0,
 };
 
 //LIST
 var enemyList = {};
 var enemyList2 = {};
+var enemyList3 = {};
 var upgradeList = {};
 var upgradeList2 = {};
 var fireList = {};
+var fireList2 = {};
 
 //test for collision
 // function getDistance(object1,object2){     //return distance (number)
@@ -172,7 +183,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
         enemyList[id] = enemy;
   }
 
-  function enemy2 (id,x,y,spdX,spdY,width,height){
+function enemy2 (id,x,y,spdX,spdY,width,height){
           var enemy = {
      x:x,
      spdX:spdX,
@@ -188,7 +199,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
           enemyList[id] = enemy;
     }
 
-    function enemy3 (id,x,y,spdX,spdY,width,height){
+function enemy3 (id,x,y,spdX,spdY,width,height){
             var enemy = {
        x:x,
        spdX:spdX,
@@ -204,7 +215,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
             enemyList[id] = enemy;
       }
 
-      function enemy4 (id,x,y,spdX,spdY,width,height){
+function enemy4 (id,x,y,spdX,spdY,width,height){
               var enemy2 = {
          x:x,
          spdX:spdX,
@@ -221,7 +232,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
               };
               enemyList2[id] = enemy2;
         }
-        function enemy5 (id,x,y,spdX,spdY,width,height){
+function enemy5 (id,x,y,spdX,spdY,width,height){
                 var enemy2 = {
            x:x,
            spdX:spdX,
@@ -238,7 +249,7 @@ function enemy (id,x,y,spdX,spdY,width,height){
                 };
                 enemyList2[id] = enemy2;
           }
-          function enemy6 (id,x,y,spdX,spdY,width,height){
+function enemy6 (id,x,y,spdX,spdY,width,height){
                   var enemy3 = {
              x:x,
              spdX:spdX,
@@ -255,6 +266,28 @@ function enemy (id,x,y,spdX,spdY,width,height){
                   };
                   enemyList2[id] = enemy3;
             }
+
+function enemy7(x,y,spdX,spdY,width,height){
+        var enemy4 = {
+        x:x,
+        spdX:spdX,
+        y:y,
+        spdY:spdY,
+        name:'E',
+        id:3,
+        width:80,
+        height:80,
+        color:'red',
+        timer: 0,
+        hp: 100,
+        img:mewtwo
+            };
+      enemyList3[enemy4.id] = enemy4;
+      return enemy4
+      }
+
+      // var mewtwoObject = enemy7
+      // mewtwoObject = {};
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -305,6 +338,23 @@ function fire (id,x,y,spdX,spdY,width,height){
     fireList[id] = fire;
 }
 
+function plasmaFire (id,x,y,spdX,spdY,width,height){
+ var plasma2 = {
+    x:x,
+    spdX:spdX,
+    y:y,
+    spdY:spdY,
+    name:'E',
+    id:id,
+    width:30,
+    height:30,
+    color:'orange',
+    timer: 0,
+    img:plasma,
+      };
+    fireList2[id] = plasma2;
+}
+
 //FIRE CONSTRUCTOR
 function blueFire (id,x,y,spdX,spdY,width,height){
  var blueFire = {
@@ -331,10 +381,20 @@ function updatePosition(something){
    something.y += something.spdY;
   //  console.log('hello',something.x)
 
-  //  if(something.x > 670 || something.x < 0){
-  //  something.spdX = -something.spdX
-   //  console.log(message);
-  //  }
+ }
+
+ function updatePosition2(something) {
+
+   something.x += something.spdX;
+   something.y += something.spdY;
+
+   if(something.x > 620 || something.x < 0){
+    something.spdX = -something.spdX
+  }
+
+    if(something.y > 320 || something.y < 0){
+     something.spdY = -something.spdY
+   }
  }
 
 //DRAW OBJECT
@@ -380,7 +440,10 @@ function drawObject(something){
   // ctx.fillRect(something.x,something.y,something.width,something.height);
 }
 
-
+function updateObject2(something){
+  updatePosition2(something);
+  drawObject(something);
+}
 
 function updateObject(something){
 updatePosition(something);
@@ -455,48 +518,63 @@ if(player.lvl >= 60) {
   }
 }
 
-if(frameCount % 5 === 0) {
+if(player.lvl < 500 && frameCount % 5 === 0) {
 enemyGenerator1();
 score++
 }
 
-if(player.lvl >= 16) {
+if(player.lvl < 500 && player.lvl >= 16) {
   if(frameCount % 5 === 0) {
     enemyGenerator2()
   }
 }
 
-if(player.lvl >= 36) {
+if(player.lvl < 500 && player.lvl >= 36) {
   if(frameCount % 3 === 0) {
     enemyGenerator3()
   }
 }
-if(player.lvl >= 150) {
+if(player.lvl < 500 && player.lvl >= 150) {
   if(frameCount % 60 === 0) {
    enemyGenerator4n5()
   }
 }
 
-if(player.lvl >= 250) {
+if(player.lvl < 500 && player.lvl >= 250) {
   if(frameCount % 60 === 0) {
    enemyGenerator6n7()
   }
 }
 
-if(player.lvl >= 350) {
+if(player.lvl < 500 && player.lvl >= 350) {
   if(frameCount % 10 === 0) {
    enemyGenerator8()
   }
 }
 
-if(player.lvl >= 500){
-  alert("You are a Pokemon Master!")
-  newGame();
+if(player.lvl >= 500 && player.mewtwo == 0) {
+   player.mewtwo ++
+   enemyGenerator9()
 }
+
+if(player.lvl >= 500) {
+  if(frameCount % 30 === 0) {
+   mewFireGenerator()
+  }
+}
+
+// if(player.lvl >= 501){
+//   alert("You are a Pokemon Master!")
+//   newGame();
+// }
 
 
 
 //loop through list and draw items
+
+for(var key in fireList2){
+  updateObject(fireList2[key]);
+}
 
 for(var key in fireList){
   updateObject(fireList[key]);
@@ -511,7 +589,7 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl ++
+      player.lvl += 100
       delete enemyList[key2];
             }
          }
@@ -589,9 +667,12 @@ for (var key in enemyList) {
      var timeSurvived = Date.now() - startTime;
      alert("You Lost! You died at level" + player.lvl);
      newGame();
-
+          }
        }
-     }
+    }
+
+    for (var key in enemyList3) {
+      updateObject2(enemyList3[key]);
   }
 
 //update player and enemy appearance
@@ -713,6 +794,19 @@ function enemyGenerator8() {
   var spdX = 5;
   var spdY = 5;
   enemy6(id,x,y,spdX,spdY,width,height);
+}
+
+function enemyGenerator9() {
+  var x = 300;
+  var y = 130;
+  var width = width;
+  var height = height;
+  var id = 3;
+  var spdX = 5;
+  var spdY = 5;
+  var mewtwoObject = enemy7(x,y,spdX,spdY,width,height);
+  return mewtwoObject;
+  console.log(mewtwoObject)
 }
 
 function enemyGenerator4n5() {
@@ -858,7 +952,26 @@ function fireGenerator8(){
     blueFire(id,x,y,spdX,spdY,width,height);
 }
 
+function mewFireGenerator(){
+
+  // var mewtwoObject = enemyGenerator9()
+  // console.log(mewtwoObject)
+
+    var x = 100;
+    var y = 100;
+    var height = height;
+    var width = width;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = 10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = -10 //Math.sin(angle/180*Math.PI)*5;
+    plasmaFire(id,x,y,spdX,spdY,width,height);
+}
+
 
 newGame();
 
 setInterval(update,40);
+
+// console.log(enemyGenerator9)

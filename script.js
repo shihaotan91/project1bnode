@@ -224,8 +224,8 @@ function enemy4 (id,x,y,spdX,spdY,width,height){
          spdY:spdY,
          name:'E',
          id:id,
-         width:80,
-         height:80,
+         width:70,
+         height:70,
          color:'red',
          timer: 0,
          hp: 3,
@@ -241,8 +241,8 @@ function enemy5 (id,x,y,spdX,spdY,width,height){
            spdY:spdY,
            name:'E',
            id:id,
-           width:80,
-           height:80,
+           width:70,
+           height:70,
            color:'red',
            timer: 0,
            hp: 3,
@@ -258,8 +258,8 @@ function enemy6 (id,x,y,spdX,spdY,width,height){
              spdY:spdY,
              name:'E',
              id:id,
-             width:80,
-             height:80,
+             width:70,
+             height:70,
              color:'red',
              timer: 0,
              hp: 3,
@@ -561,7 +561,7 @@ if(player.lvl >= 500 && player.mewtwo == 0) {
 }
 
 if(player.lvl >= 500) {
-  if(frameCount % 40 === 0) {
+  if(frameCount % 80 === 0) {
    mewFireGenerator()
    mewFireGenerator2()
   }
@@ -579,7 +579,7 @@ if(player.lvl >= 500) {
 for(var key in fireList2){
   updateObject(fireList2[key]);
 }
-
+//START OF FIRE LIST
 
 for(var key in fireList){
   updateObject(fireList[key]);
@@ -594,7 +594,7 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 2
+      player.lvl += 5
       delete enemyList[key2];
             }
          }
@@ -602,6 +602,8 @@ for(var key in fireList){
         delete fireList[key];
         }
     }
+
+    //END OF FIRELIST
 
   for(var key in enemyList3){
     updateObject2(enemyList3[key]);
@@ -611,18 +613,26 @@ for(var key in fireList){
       if(isColliding){
       delete fireList[key2];
       // toRemove = true;
-      health -= (Math.floor(Math.random() * 7))
-      if (health == 0){
+      health -= (Math.floor(Math.random() * 5))
+      if (health <= 0){
        delete enemyList3[key]
        alert("Congrats! You defeated Mewtwo")
        newGame();
        }
-      // if(toRemove){
-      //   delete fireList[key];
-      //  }
      }
     }
+    // for(var key2 in fireList){
+      var isColliding = testCollision(player,enemyList3[key]);
+      if(isColliding){
+      player.hp -= 3
+
+      if(player.hp<=0) {
+        var timeSurvived = Date.now() - startTime;
+        alert("You Lost! You died at level " + player.lvl);
+        newGame();
   }
+ }
+}
 
 
 for (var key in upgradeList) {
@@ -648,11 +658,11 @@ for (var key in upgradeList2) {
   var isColliding = testCollision(player, upgradeList2[key]);
   if(isColliding){
     //  console.log('Colliding!');
-    player.atkSpd += 1
+    player.atkSpd += 3
 
-    if(player.atkSpd > 20)
+    if(player.atkSpd > 30)
     {
-      player.atkSpd = 20
+      player.atkSpd = 30
     }
 
     delete upgradeList2[key];
@@ -691,15 +701,12 @@ for (var key in enemyList) {
 
    if(player.hp<=0) {
      var timeSurvived = Date.now() - startTime;
-     alert("You Lost! You died at level" + player.lvl);
+     alert("You Lost! You died at level " + player.lvl);
      newGame();
           }
        }
     }
 
-  //   for (var key in enemyList3) {
-  //     updateObject2(enemyList3[key]);
-  // }
 
   for (var key in fireList2) {
     updateObject2(fireList2[key])
@@ -707,11 +714,11 @@ for (var key in enemyList) {
     var isColliding = testCollision(player, fireList2[key]);
     if(isColliding){
       //  console.log('Colliding!');
-      player.hp -= 1
+      player.hp -= 3
 
     if(player.hp<=0) {
       var timeSurvived = Date.now() - startTime;
-      alert("You died fighting with Mewtwo at " + player.lvl);
+      alert("You died fighting with Mewtwo at level " + player.lvl + ". Try again!");
       newGame();
 
          }
@@ -728,8 +735,10 @@ ctx.fillText(player.hp + 'HP', 80, 32)
 ctx.fillText("Level: " + player.lvl, 280, 32)
 ctx.fillText("AtK Spd: " + player.atkSpd, 500, 32)
 
-if (player.lvl >= 500)
-ctx.fillText('Mewtwo HP:' + health, 260, 380)
+if (player.lvl >= 500){
+ctx.fillStyle = 'red';
+ctx.fillText('Mewtwo HP:' + health, 230, 380)
+ }
 }
 
 //END OF UPDATE//
@@ -743,6 +752,7 @@ function newGame(){
     score = 0;
     player.lvl = 0;
     player.atkSpd = 0;
+    player.mewtwo = 0
     enemyList = {};
     enemyList2 = {};
     enemyList3 = {};
@@ -750,6 +760,7 @@ function newGame(){
     fireList2 = {};
     upgradeList = {};
     upgradeList2 = {};
+    health = 100
 }
 
 //GENERATE STUFF
@@ -850,8 +861,8 @@ function enemyGenerator9() {
   var id = 3;
   var spdX = 5;
   var spdY = 5;
-  var mewtwoObject = enemy7(x,y,spdX,spdY,width,height);
-  return mewtwoObject;
+
+  enemy7(x,y,spdX,spdY,width,height);
   console.log(mewtwoObject)
 }
 
@@ -1036,5 +1047,3 @@ function mewFireGenerator2(){
 newGame();
 
 setInterval(update,40);
-
-// console.log(enemyGenerator9)

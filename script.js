@@ -12,11 +12,10 @@ $("#instruct").hover(
 
 var ctx = document.getElementById("ctx").getContext("2d");
 
-ctx.font = '30px Helvetica';
+ ctx.font = '30px Helvetica';
 
-//CANVAS SIZE//
-var HEIGHT = 400
-var WIDTH = 700
+ var HEIGHT = 400
+ var WIDTH = 700
 
 //IMAGE LIST//
 var img = {};
@@ -110,15 +109,16 @@ var player = {
 };
 
 //LIST
-var enemyList = {};
-var enemyList2 = {};
-var enemyList3 = {};
-var upgradeList = {};
-var upgradeList2 = {};
-var fireList = {};
-var fireList2 = {};
+var allList = {};
+  var enemyList = {};
+  var enemyList2 = {};
+  var enemyList3 = {};
+  var upgradeList = {};
+  var upgradeList2 = {};
+  var fireList = {};
+  var fireList2 = {};
 
-//test for collision
+//TEST FOR COLLISION. OLD COLLISION FORMULAR INSIDE
 // function getDistance(object1,object2){     //return distance (number)
 //         var vx = object1.x - object2.x;
 //         var vy = object1.y - object2.y;
@@ -129,14 +129,7 @@ var fireList2 = {};
 //         var distance = getDistance(object1,object2);
 //         return distance < 30;
 // }
-
-// getDistance = function (object1,object2){  //return distance (number)
-//         var vx = object1.x - object2.x;
-//         var vy = object1.y - object2.y;
-//         return Math.sqrt(vx*vx+vy*vy);
-// }
-
-testCollisionRectRect = function(rect1,rect2){
+ testCollisionRectRect = function(rect1,rect2){
   return rect1.x <= rect2.x+rect2.width
   && rect2.x <= rect1.x+rect1.width
   && rect1.y <= rect2.y + rect2.height
@@ -159,22 +152,6 @@ function testCollision (object1,object2){
         return testCollisionRectRect(rect1,rect2);
 }
 
-
-// function testCollision (object1,object2){       //return if colliding (true/false)
-//         var object1 = {
-//                 x:object1.x-object1.width/2,
-//                 y:object1.y-object1.height/2,
-//                 width:object1.width,
-//                 height:object1.height,
-//         }
-//         var object2 = {
-//                 x:object2.x-object2.width/2,
-//                 y:object2.y-object2.height/2,
-//                 width:object2.width,
-//                 height:object2.height,
-//      }
-//      return testCollision(object1,object2);
-//   }
 
 //ENEMY CONSTRUCTOR
 function enemy (id,x,y,spdX,spdY,width,height){
@@ -243,6 +220,7 @@ function enemy4 (id,x,y,spdX,spdY,width,height){
               };
               enemyList2[id] = enemy2;
         }
+
 function enemy5 (id,x,y,spdX,spdY,width,height){
                 var enemy2 = {
            x:x,
@@ -260,6 +238,7 @@ function enemy5 (id,x,y,spdX,spdY,width,height){
                 };
                 enemyList2[id] = enemy2;
           }
+
 function enemy6 (id,x,y,spdX,spdY,width,height){
                   var enemy3 = {
              x:x,
@@ -296,9 +275,6 @@ function enemy7(x,y,spdX,spdY,width,height){
       enemyList3[enemy4.id] = enemy4;
       return enemy4
       }
-
-      // var mewtwoObject = enemy7
-      // mewtwoObject = {};
 
 //UPGRADE CONSTRUCTOR
 function upgrade(id,x,y,width,height,spdX,spdY,color){
@@ -366,7 +342,6 @@ function plasmaFire (id,x,y,spdX,spdY,width,height){
     fireList2[id] = plasma2;
 }
 
-//FIRE CONSTRUCTOR
 function blueFire (id,x,y,spdX,spdY,width,height){
  var blueFire = {
     x:x,
@@ -384,15 +359,50 @@ function blueFire (id,x,y,spdX,spdY,width,height){
     fireList[id] = blueFire;
 }
 
-//UPDATE OBJECT POSITION
+//DRAW OBJECTS
+
+function drawPlayer(something){
+  if (player.lvl < 16) {
+  ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+}
+   if (player.lvl >= 16 && player.lvl < 36) {
+   ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
+   ctx.fillStyle = 'black';
+    }
+  if (player.lvl >= 36 && player.lvl < 60) {
+  ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+  }
+  if (player.lvl >= 60) {
+  ctx.drawImage(mega,something.x,something.y,something.width,something.height);
+  ctx.fillStyle = 'black';
+  }
+}
+
+function drawObject(something){
+  ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
+}
+
+//ASSIGNING WHICH OBJECTS WILL INHERIT WHICH PHYSICS
+function updateObject2(something){
+  updatePosition2(something);
+  drawObject(something);
+}
+
+function updateObject(something){
+  updatePosition(something);
+  drawObject(something);
+}
+
+//UPDATE OBJECT POSITION AKA THE PHYSICS
 
 function updatePosition(something){
 
    something.x += something.spdX;
    something.y += something.spdY;
   //  console.log('hello',something.x)
-
- }
+}
 
  function updatePosition2(something) {
 
@@ -408,62 +418,7 @@ function updatePosition(something){
    }
  }
 
-//DRAW OBJECT
-
-function drawPlayer(something){
-  if (player.lvl < 16) {
-  ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-}
-  if (player.lvl >= 16 && player.lvl < 36) {
-  ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-}
-  if (player.lvl >= 36 && player.lvl < 60) {
-  ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-  }
-  if (player.lvl >= 60) {
-  ctx.drawImage(mega,something.x,something.y,something.width,something.height);
-  ctx.fillStyle = 'black';
-  }
-}
-
-// function drawEnemy(something){
-//   if (player.lvl < 5) {
-//   ctx.drawImage(bellsprout,something.x,something.y,something.width,something.height);
-//   // ctx.fillStyle = 'black';
-// }
-//   if (player.lvl >= 5 && player.lvl < 36) {
-//   ctx.drawImage(weepin,something.x,something.y,something.width,something.height);
-//   // ctx.fillStyle = 'black';
-// }
-//   if (player.lvl >= 36) {
-//   ctx.drawImage(victree,something.x,something.y,something.width,something.height);
-//   // ctx.fillStyle = 'black';
-//   }
-// }
-
-function drawObject(something){
-  // ctx.fillStyle = something.color;
-  ctx.drawImage(something.img,something.x,something.y,something.width,something.height);
-  // ctx.drawImage(potion,something.x,something.y,something.width,something.height);
-  // ctx.fillRect(something.x,something.y,something.width,something.height);
-}
-
-function updateObject2(something){
-  updatePosition2(something);
-  drawObject(something);
-}
-
-function updateObject(something){
-updatePosition(something);
-drawObject(something);
-// drawFire(something)
-// drawUpgrade(something)
-// drawPlayer(something);
-// drawEnemy(something);
-}
+ // MOUSE MOVEMENT
 
 document.onmousemove = function(mouse){
   var mouseX = mouse.clientX-310;
@@ -485,27 +440,31 @@ document.onmousemove = function(mouse){
 }
 
 //UPDATE TO RUN EVERYTHING
+//------------------------------------------------
 
 function update(){
 
-//clear canvas
+//CLEAR CANVAS TO AVOID DUPLICATES
 ctx.clearRect(0,0,WIDTH,HEIGHT);
 
-//add frameCount
+//ADD FRAME COUNT FOR MODULARS TO WORK
 frameCount++
-//generate stuff
+
+//GENERATE UPGRADES
 
 if(frameCount % 150 === 0) {
-upgradeGenerator();
-}
+ upgradeGenerator();
+ }
 
 if(frameCount % 130 === 0) {
-atkSpdGenerator();
-}
+ atkSpdGenerator();
+ }
+
+//GENERATE PLAYER ATTACKS
 
 if(frameCount % (30 - player.atkSpd) === 0) {
-fireGenerator();
-}
+ fireGenerator();
+ }
 
 if(player.lvl >= 16) {
   if(frameCount % (30 - player.atkSpd) === 0) {
@@ -529,9 +488,11 @@ if(player.lvl >= 60) {
   }
 }
 
+//GENERATE GRASS ENEMIES
+
 if(player.lvl < 500 && frameCount % 5 === 0) {
-enemyGenerator1();
-score++
+ enemyGenerator1();
+ score++
 }
 
 if(player.lvl < 500 && player.lvl >= 16) {
@@ -545,15 +506,20 @@ if(player.lvl < 500 && player.lvl >= 36) {
     enemyGenerator3()
   }
 }
+
+//GENERATE WATER ENEMIES
+
 if(player.lvl < 500 && player.lvl >= 150) {
   if(frameCount % 60 === 0) {
-   enemyGenerator4n5()
+   enemyGenerator4()
+   enemyGenerator5()
   }
 }
 
 if(player.lvl < 500 && player.lvl >= 250) {
   if(frameCount % 60 === 0) {
-   enemyGenerator6n7()
+   enemyGenerator6()
+   enemyGenerator7()
   }
 }
 
@@ -562,6 +528,8 @@ if(player.lvl < 500 && player.lvl >= 350) {
    enemyGenerator8()
   }
 }
+
+//GENERATE MEWTWO AND HIS PLASMA BALLS
 
 if(player.lvl >= 500 && player.mewtwo == 0) {
    alert("Congrats on reaching level 500! We'll be healing you back to full health and prepare for the final BOSS!")
@@ -577,20 +545,9 @@ if(player.lvl >= 500) {
   }
 }
 
-// if(player.lvl >= 501){
-//   alert("You are a Pokemon Master!")
-//   newGame();
-// }
+//LOOP THROUGH LIST, DRAW THEM OUT, AND ASSIGN COLLISION LOGIC TO THEM
 
-
-
-//loop through list and draw items
-
-for(var key in fireList2){
-  updateObject(fireList2[key]);
-}
-//START OF FIRE LIST
-
+//LOGIC OF NORMAL FIRE HITTING ENEMIES
 for(var key in fireList){
   updateObject(fireList[key]);
 
@@ -604,17 +561,16 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 5
+      player.lvl += 3
       delete enemyList[key2];
             }
          }
         if(toRemove){
         delete fireList[key];
-        }
+      }
     }
 
-    //END OF FIRELIST
-
+//LOGIC OF FIGHTING WITH MEWTWO
   for(var key in enemyList3){
     updateObject2(enemyList3[key]);
 
@@ -644,7 +600,7 @@ for(var key in fireList){
  }
 }
 
-
+//LOGIC TO POTION
 for (var key in upgradeList) {
   updateObject(upgradeList[key]);
 
@@ -662,6 +618,7 @@ for (var key in upgradeList) {
   }
 }
 
+//LOGIC TO ATTACK BOOST
 for (var key in upgradeList2) {
   updateObject(upgradeList2[key]);
 
@@ -679,7 +636,7 @@ for (var key in upgradeList2) {
   }
 }
 
-
+//LOGIC TO GRASS ENEMY LIST
 for (var key in enemyList) {
   updateObject(enemyList[key]);
 
@@ -699,7 +656,8 @@ for (var key in enemyList) {
     }
  }
 
- for (var key in enemyList2) {
+//LOGIC TO WATER ENEMY LIST
+for (var key in enemyList2) {
    updateObject(enemyList2[key]);
 
    //check for collision
@@ -735,25 +693,24 @@ for (var key in enemyList) {
       }
 }
 
-//update player and enemy appearance
-// drawEnemy(enemy);
+//DRAW PLAYER
 drawPlayer(player);
-// drawUpgrade(upgrade);
-// drawFire(fire);
 
+//FILL TEXT IN CANVAS
 ctx.fillText(player.hp + 'HP', 80, 32)
-ctx.fillText("Level: " + player.lvl, 280, 32)
-ctx.fillText("AtK Spd: " + player.atkSpd, 500, 32)
+ ctx.fillText("Level: " + player.lvl, 280, 32)
+ ctx.fillText("AtK Spd: " + player.atkSpd, 500, 32)
 
 if (player.lvl >= 500){
-ctx.fillStyle = 'red';
-ctx.fillText('Mewtwo HP:' + health, 230, 380)
+ ctx.fillStyle = 'red';
+ ctx.fillText('Mewtwo HP:' + health, 230, 380)
  }
 }
 
-//END OF UPDATE//
+//END OF UPDATE FUNCTION//
+// ----------------------------------------
 
-//Create a new game whenever the game ends
+//CREATING A NEWGAME WHEN GAME ENDS
 
 function newGame(){
     player.hp = 100;
@@ -773,7 +730,7 @@ function newGame(){
     health = 100
 }
 
-//GENERATE STUFF
+//GENERATE ENEMY
 
 function enemyGenerator1() {
   var x = 0;
@@ -876,20 +833,12 @@ function enemyGenerator9() {
   console.log(mewtwoObject)
 }
 
-function enemyGenerator4n5() {
-enemyGenerator4()
-enemyGenerator5()
-}
-
-function enemyGenerator6n7() {
-enemyGenerator6()
-enemyGenerator7()
-}
+//GENERATE UPGRADES
 
 function upgradeGenerator() {
   var id = Math.random();
-  var x = Math.random()* WIDTH;
-  var y = Math.random()* HEIGHT;
+  var x = Math.random()* WIDTH - 30;
+  var y = Math.random()* HEIGHT - 30;
   var width = 10;
   var height = 10;
   var spdX = 0;
@@ -899,14 +848,16 @@ function upgradeGenerator() {
 
 function atkSpdGenerator() {
   var id = Math.random();
-  var x = Math.random()* WIDTH;
-  var y = Math.random()* HEIGHT;
+  var x = Math.random()* WIDTH - 30;
+  var y = Math.random()* HEIGHT - 30;
   var width = 30;
   var height = 10;
   var spdX = 0;
   var spdY = 0;
   atkSpd(id,x,y,width,height,spdX,spdY);
 }
+
+//GENERATE FIRE FROM CHARWHATEVER
 
 function fireGenerator(){
     var x = player.x;
@@ -1019,10 +970,9 @@ function fireGenerator8(){
     blueFire(id,x,y,spdX,spdY,width,height);
 }
 
-function mewFireGenerator(){
+//GENERATE FIRE FOR MEWTWO
 
-  // var mewtwoObject = enemyGenerator9()
-  // console.log(mewtwoObject)
+function mewFireGenerator(){
 
     var x = Math.random() * WIDTH;
     var y = Math.random() * HEIGHT;
@@ -1054,8 +1004,6 @@ function mewFireGenerator2(){
 }
 
 
-newGame();
+// newGame();
 
-// setInterval(update,40);
-
-drawPlayer(player);
+setInterval(update,40);

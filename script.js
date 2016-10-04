@@ -80,6 +80,7 @@ var img = {};
 var frameCount = 0;
 var score = 0;
 var startTime = Date.now();
+var health = 100
 
 //PLAYER SPECS//
 var player = {
@@ -279,7 +280,7 @@ function enemy7(x,y,spdX,spdY,width,height){
         height:80,
         color:'red',
         timer: 0,
-        hp: 100,
+        hp: 30,
         img:mewtwo
             };
       enemyList3[enemy4.id] = enemy4;
@@ -484,11 +485,11 @@ ctx.clearRect(0,0,WIDTH,HEIGHT);
 frameCount++
 //generate stuff
 
-if(frameCount % 200 === 0) {
+if(frameCount % 150 === 0) {
 upgradeGenerator();
 }
 
-if(frameCount % 150 === 0) {
+if(frameCount % 130 === 0) {
 atkSpdGenerator();
 }
 
@@ -553,13 +554,16 @@ if(player.lvl < 500 && player.lvl >= 350) {
 }
 
 if(player.lvl >= 500 && player.mewtwo == 0) {
+   alert("Congrats on reaching level 500! We'll be healing you back to full health and prepare for the final BOSS!")
+   player.hp = 100
    player.mewtwo ++
    enemyGenerator9()
 }
 
 if(player.lvl >= 500) {
-  if(frameCount % 30 === 0) {
+  if(frameCount % 40 === 0) {
    mewFireGenerator()
+   mewFireGenerator2()
   }
 }
 
@@ -576,6 +580,7 @@ for(var key in fireList2){
   updateObject(fireList2[key]);
 }
 
+
 for(var key in fireList){
   updateObject(fireList[key]);
 
@@ -589,7 +594,7 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 100
+      player.lvl += 2
       delete enemyList[key2];
             }
          }
@@ -597,6 +602,27 @@ for(var key in fireList){
         delete fireList[key];
         }
     }
+
+  for(var key in enemyList3){
+    updateObject2(enemyList3[key]);
+
+    for(var key2 in fireList){
+      var isColliding = testCollision(fireList[key2],enemyList3[key]);
+      if(isColliding){
+      delete fireList[key2];
+      // toRemove = true;
+      health -= (Math.floor(Math.random() * 7))
+      if (health == 0){
+       delete enemyList3[key]
+       alert("Congrats! You defeated Mewtwo")
+       newGame();
+       }
+      // if(toRemove){
+      //   delete fireList[key];
+      //  }
+     }
+    }
+  }
 
 
 for (var key in upgradeList) {
@@ -646,7 +672,7 @@ for (var key in enemyList) {
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    alert("You Lost! You died at level" + player.lvl);
+    alert("You Lost! You died at level " + player.lvl);
     newGame();
 
       }
@@ -671,9 +697,26 @@ for (var key in enemyList) {
        }
     }
 
-    for (var key in enemyList3) {
-      updateObject2(enemyList3[key]);
-  }
+  //   for (var key in enemyList3) {
+  //     updateObject2(enemyList3[key]);
+  // }
+
+  for (var key in fireList2) {
+    updateObject2(fireList2[key])
+
+    var isColliding = testCollision(player, fireList2[key]);
+    if(isColliding){
+      //  console.log('Colliding!');
+      player.hp -= 1
+
+    if(player.hp<=0) {
+      var timeSurvived = Date.now() - startTime;
+      alert("You died fighting with Mewtwo at " + player.lvl);
+      newGame();
+
+         }
+      }
+}
 
 //update player and enemy appearance
 // drawEnemy(enemy);
@@ -684,6 +727,9 @@ drawPlayer(player);
 ctx.fillText(player.hp + 'HP', 80, 32)
 ctx.fillText("Level: " + player.lvl, 280, 32)
 ctx.fillText("AtK Spd: " + player.atkSpd, 500, 32)
+
+if (player.lvl >= 500)
+ctx.fillText('Mewtwo HP:' + health, 260, 380)
 }
 
 //END OF UPDATE//
@@ -694,16 +740,16 @@ function newGame(){
     player.hp = 100;
     startTime = Date.now();
     frameCount = 0;
-    score = 0
-    player.lvl = 0
-    player.atkSpd = 0
+    score = 0;
+    player.lvl = 0;
+    player.atkSpd = 0;
     enemyList = {};
     enemyList2 = {};
+    enemyList3 = {};
+    fireList = {};
+    fireList2 = {};
     upgradeList = {};
     upgradeList2 = {};
-    // enemyGenerator1();
-    // enemyGenerator1();
-    // enemyGenerator1();
 }
 
 //GENERATE STUFF
@@ -957,15 +1003,32 @@ function mewFireGenerator(){
   // var mewtwoObject = enemyGenerator9()
   // console.log(mewtwoObject)
 
-    var x = 100;
-    var y = 100;
+    var x = Math.random() * WIDTH;
+    var y = Math.random() * HEIGHT;
     var height = height;
     var width = width;
     var id = Math.random();
 
     var angle = Math.random()*360;
-    var spdX = 10 //Math.cos(angle/180*Math.PI)*5;
-    var spdY = -10 //Math.sin(angle/180*Math.PI)*5;
+    var spdX = 5 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = -5 //Math.sin(angle/180*Math.PI)*5;
+    plasmaFire(id,x,y,spdX,spdY,width,height);
+}
+
+function mewFireGenerator2(){
+
+  // var mewtwoObject = enemyGenerator9()
+  // console.log(mewtwoObject)
+
+    var x = Math.random() * WIDTH;
+    var y = Math.random() * HEIGHT;
+    var height = height;
+    var width = width;
+    var id = Math.random();
+
+    var angle = Math.random()*360;
+    var spdX = -10 //Math.cos(angle/180*Math.PI)*5;
+    var spdY = 10 //Math.sin(angle/180*Math.PI)*5;
     plasmaFire(id,x,y,spdX,spdY,width,height);
 }
 

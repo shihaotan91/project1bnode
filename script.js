@@ -85,6 +85,52 @@ var img = {};
   var mewtwo = img.mewtwo
   var plasma = img.plasma
 
+//AUDIO LIST
+
+var battle = document.getElementById("battle");
+
+  function playBattle() {
+  battle.play();
+  }
+
+  function pauseBattle() {
+  battle.pause();
+  battle.currentTime = 0;
+  }
+
+var battlemew = document.getElementById("battlemew");
+
+ function playBattleMew() {
+   battlemew.play();
+}
+  function pauseBattleMew() {
+  battlemew.pause();
+  battlemew.currentTime = 0;
+}
+
+var level = document.getElementById("level");
+
+ function playLevel() {
+ level.play();
+ }
+
+ function pauseLevel() {
+ level.pause();
+ level.currentTime = 0;
+ }
+
+var victory = document.getElementById("victory");
+
+ function playVictory() {
+  victory.play();
+  }
+
+   function pauseVictory() {
+   victory.pause();
+   victory.currentTime = 0;
+  }
+
+
 //COUNTERS//
 var frameCount = 0;
 var score = 0;
@@ -447,40 +493,30 @@ function update(){
 //PAUSE BUTTON
 if(paused){
    ctx.fillStyle = 'red'
-   ctx.fillText('PAUSED',290,200)
+   ctx.fillText('PAUSED',340,200)
   return;
 }
 
 //EVOLUTION EFFECTS
-if(player.lvl == 20){
-  player.width = 80
-  player.height = 80
+
+function evolution() {
+if(player.lvl == 20 || player.lvl == 60 || player.lvl == 120){
+player.width = 80
+player.height = 80
+playLevel();
+  }
 }
 
-if(player.lvl == 25){
-  player.width = 50
-  player.height = 50
+function evolution2() {
+if(player.lvl == 24 || player.lvl == 64 || player.lvl >= 127){
+player.width = 50
+player.height = 50
+  }
 }
 
-if(player.lvl == 60){
-  player.width = 80
-  player.height = 80
-}
+evolution()
+evolution2()
 
-if(player.lvl == 65){
-  player.width = 50
-  player.height = 50
-}
-
-if(player.lvl == 120){
-  player.width = 80
-  player.height = 80
-}
-
-if(player.lvl >= 130){
-  player.width = 50
-  player.height = 50
-}
 
 //CLEAR CANVAS TO AVOID DUPLICATES
 ctx.clearRect(0,0,WIDTH,HEIGHT);
@@ -494,13 +530,13 @@ if(frameCount % 150 === 0) {
  upgradeGenerator();
  }
 
-if(frameCount % 130 === 0) {
+if(frameCount % 180 === 0) {
  atkSpdGenerator();
  }
 
 //GENERATE PLAYER ATTACKS
 
-if(frameCount % (30 - player.atkSpd) === 0) {
+if((frameCount) % (30 - player.atkSpd) === 0) {
  fireGenerator();
  }
 
@@ -571,6 +607,8 @@ if(player.lvl < 500 && player.lvl >= 350) {
 
 if(player.lvl >= 500 && player.mewtwo == 0) {
    alert("Congrats on reaching level 500! We'll be healing you back to full health and prepare for the final BOSS!")
+   pauseBattle();
+   playBattleMew();
    player.hp = 100
    player.mewtwo ++
    enemyGenerator9()
@@ -586,7 +624,7 @@ if(player.lvl >= 500) {
 //LOOP THROUGH LIST, DRAW THEM OUT, AND ASSIGN COLLISION LOGIC TO THEM
 
 //LOGIC OF NORMAL FIRE HITTING ENEMIES
-for(var key in fireList){
+ for(var key in fireList){
   updateObject(fireList[key]);
 
   var toRemove = false;
@@ -599,7 +637,7 @@ for(var key in fireList){
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 50
+      player.lvl += 1
       delete enemyList[key2];
             }
          }
@@ -617,18 +655,20 @@ for(var key in enemyList3){
       if(isColliding){
       delete fireList[key2];
       // toRemove = true;
-      health -= (Math.floor(Math.random() * 5))
+      health -= (Math.floor(Math.random() * 3))
       if (health <= 0){
        delete enemyList3[key]
-       alert("Congrats! You defeated Mewtwo")
-       newGame();
+       pauseBattleMew();
+       playVictory();
+      //  alert("Congrats! You defeated Mewtwo. You are truly a Pokemon Master!")
+      //  newGame();
        }
      }
     }
     // for(var key2 in fireList){
       var isColliding = testCollision(player,enemyList3[key]);
       if(isColliding){
-      player.hp -= 2
+      player.hp -= 5
 
       if(player.hp<=0) {
         var timeSurvived = Date.now() - startTime;
@@ -665,14 +705,14 @@ for (var key in upgradeList2) {
     //  console.log('Colliding!');
     player.atkSpd += 1
 
-    if(player.atkSpd > 30)
+    if(player.atkSpd > 20)
     {
-      player.atkSpd = 30
+      player.atkSpd = 20
     }
 
     delete upgradeList2[key];
   }
-}
+   }
 
 //LOGIC TO GRASS ENEMY LIST
 for (var key in enemyList) {
@@ -720,7 +760,15 @@ for (var key in fireList2) {
     var isColliding = testCollision(player, fireList2[key]);
     if(isColliding){
       //  console.log('Colliding!');
-      player.hp -= 3
+      {
+        player.hp -= 2
+      }
+
+      //OFFSET COLLISION DAMAGE
+      if(health <= 0){
+      player.hp += 2
+      }
+
 
     if(player.hp<=0) {
       var timeSurvived = Date.now() - startTime;
@@ -735,15 +783,25 @@ for (var key in fireList2) {
 drawPlayer(player);
 
 //FILL TEXT IN CANVAS
-ctx.fillText(player.hp + 'HP', 80, 32)
- ctx.fillText("Level: " + player.lvl, 280, 32)
- ctx.fillText("AtK Spd: " + player.atkSpd, 500, 32)
+ctx.textAlign= "center"
+ctx.fillText(player.hp + 'HP', 120, 32)
+ctx.fillText("Level: " + player.lvl, 320, 32)
+ctx.fillText("AtK Spd: " + player.atkSpd, 540, 32)
 
 if (player.lvl >= 500){
  ctx.fillStyle = 'red';
- ctx.fillText('Mewtwo HP:' + health, 230, 60)
+ ctx.fillText('Mewtwo HP:' + health, 320, 60)
  }
-}
+
+ if(health <= 0){
+  ctx.fillStyle = 'gold'
+  ctx.fillText('Congrats on beating Mewtwo!', 350, 150)
+  ctx.fillText('Your next adventure is waiting for you.', 350, 210)
+  ctx.fillText('Press R to restart the game', 350, 270)
+   }
+
+ }
+
 
 //END OF UPDATE FUNCTION//
 // ----------------------------------------
@@ -766,6 +824,9 @@ function newGame(){
     upgradeList = {};
     upgradeList2 = {};
     health = 100
+    pauseVictory();
+    pauseBattleMew();
+    playBattle();
 }
 
 //GENERATE ENEMY
@@ -868,7 +929,6 @@ function enemyGenerator9() {
   var spdY = 5;
 
   enemy7(x,y,spdX,spdY,width,height);
-  console.log(mewtwoObject)
 }
 
 //GENERATE UPGRADES
@@ -1042,12 +1102,22 @@ function mewFireGenerator2(){
 
 var start = 0
 
+var playBox = document.getElementById('play');
+
+
+
 document.onkeydown = function(event){
   if(event.keyCode === 83 && start === 0){
-  setInterval(update,40)
+  setInterval(update,50)
+  // update();
+  playBattle();
+  playBox.style.display = 'none';
   start++;
   }
   else if(event.keyCode === 80){
   paused = !paused
   }
+  if(event.keyCode === 82){
+  newGame();
+ }
 }

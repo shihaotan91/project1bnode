@@ -8,7 +8,7 @@
 }
 
 body {
-  background-image: url("images/background-pixel.png");
+  background-image: url("images/chabackground.png");
   background-size: cover;
 }
 
@@ -17,10 +17,10 @@ body {
   width: 300px;
   position: absolute;
   left: 510px;
-  top: 105px;
-  color: grey;
+  top: 110px;
+  color: yellow;
   font-size: 22px;
-  color: black;
+  text-shadow: -2px 0 blue, 0 2px blue, 2px 0 blue, 0 -2px blue
 }
 
 #play {
@@ -30,10 +30,14 @@ body {
   position: fixed;
   left: 350px;
   top: 90px;
-  background-color: rgba(0, 0, 0, 0.5);;
+  background-color: rgba(0, 0, 0, 0.7);;
   text-align: center;
   color: white;
   font-size: 13px;
   line-height: 20px;
   /*display: none;*/
+}
+
+.red {
+  color: red;
 }

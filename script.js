@@ -895,7 +895,7 @@ function atkSpdGenerator() {
   atkSpd(id,x,y,width,height,spdX,spdY);
 }
 
-//GENERATE FIRE FROM CHARWHATEVER
+//GENERATE FIRE FROM PLAYER
 
 function fireGenerator(){
     var x = player.x;

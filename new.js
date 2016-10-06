@@ -55,6 +55,10 @@ img.sad = new Image()
 img.sad.src = 'images/sad.png'
 img.crown = new Image()
 img.crown.src = 'images/crown.png'
+img.party1 = new Image()
+img.party1.src = 'images/party1.png'
+img.party2 = new Image()
+img.party2.src = 'images/party2.png'
 
 // AUDIO LIST
 
@@ -141,6 +145,7 @@ var upgradeList = {}
 var upgradeList2 = {}
 var fireList = {}
 var fireList2 = {}
+var partyList = {}
 
 // TEST FOR COLLISION. OLD COLLISION FORMULAR INSIDE
 // function getDistance(object1,object2){     //return distance (number)
@@ -349,6 +354,38 @@ function blueFire (id, x, y, spdX, spdY, width, height) {
   fireList[id] = blueFire
 }
 
+//PARTY CONSTRUCTOR
+
+function party1 (id, x, y, spdX, spdY) {
+  var party1 = {
+    x: x,
+    spdX: spdX,
+    y: y,
+    spdY: spdY,
+    id: id,
+    width: 40,
+    height: 70,
+    img: img.party1
+  }
+  partyList[id] = party1
+}
+
+function party2 (id, x, y, spdX, spdY) {
+  var party2 = {
+    x: x,
+    spdX: spdX,
+    y: y,
+    spdY: spdY,
+    id: id,
+    width: 50,
+    height: 50,
+    img: img.party2
+  }
+  partyList[id] = party2
+}
+
+
+
 // ------------------------------------------------------------------
 
 // DRAW OBJECTS
@@ -489,6 +526,14 @@ function update () {
 
   // GENERATE PLAYER ATTACKS
   fireGenerator()
+
+  //GENERATE PARTY ITEMS
+  partyGenerator ()
+
+  //DRAW PARTY ITEMS
+  for (var key in partyList) {
+    updateObject(partyList[key])
+  }
 
   // SHOW BOX MESSAGE
 
@@ -768,6 +813,15 @@ function fireGenerator () {
     blueFire(Math.random(), player.x, player.y, -10, -10)
     blueFire(Math.random(), player.x, player.y, 10, -10)
     blueFire(Math.random(), player.x, player.y, -10, 10)
+  }
+}
+
+function partyGenerator () {
+  if (frameCount % 1 === 0 && health <= 0) {
+    party1(Math.random(), Math.random() * WIDTH, 380, 0, -10)
+  }
+  if (frameCount % 1 === 0 && health <= 0) {
+    party2(Math.random(), Math.random() * WIDTH, 0, 0, 10)
   }
 }
 

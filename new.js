@@ -5,7 +5,7 @@ $('#instruct').hover(
     $('#play').show()
   }, function () {
     $('#play').hide()
-  }
+}
 )
 
 // CANVAS//
@@ -21,76 +21,40 @@ var WIDTH = 700
 var img = {}
 img.char1 = new Image()
 img.char1.src = 'images/char1.png'
-
 img.char2 = new Image()
 img.char2.src = 'images/char2.png'
-
 img.char3 = new Image()
 img.char3.src = 'images/char3.png'
-
 img.bellsprout = new Image()
 img.bellsprout.src = 'images/bell.png'
-
 img.weepin = new Image()
 img.weepin.src = 'images/weepin.png'
-
 img.victree = new Image()
 img.victree.src = 'images/victree.png'
-
 img.potion = new Image()
 img.potion.src = 'images/potion.png'
-
 img.fire = new Image()
 img.fire.src = 'images/fire.png'
-
 img.bluefire = new Image()
 img.bluefire.src = 'images/bluefire.png'
-
 img.mega = new Image()
 img.mega.src = 'images/mega-char.png'
-
 img.blast = new Image()
 img.blast.src = 'images/blast.png'
-
 img.gay = new Image()
 img.gay.src = 'images/gay.png'
-
 img.speed = new Image()
 img.speed.src = 'images/speed.png'
-
 img.lap = new Image()
 img.lap.src = 'images/lapras.png'
-
 img.mewtwo = new Image()
 img.mewtwo.src = 'images/mewtwo.png'
-
 img.plasma = new Image()
 img.plasma.src = 'images/plasma.png'
-
 img.sad = new Image()
 img.sad.src = 'images/sad.png'
-
 img.crown = new Image()
 img.crown.src = 'images/crown.png'
-
-var charmander = img.char1
-var charmeleon = img.char2
-var charizard = img.char3
-var bellsprout = img.bellsprout
-var weepin = img.weepin
-var victree = img.victree
-var potion = img.potion
-var fireball = img.fire
-var bluefire = img.bluefire
-var mega = img.mega
-var blast = img.blast
-var gay = img.gay
-var speed = img.speed
-var lap = img.lap
-var mewtwo = img.mewtwo
-var plasma = img.plasma
-var sad = img.sad
-var crown = img.crown
 
 // AUDIO LIST
 
@@ -99,12 +63,10 @@ var battle = document.getElementById('battle')
 function playBattle () {
   battle.play()
 }
-
 function pauseBattle () {
   battle.pause()
   battle.currentTime = 0
 }
-
 function pauseBattle1 () {
   battle.pause()
 }
@@ -118,7 +80,6 @@ function pauseBattleMew () {
   battlemew.pause()
   battlemew.currentTime = 0
 }
-
 function pauseBattleMew1 () {
   battlemew.pause()
 }
@@ -129,17 +90,11 @@ function playLevel () {
   level.play()
 }
 
-// function pauseLevel () {
-//   level.pause()
-//   level.currentTime = 0
-// }
-
 var victory = document.getElementById('victory')
 
 function playVictory () {
   victory.play()
 }
-
 function pauseVictory () {
   victory.pause()
   victory.currentTime = 0
@@ -150,7 +105,6 @@ var ghost = document.getElementById('ghost')
 function playGhost () {
   ghost.play()
 }
-
 function pauseGhost () {
   ghost.pause()
   ghost.currentTime = 0
@@ -158,12 +112,13 @@ function pauseGhost () {
 
 // COUNTERS//
 var frameCount = 0
-var score = 0
 var startTime = Date.now()
 var health = 100
 var paused = false
+var boxPaused = false
 var waterCount = 0
 var psyCount = 0
+var boxCount = 0
 
 // PLAYER SPECS//
 var player = {
@@ -172,14 +127,13 @@ var player = {
   hp: 100,
   width: 50,
   height: 50,
-  img: charmander,
+  img: img.char1,
   lvl: 0,
   atkSpd: 0,
   mewtwo: 0
 }
 
 // LIST
-var allList = {}
 var enemyList = {}
 var enemyList2 = {}
 var enemyList3 = {}
@@ -200,10 +154,10 @@ var fireList2 = {}
 //         return distance < 30
 // }
 testCollisionRectRect = function (rect1, rect2) {
-  return rect1.x <= rect2.x + rect2.width
-    && rect2.x <= rect1.x + rect1.width
-    && rect1.y <= rect2.y + rect2.height
-    && rect2.y <= rect1.y + rect1.height
+  return rect1.x <= rect2.x + rect2.width &&
+    rect2.x <= rect1.x + rect1.width &&
+    rect1.y <= rect2.y + rect2.height &&
+    rect2.y <= rect1.y + rect1.height
 }
 
 function testCollision (object1, object2) {
@@ -233,7 +187,7 @@ function enemy (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 40,
     height: 40,
-    img: bellsprout
+    img: img.bellsprout
   }
   enemyList[id] = enemy
 }
@@ -246,7 +200,7 @@ function enemy2 (id, x, y, spdX, spdY, width, height) {
     spdY: spdY,
     width: 40,
     height: 40,
-    img: weepin
+    img: img.weepin
   }
   enemyList[id] = enemy
 }
@@ -260,7 +214,7 @@ function enemy3 (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 60,
     height: 60,
-    img: victree
+    img: img.victree
   }
   enemyList[id] = enemy
 }
@@ -274,7 +228,7 @@ function enemy4 (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 70,
     height: 70,
-    img: blast
+    img: img.blast
   }
   enemyList2[id] = enemy2
 }
@@ -289,7 +243,7 @@ function enemy5 (id, x, y, spdX, spdY, width, height) {
     width: 70,
     height: 70,
     color: 'red',
-    img: gay
+    img: img.gay
   }
   enemyList2[id] = enemy2
 }
@@ -303,7 +257,7 @@ function enemy6 (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 70,
     height: 70,
-    img: lap
+    img: img.lap
   }
   enemyList2[id] = enemy3
 }
@@ -317,7 +271,7 @@ function enemy7 (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 80,
     height: 80,
-    img: mewtwo
+    img: img.mewtwo
   }
   enemyList3[id] = enemy4
 }
@@ -332,7 +286,7 @@ function upgrade (id, x, y, spdX, spdY) {
     id: id,
     width: 30,
     height: 40,
-    img: potion
+    img: img.potion
   }
   upgradeList[id] = upgrade
 }
@@ -346,7 +300,7 @@ function atkSpd (id, x, y, spdX, spdY) {
     id: id,
     width: 40,
     height: 50,
-    img: speed
+    img: img.speed
   }
   upgradeList2[id] = atkSpd
 }
@@ -362,7 +316,7 @@ function fire (id, x, y, spdX, spdY, width, height) {
     width: 30,
     height: 30,
     timer: 0,
-    img: fireball
+    img: img.fire
   }
   fireList[id] = fire
 }
@@ -376,7 +330,7 @@ function plasmaFire (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 30,
     height: 30,
-    img: plasma
+    img: img.plasma
   }
   fireList2[id] = plasma2
 }
@@ -390,7 +344,7 @@ function blueFire (id, x, y, spdX, spdY, width, height) {
     id: id,
     width: 50,
     height: 50,
-    img: bluefire
+    img: img.bluefire
   }
   fireList[id] = blueFire
 }
@@ -400,28 +354,29 @@ function blueFire (id, x, y, spdX, spdY, width, height) {
 // DRAW OBJECTS
 function drawPlayer (something) {
   if (player.hp > 0 && player.lvl < 20) {
-    ctx.drawImage(charmander, something.x, something.y, something.width, something.height)
+    ctx.drawImage(img.char1, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
   if (player.hp > 0 && player.lvl >= 20 && player.lvl < 60) {
-    ctx.drawImage(charmeleon, something.x, something.y, something.width, something.height)
+    ctx.drawImage(img.char2, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
   if (player.hp > 0 && player.lvl >= 60 && player.lvl < 120) {
-    ctx.drawImage(charizard, something.x, something.y, something.width, something.height)
+    ctx.drawImage(img.char3, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
   if (player.hp > 0 && player.lvl >= 120 && health > 0) {
-    ctx.drawImage(mega, something.x, something.y, something.width, something.height)
+    ctx.drawImage(img.mega, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
   if (player.hp <= 0) {
-    ctx.drawImage(sad, something.x, something.y, 90, 90)
+    ctx.drawImage(img.sad, something.x, something.y, 100, 90)
     ctx.fillStyle = 'black'
   }
-  if (health <= 0)
-    ctx.drawImage(crown, something.x, something.y, 100, 100)
-  ctx.fillStyle = 'black'
+  if (health <= 0) {
+    ctx.drawImage(img.crown, something.x, something.y, 100, 100)
+    ctx.fillStyle = 'black'
+  }
 }
 
 function drawObject (something) {
@@ -466,14 +421,18 @@ document.onmousemove = function (mouse) {
   var mouseX = mouse.clientX - 310
   var mouseY = mouse.clientY - 195
 
-  if (mouseX < player.width / 2)
+  if (mouseX < player.width / 2) {
     mouseX = player.width / 2 - 10
-  if (mouseX > WIDTH - player.width / 2)
+  }
+  if (mouseX > WIDTH - player.width / 2) {
     mouseX = WIDTH - player.width / 2 - 10
-  if (mouseY < player.height / 2)
+  }
+  if (mouseY < player.height / 2) {
     mouseY = player.height / 2 - 10
-  if (mouseY > HEIGHT - player.height / 2)
+  }
+  if (mouseY > HEIGHT - player.height / 2) {
     mouseY = HEIGHT - player.height / 2 - 10
+  }
 
   player.x = mouseX
   player.y = mouseY
@@ -481,7 +440,6 @@ document.onmousemove = function (mouse) {
 
 // UPDATE TO RUN EVERYTHING
 // ------------------------------------------------
-
 function update () {
 
   // PAUSE BUTTON
@@ -490,20 +448,25 @@ function update () {
     ctx.fillText('PAUSED', 340, 200)
     pauseBattle1()
     pauseBattleMew1()
-    return;}
+    return
+  }
 
-  if (paused == false && player.lvl < 500) {
+  if (paused === false && player.lvl < 500) {
     playBattle()
   }
 
-  if (paused == false && player.lvl >= 500 && health > 0) {
+  if (paused === false && player.lvl >= 500 && health > 0) {
     playBattleMew()
+  }
+
+  if (boxPaused) {
+    return
   }
 
   // EVOLUTION EFFECTS
 
   function evolution () {
-    if (player.lvl == 20 || player.lvl == 60 || player.lvl == 120) {
+    if (player.lvl === 20 || player.lvl === 60 || player.lvl === 120) {
       playLevel()
     }
   }
@@ -529,21 +492,33 @@ function update () {
 
   // SHOW BOX MESSAGE
 
-  if (player.lvl == 150 && waterCount == 0) {
-    paused = true
+  if (player.lvl == 150 && waterCount === 0) {
+    boxPaused = true
     waterCount++
     waterBox.style.display = 'block'
   }
 
-  if (player.lvl >= 500 && psyCount == 0) {
-    paused = true
+  if (player.lvl >= 500 && psyCount === 0) {
+    boxPaused = true
     psyCount++
     psyBox.style.display = 'block'
   }
 
+  if (health <= 0){
+  winBox.style.display = 'block'
+  }
+
+  if (player.lvl >= 500 && player.hp <= 0){
+  death2Box.style.display = 'block'
+  }
+
+  if (player.lvl <= 500 && player.hp <= 0){
+  deathBox.style.display = 'block'
+  }
+
   // LOOP THROUGH LIST, DRAW THEM OUT, AND ASSIGN COLLISION LOGIC TO THEM
 
-  // LOGIC OF NORMAL FIRE HITTING ENEMIES
+  // LOGIC OF FIRE HITTING ENEMIES
   for (var key in fireList) {
     updateObject(fireList[key])
 
@@ -557,7 +532,7 @@ function update () {
       var isColliding = testCollision(fireList[key], enemyList[key2])
       if (isColliding) {
         toRemove = true
-        player.lvl += 5
+        player.lvl += 10
         delete enemyList[key2]
       }
     }
@@ -574,31 +549,19 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        // toRemove = true
         health -= (Math.floor(Math.random() * 20))
 
         if (health <= 0) {
           delete enemyList3[key]
-          //  pause = false
           pauseBattleMew()
-          //  pauseBattleMew1()
           playVictory()
-        //  alert('Congrats! You defeated Mewtwo. You are truly a Pokemon Master!')
-        //  newGame()
         }
       }
     }
     // for(var key2 in fireList){
     var isColliding = testCollision(player, enemyList3[key])
     if (isColliding) {
-      player.hp -= 20
-
-      if (player.hp <= 0) {
-        var timeSurvived = Date.now() - startTime
-        // alert('You Lost! You died fighting with Mewtwo at level ' + player.lvl + ' The game will now reset.')
-        // newGame()
-
-      }
+      player.hp -= 10
     }
   }
 
@@ -648,11 +611,7 @@ function update () {
       delete enemyList[key]
 
       if (player.hp <= 0) {
-        var timeSurvived = Date.now() - startTime
-        // alert('You Lost! You died at level ' + player.lvl)
         pauseBattle()
-        // newGame()
-
       }
     }
   }
@@ -664,15 +623,11 @@ function update () {
     // check for collision
     var isColliding = testCollision(player, enemyList2[key])
     if (isColliding) {
-      //  console.log('Colliding!')
       player.hp -= 5
       delete enemyList2[key]
 
       if (player.hp <= 0) {
-        var timeSurvived = Date.now() - startTime
-        //  alert('You Lost! You died at level ' + player.lvl)
         pauseBattle()
-      //  newGame()
       }
     }
   }
@@ -682,23 +637,8 @@ function update () {
     updateObject2(fireList2[key])
 
     var isColliding = testCollision(player, fireList2[key])
-    if (isColliding) {
-      //  console.log('Colliding!')
-      {
-        player.hp -= 2
-      }
-
-      // OFFSET COLLISION DAMAGE
-      if (health <= 0) {
-        player.hp += 2
-      }
-
-      if (player.hp <= 0) {
-        var timeSurvived = Date.now() - startTime
-        // alert('You died fighting with Mewtwo at level ' + player.lvl + '. Try again!')
-        // newGame()
-
-      }
+    if (isColliding && health > 0) {
+      player.hp -= 2
     }
   }
 
@@ -719,26 +659,11 @@ function update () {
   if (player.hp <= 0 && player.lvl < 500) {
     pauseBattle()
     playGhost()
-    ctx.fillStyle = 'red'
-    ctx.fillText('You died at level:' + player.lvl, 350, 150)
-    ctx.fillText('Better luck next time!', 350, 210)
-    ctx.fillText('Press R to restart the game', 350, 270)
   }
 
   if (player.hp <= 0 && player.lvl >= 500) {
     pauseBattleMew()
     playGhost()
-    ctx.fillStyle = 'red'
-    ctx.fillText('You died fighting Mewtwo at level:' + player.lvl, 350, 150)
-    ctx.fillText('You were so close to defeating him!', 350, 210)
-    ctx.fillText('Press R to restart the game', 350, 270)
-  }
-
-  if (health <= 0) {
-    ctx.fillStyle = 'gold'
-    ctx.fillText('Congrats on beating Mewtwo!', 350, 150)
-    ctx.fillText('Your next adventure is waiting for you.', 350, 210)
-    ctx.fillText('Press R to restart the game', 350, 270)
   }
 }
 
@@ -751,9 +676,9 @@ function newGame () {
   player.hp = 100
   startTime = Date.now()
   frameCount = 0
-  score = 0
   waterCount = 0
   psyCount = 0
+  boxCount = 0
   player.lvl = 0
   player.atkSpd = 0
   player.mewtwo = 0
@@ -765,10 +690,11 @@ function newGame () {
   upgradeList = {}
   upgradeList2 = {}
   health = 100
+  pauseBattle()
   pauseVictory()
   pauseBattleMew()
-  playBattle()
   pauseGhost()
+  playBattle()
 }
 
 // GENERATE ENEMY
@@ -816,10 +742,10 @@ function bossGenerator () {
 // GENERATE UPGRADES
 
 function upgradeGenerator () {
-  if (frameCount % 150 == 0 && player.hp > 0) {
+  if (frameCount % 150 === 0 && player.hp > 0) {
     upgrade(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
   }
-  if (frameCount % 180 == 0 && player.hp > 0) {
+  if (frameCount % 180 === 0 && player.hp > 0) {
     atkSpd(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
   }
 }
@@ -852,6 +778,9 @@ var start = 0
 var playBox = document.getElementById('play')
 var waterBox = document.getElementById('waterwarn')
 var psyBox = document.getElementById('psychicwarn')
+var deathBox = document.getElementById('death1')
+var death2Box = document.getElementById('death2')
+var winBox = document.getElementById('win')
 
 document.onkeydown = function (event) {
   if (event.keyCode === 83 && start === 0) {
@@ -863,14 +792,19 @@ document.onkeydown = function (event) {
   }
   else if (event.keyCode === 80) {
     paused = !paused
+  }
+  else if (event.keyCode === 67) {
+    boxPaused = !boxPaused
     waterBox.style.display = 'none'
     psyBox.style.display = 'none'
   }
   if (event.keyCode === 82) {
     newGame()
+    deathBox.style.display = 'none'
+    death2Box.style.display = 'none'
+    winBox.style.display = 'none'
   }
 }
-
 // EXPERIMENT WITH CONSTURCTORS
 
 // var pokemon = [{

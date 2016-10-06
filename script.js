@@ -98,15 +98,23 @@ var battle = document.getElementById("battle");
   battle.currentTime = 0;
   }
 
+  function pauseBattle1() {
+  battle.pause();
+  }
+
 var battlemew = document.getElementById("battlemew");
 
  function playBattleMew() {
    battlemew.play();
-}
+    }
   function pauseBattleMew() {
-  battlemew.pause();
-  battlemew.currentTime = 0;
-}
+   battlemew.pause();
+   battlemew.currentTime = 0;
+     }
+
+    function pauseBattleMew1() {
+    battlemew.pause();
+      }
 
 var level = document.getElementById("level");
 
@@ -137,6 +145,8 @@ var score = 0;
 var startTime = Date.now();
 var health = 100
 var paused = false
+var waterCount = 0
+var psyCount = 0
 
 //PLAYER SPECS//
 var player = {
@@ -207,12 +217,9 @@ function enemy (id,x,y,spdX,spdY,width,height){
    spdX:spdX,
    y:y,
    spdY:spdY,
-   name:'E',
    id:id,
    width:40,
    height:40,
-   color:'red',
-   timer: 0,
    img:bellsprout
         };
         enemyList[id] = enemy;
@@ -224,14 +231,11 @@ function enemy2 (id,x,y,spdX,spdY,width,height){
      spdX:spdX,
      y:y,
      spdY:spdY,
-     name:'E',
-     id:id,
      width:40,
      height:40,
-     color:'red',
      img:weepin
           };
-          enemyList[id] = enemy;
+        enemyList[id] = enemy;
     }
 
 function enemy3 (id,x,y,spdX,spdY,width,height){
@@ -494,25 +498,34 @@ function update(){
 if(paused){
    ctx.fillStyle = 'red'
    ctx.fillText('PAUSED',340,200)
-  return;
+   pauseBattle1();
+   pauseBattleMew1();
+   return;}
+
+if(paused == false && player.lvl < 500){
+  playBattle();
+}
+
+if(paused == false && player.lvl >= 500){
+  playBattleMew();
 }
 
 //EVOLUTION EFFECTS
 
-function evolution() {
-if(player.lvl == 20 || player.lvl == 60 || player.lvl == 120){
-player.width = 80
-player.height = 80
-playLevel();
+  function evolution() {
+   if(player.lvl == 20 || player.lvl == 60 || player.lvl == 120){
+    player.width = 80
+    player.height = 80
+    playLevel();
+    }
   }
-}
 
-function evolution2() {
-if(player.lvl == 24 || player.lvl == 64 || player.lvl >= 127){
-player.width = 50
-player.height = 50
-  }
-}
+  function evolution2() {
+   if(player.lvl == 24 || player.lvl == 64 || player.lvl >= 127){
+    player.width = 50
+    player.height = 50
+     }
+    }
 
 evolution()
 evolution2()
@@ -565,7 +578,7 @@ if(player.lvl >= 120) {
 //GENERATE GRASS ENEMIES
 
 if(player.lvl < 500 && frameCount % 5 === 0) {
- enemyGenerator1();
+ enemyGenerator1(enemy);
  score++
 }
 
@@ -590,6 +603,20 @@ if(player.lvl < 500 && player.lvl >= 150) {
   }
 }
 
+//SHOW BOX MESSAGE
+
+if(player.lvl == 150 && waterCount == 0){
+paused = true
+waterCount ++
+waterBox.style.display = 'block'
+}
+
+if(player.lvl >= 500 && psyCount == 0){
+paused = true
+psyCount ++
+psyBox.style.display = 'block'
+}
+
 if(player.lvl < 500 && player.lvl >= 250) {
   if(frameCount % 60 === 0) {
    enemyGenerator6()
@@ -606,7 +633,7 @@ if(player.lvl < 500 && player.lvl >= 350) {
 //GENERATE MEWTWO AND HIS PLASMA BALLS
 
 if(player.lvl >= 500 && player.mewtwo == 0) {
-   alert("Congrats on reaching level 500! We'll be healing you back to full health and prepare for the final BOSS!")
+  //  alert("Congrats on reaching level 500! We'll be healing you back to full health and prepare for the final BOSS!")
    pauseBattle();
    playBattleMew();
    player.hp = 100
@@ -637,7 +664,7 @@ if(player.lvl >= 500) {
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 1
+      player.lvl += 30
       delete enemyList[key2];
             }
          }
@@ -655,7 +682,7 @@ for(var key in enemyList3){
       if(isColliding){
       delete fireList[key2];
       // toRemove = true;
-      health -= (Math.floor(Math.random() * 3))
+      health -= (Math.floor(Math.random() * 20))
       if (health <= 0){
        delete enemyList3[key]
        pauseBattleMew();
@@ -668,12 +695,13 @@ for(var key in enemyList3){
     // for(var key2 in fireList){
       var isColliding = testCollision(player,enemyList3[key]);
       if(isColliding){
-      player.hp -= 5
+      player.hp -= 20
 
       if(player.hp<=0) {
         var timeSurvived = Date.now() - startTime;
-        alert("You Lost! You died at level " + player.lvl);
+        alert("You Lost! You died fighting with Mewtwo at level " + player.lvl + " The game will now reset.");
         newGame();
+
   }
  }
 }
@@ -728,6 +756,7 @@ for (var key in enemyList) {
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
     alert("You Lost! You died at level " + player.lvl);
+    pauseBattle();
     newGame();
 
       }
@@ -748,6 +777,7 @@ for (var key in enemyList2) {
    if(player.hp<=0) {
      var timeSurvived = Date.now() - startTime;
      alert("You Lost! You died at level " + player.lvl);
+     pauseBattle();
      newGame();
       }
     }
@@ -786,7 +816,7 @@ drawPlayer(player);
 ctx.textAlign= "center"
 ctx.fillText(player.hp + 'HP', 120, 32)
 ctx.fillText("Level: " + player.lvl, 320, 32)
-ctx.fillText("AtK Spd: " + player.atkSpd, 540, 32)
+ctx.fillText("Atk Spd: " + player.atkSpd, 540, 32)
 
 if (player.lvl >= 500){
  ctx.fillStyle = 'red';
@@ -813,9 +843,11 @@ function newGame(){
     startTime = Date.now();
     frameCount = 0;
     score = 0;
+    waterCount = 0;
+    psyCount = 0;
     player.lvl = 0;
     player.atkSpd = 0;
-    player.mewtwo = 0
+    player.mewtwo = 0;
     enemyList = {};
     enemyList2 = {};
     enemyList3 = {};
@@ -823,7 +855,7 @@ function newGame(){
     fireList2 = {};
     upgradeList = {};
     upgradeList2 = {};
-    health = 100
+    health = 100;
     pauseVictory();
     pauseBattleMew();
     playBattle();
@@ -831,15 +863,20 @@ function newGame(){
 
 //GENERATE ENEMY
 
+// function enemyGenerator1() {
+//   var x = 0;
+//   var y = Math.random()* HEIGHT - 10;
+//   var width = width;
+//   var height = height;
+//   var id = Math.random();
+//   var spdX = 10;
+//   var spdY = 0;
+//   enemy(id,x,y,spdX,spdY,width,height);
+// }
+
 function enemyGenerator1() {
-  var x = 0;
-  var y = Math.random()* HEIGHT - 10;
-  var width = 30;
-  var height = 30;
-  var id = Math.random();
-  var spdX = 10;
-  var spdY = 0;
-  enemy(id,x,y,spdX,spdY,width,height);
+  enemy(Math.random(),0,Math.random()* HEIGHT - 10,10,0)
+  // enemy2(Math.random(),Math.random()* WIDTH - 10,0,0,15)
 }
 
 function enemyGenerator2() {
@@ -1103,8 +1140,8 @@ function mewFireGenerator2(){
 var start = 0
 
 var playBox = document.getElementById('play');
-
-
+var waterBox = document.getElementById('waterwarn');
+var psyBox = document.getElementById('psychicwarn');
 
 document.onkeydown = function(event){
   if(event.keyCode === 83 && start === 0){
@@ -1116,6 +1153,8 @@ document.onkeydown = function(event){
   }
   else if(event.keyCode === 80){
   paused = !paused
+  waterBox.style.display = 'none'
+  psyBox.style.display = 'none'
   }
   if(event.keyCode === 82){
   newGame();

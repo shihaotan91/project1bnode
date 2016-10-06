@@ -38,6 +38,46 @@ body {
   /*display: none;*/
 }
 
+#waterwarn {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 200px;
+  position: fixed;
+  left: 295px;
+  top: 250px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
+#psychicwarn {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 240px;
+  position: fixed;
+  left: 295px;
+  top: 250px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
 .red {
   color: red;
+}
+
+.blue {
+  color: blue;
+}
+
+.purple {
+  color: rgb(251, 154, 227);
 }

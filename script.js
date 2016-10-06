@@ -872,7 +872,7 @@ if (player.lvl >= 500){
  if(health <= 0){
   ctx.fillStyle = 'gold'
   ctx.fillText('Congrats on beating Mewtwo!', 350, 150)
-  ctx.fillText('Your next adventure is waiting for you.', 350, 210)
+  ctx.fillText('You truly are a Pokemon Master.', 350, 210)
   ctx.fillText('Press R to restart the game', 350, 270)
    }
 
@@ -1161,7 +1161,7 @@ function mewFireGenerator(){
     var width = width;
     var id = Math.random();
 
-    var angle = Math.random()*360;
+    // var angle = Math.random()*360;
     var spdX = 5 //Math.cos(angle/180*Math.PI)*5;
     var spdY = -5 //Math.sin(angle/180*Math.PI)*5;
     plasmaFire(id,x,y,spdX,spdY,width,height);
@@ -1176,7 +1176,7 @@ function mewFireGenerator2(){
     var width = width;
     var id = Math.random();
 
-    var angle = Math.random()*360;
+    // var angle = Math.random()*360;
     var spdX = -5 //Math.cos(angle/180*Math.PI)*5;
     var spdY = 5 //Math.sin(angle/180*Math.PI)*5;
     plasmaFire(id,x,y,spdX,spdY,width,height);

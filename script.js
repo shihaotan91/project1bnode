@@ -70,6 +70,9 @@ var img = {};
   img.sad = new Image();
   img.sad.src = "images/sad.png";
 
+  img.crown = new Image();
+  img.crown.src = "images/crown.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -88,6 +91,7 @@ var img = {};
   var mewtwo = img.mewtwo
   var plasma = img.plasma
   var sad = img.sad
+  var crown = img.crown
 
 //AUDIO LIST
 
@@ -438,7 +442,7 @@ function drawPlayer(something){
      ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
      ctx.fillStyle = 'black';
      }
-      if (player.hp > 0 && player.lvl >= 120) {
+      if (player.hp > 0 && player.lvl >= 120 && health > 0) {
       ctx.drawImage(mega,something.x,something.y,something.width,something.height);
       ctx.fillStyle = 'black';
        }
@@ -446,6 +450,9 @@ function drawPlayer(something){
        ctx.drawImage(sad,something.x,something.y,90,90);
        ctx.fillStyle = 'black';
        }
+       if (health <= 0)
+       ctx.drawImage(crown,something.x,something.y,100,100);
+       ctx.fillStyle = 'black';
      }
 
 function drawObject(something){
@@ -682,7 +689,7 @@ if(player.lvl >= 500) {
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 1
+      player.lvl += 50
       delete enemyList[key2];
             }
          }
@@ -700,7 +707,7 @@ for(var key in enemyList3){
       if(isColliding){
       delete fireList[key2];
       // toRemove = true;
-      health -= (Math.floor(Math.random() * 5))
+      health -= (Math.floor(Math.random() * 20))
 
       if (health <= 0){
        delete enemyList3[key]

@@ -67,6 +67,9 @@ var img = {};
   img.plasma = new Image();
   img.plasma.src = "images/plasma.png";
 
+  img.sad = new Image();
+  img.sad.src = "images/sad.png";
+
 
   var charmander = img.char1
   var charmeleon = img.char2
@@ -84,6 +87,7 @@ var img = {};
   var lap = img.lap
   var mewtwo = img.mewtwo
   var plasma = img.plasma
+  var sad = img.sad
 
 //AUDIO LIST
 
@@ -138,6 +142,16 @@ var victory = document.getElementById("victory");
    victory.currentTime = 0;
   }
 
+var ghost = document.getElementById("ghost");
+
+  function playGhost() {
+  ghost.play();
+    }
+
+  function pauseGhost() {
+  ghost.pause();
+  ghost.currentTime = 0;
+    }
 
 //COUNTERS//
 var frameCount = 0;
@@ -412,21 +426,25 @@ function blueFire (id,x,y,spdX,spdY,width,height){
 
 //DRAW OBJECTS
 function drawPlayer(something){
-  if (player.lvl < 20) {
+  if (player.hp > 0 && player.lvl < 20) {
   ctx.drawImage(charmander,something.x,something.y,something.width,something.height);
   ctx.fillStyle = 'black';
     }
-   if (player.lvl >= 20 && player.lvl < 60) {
+   if (player.hp > 0 && player.lvl >= 20 && player.lvl < 60) {
    ctx.drawImage(charmeleon,something.x,something.y,something.width,something.height);
    ctx.fillStyle = 'black';
     }
-    if (player.lvl >= 60 && player.lvl < 120) {
+    if (player.hp > 0 && player.lvl >= 60 && player.lvl < 120) {
      ctx.drawImage(charizard,something.x,something.y,something.width,something.height);
      ctx.fillStyle = 'black';
      }
-      if (player.lvl >= 120) {
+      if (player.hp > 0 && player.lvl >= 120) {
       ctx.drawImage(mega,something.x,something.y,something.width,something.height);
       ctx.fillStyle = 'black';
+       }
+       if (player.hp <= 0) {
+       ctx.drawImage(sad,something.x,something.y,90,90);
+       ctx.fillStyle = 'black';
        }
      }
 
@@ -506,7 +524,7 @@ if(paused == false && player.lvl < 500){
   playBattle();
 }
 
-if(paused == false && player.lvl >= 500){
+if(paused == false && player.lvl >= 500 && health > 0){
   playBattleMew();
 }
 
@@ -539,34 +557,34 @@ frameCount++
 
 //GENERATE UPGRADES
 
-if(frameCount % 150 === 0) {
+if(frameCount % 150 === 0 && player.hp > 0) {
  upgradeGenerator();
  }
 
-if(frameCount % 180 === 0) {
+if(frameCount % 180 === 0 && player.hp > 0) {
  atkSpdGenerator();
  }
 
 //GENERATE PLAYER ATTACKS
 
-if((frameCount) % (30 - player.atkSpd) === 0) {
+if((frameCount) % (30 - player.atkSpd) === 0 && player.hp > 0) {
  fireGenerator();
  }
 
-if(player.lvl >= 20) {
-  if(frameCount % (30 - player.atkSpd) === 0) {
+if(player.lvl >= 20 && player.hp > 0) {
+  if(frameCount % (30 - player.atkSpd) === 0 && player.hp > 0) {
     fireGenerator2()
   }
 }
 
-if(player.lvl >= 60) {
+if(player.lvl >= 60 && player.hp > 0) {
   if(frameCount % (30 - player.atkSpd) === 0) {
     fireGenerator3()
     fireGenerator4()
   }
 }
 
-if(player.lvl >= 120) {
+if(player.lvl >= 120 && player.hp > 0) {
   if(frameCount % (30 - player.atkSpd) === 0) {
     fireGenerator5()
     fireGenerator6()
@@ -664,7 +682,7 @@ if(player.lvl >= 500) {
       var isColliding = testCollision(fireList[key],enemyList[key2]);
       if(isColliding){
       toRemove = true;
-      player.lvl += 30
+      player.lvl += 1
       delete enemyList[key2];
             }
          }
@@ -682,10 +700,13 @@ for(var key in enemyList3){
       if(isColliding){
       delete fireList[key2];
       // toRemove = true;
-      health -= (Math.floor(Math.random() * 20))
+      health -= (Math.floor(Math.random() * 5))
+
       if (health <= 0){
        delete enemyList3[key]
+      //  pause = false
        pauseBattleMew();
+      //  pauseBattleMew1()
        playVictory();
       //  alert("Congrats! You defeated Mewtwo. You are truly a Pokemon Master!")
       //  newGame();
@@ -699,8 +720,8 @@ for(var key in enemyList3){
 
       if(player.hp<=0) {
         var timeSurvived = Date.now() - startTime;
-        alert("You Lost! You died fighting with Mewtwo at level " + player.lvl + " The game will now reset.");
-        newGame();
+        // alert("You Lost! You died fighting with Mewtwo at level " + player.lvl + " The game will now reset.");
+        // newGame();
 
   }
  }
@@ -711,7 +732,7 @@ for (var key in upgradeList) {
   updateObject(upgradeList[key]);
 
   var isColliding = testCollision(player, upgradeList[key]);
-  if(isColliding){
+  if(isColliding && player.hp > 0){
     //  console.log('Colliding!');
     player.hp += 20
 
@@ -729,7 +750,7 @@ for (var key in upgradeList2) {
   updateObject(upgradeList2[key]);
 
   var isColliding = testCollision(player, upgradeList2[key]);
-   if(isColliding){
+   if(isColliding && player.hp > 0){
     //  console.log('Colliding!');
     player.atkSpd += 1
 
@@ -755,9 +776,9 @@ for (var key in enemyList) {
 
   if(player.hp<=0) {
     var timeSurvived = Date.now() - startTime;
-    alert("You Lost! You died at level " + player.lvl);
+    // alert("You Lost! You died at level " + player.lvl);
     pauseBattle();
-    newGame();
+    // newGame();
 
       }
     }
@@ -776,9 +797,9 @@ for (var key in enemyList2) {
 
    if(player.hp<=0) {
      var timeSurvived = Date.now() - startTime;
-     alert("You Lost! You died at level " + player.lvl);
+    //  alert("You Lost! You died at level " + player.lvl);
      pauseBattle();
-     newGame();
+    //  newGame();
       }
     }
   }
@@ -802,8 +823,8 @@ for (var key in fireList2) {
 
     if(player.hp<=0) {
       var timeSurvived = Date.now() - startTime;
-      alert("You died fighting with Mewtwo at level " + player.lvl + ". Try again!");
-      newGame();
+      // alert("You died fighting with Mewtwo at level " + player.lvl + ". Try again!");
+      // newGame();
 
          }
       }
@@ -822,6 +843,24 @@ if (player.lvl >= 500){
  ctx.fillStyle = 'red';
  ctx.fillText('Mewtwo HP:' + health, 320, 60)
  }
+
+ if (player.hp <= 0 && player.lvl < 500){
+   pauseBattle();
+   playGhost();
+   ctx.fillStyle = 'red';
+   ctx.fillText('You died at level:' + player.lvl, 350, 150)
+   ctx.fillText('Better luck next time!', 350, 210)
+   ctx.fillText('Press R to restart the game', 350, 270)
+  }
+
+  if (player.hp <= 0 && player.lvl >= 500){
+    pauseBattleMew();
+    playGhost();
+    ctx.fillStyle = 'red';
+    ctx.fillText('You died fighting Mewtwo at level:' + player.lvl, 350, 150)
+    ctx.fillText('You were so close to defeating him!', 350, 210)
+    ctx.fillText('Press R to restart the game', 350, 270)
+   }
 
  if(health <= 0){
   ctx.fillStyle = 'gold'
@@ -859,6 +898,7 @@ function newGame(){
     pauseVictory();
     pauseBattleMew();
     playBattle();
+    pauseGhost();
 }
 
 //GENERATE ENEMY

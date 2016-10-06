@@ -492,7 +492,7 @@ function update () {
 
   // SHOW BOX MESSAGE
 
-  if (player.lvl == 150 && waterCount === 0) {
+  if (player.lvl === 150 && waterCount === 0) {
     boxPaused = true
     waterCount++
     waterBox.style.display = 'block'
@@ -504,16 +504,16 @@ function update () {
     psyBox.style.display = 'block'
   }
 
-  if (health <= 0){
-  winBox.style.display = 'block'
+  if (health <= 0) {
+    winBox.style.display = 'block'
   }
 
-  if (player.lvl >= 500 && player.hp <= 0){
-  death2Box.style.display = 'block'
+  if (player.lvl >= 500 && player.hp <= 0) {
+    death2Box.style.display = 'block'
   }
 
-  if (player.lvl <= 500 && player.hp <= 0){
-  deathBox.style.display = 'block'
+  if (player.lvl <= 500 && player.hp <= 0) {
+    deathBox.style.display = 'block'
   }
 
   // LOOP THROUGH LIST, DRAW THEM OUT, AND ASSIGN COLLISION LOGIC TO THEM
@@ -532,7 +532,7 @@ function update () {
       var isColliding = testCollision(fireList[key], enemyList[key2])
       if (isColliding) {
         toRemove = true
-        player.lvl += 10
+        player.lvl += 2
         delete enemyList[key2]
       }
     }
@@ -549,7 +549,7 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 20))
+        health -= (Math.floor(Math.random() * 15))
 
         if (health <= 0) {
           delete enemyList3[key]
@@ -591,8 +591,8 @@ function update () {
       //  console.log('Colliding!')
       player.atkSpd += 1
 
-      if (player.atkSpd > 20) {
-        player.atkSpd = 20
+      if (player.atkSpd > 25) {
+        player.atkSpd = 25
       }
 
       delete upgradeList2[key]
@@ -623,7 +623,7 @@ function update () {
     // check for collision
     var isColliding = testCollision(player, enemyList2[key])
     if (isColliding) {
-      player.hp -= 5
+      player.hp -= 1
       delete enemyList2[key]
 
       if (player.hp <= 0) {
@@ -745,7 +745,7 @@ function upgradeGenerator () {
   if (frameCount % 150 === 0 && player.hp > 0) {
     upgrade(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
   }
-  if (frameCount % 180 === 0 && player.hp > 0) {
+  if (frameCount % 120 === 0 && player.hp > 0) {
     atkSpd(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
   }
 }

@@ -14,27 +14,31 @@ More information can be found at the “HOW TO PLAY” section of the game itsel
 
 ## API
 
-<a href=“https://code.jquery.com/“Jquery</a>
+Query
 
 ## Credits
 
-<a href=“http://rainingchain.com/tutorial/html5”>Raining Chain</a>
+http://rainingchain.com/tutorial/html5
 
 Eloquent tutorial on how canvas works. This series of videos helped me understand how animation, collision and mouse cursor tracking works in canvas. I used this website to lay out the skeleton of my code.
 
-<a href=“http://downloads.khinsider.com/game-soundtracks/album/pokemon-gameboy-sound-collection”>Khinsider</a>
+
+http://downloads.khinsider.com/game-soundtracks/album/pokemon-gameboy-sound-collection
 
 Provided all the audio used in the game.
 
-<a href=“http://www.serebii.net/shuffle/pokemon.shtml”>Pokemon Shuffle on Serebii</a>
+
+http://www.serebii.net/shuffle/pokemon.shtml
 
 Provided most of the images used in the game.
 
-<a href=“https://github.com/junkaiii/tomandjerry”>Tom and Jerry by Junkaii</a>
+
+https://github.com/junkaiii/tomandjerry
 
 Copied Jquery code for hiding and showing “HOW TO PLAY”.
 
-<a href=“https://fonts.googleapis.com/css?family=Press+Start+2P”>”Press Start 2P” on Google Fonts</a>
+
+https://fonts.googleapis.com/css?family=Press+Start+2P
 
 Provided the fonts for my game
 

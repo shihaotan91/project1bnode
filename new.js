@@ -197,19 +197,19 @@ function enemy (type, id, x, y, spdX, spdY, width, height, img) {
   }
   if (enemy.type === "grass")
   enemyList[id] = enemy
-  if (enemy.type == "water")
+  if (enemy.type === "water")
   enemyList2[id] = enemy
-  if (enemy.type == "psychic")
+  if (enemy.type === "psychic")
   enemyList3[id] = enemy
-  if (enemy.type == "upgrade1")
+  if (enemy.type === "upgrade1")
   upgradeList[id] = enemy
-  if (enemy.type == "upgrade2")
+  if (enemy.type === "upgrade2")
   upgradeList2[id] = enemy
-  if (enemy.type == "fire")
+  if (enemy.type === "fire")
   fireList[id] = enemy
-  if (enemy.type == "plasma")
+  if (enemy.type === "plasma")
   fireList2[id] = enemy
-  if (enemy.type == "party")
+  if (enemy.type === "party")
   partyList[id] = enemy
 }
 
@@ -601,8 +601,8 @@ function bossGenerator () {
     enemy("psychic",Math.random(), 300, 130, 5, 5, 80, 80, img.mewtwo)
   }
   if (player.lvl >= 500 && frameCount % 30 === 0) {
-    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5)
-    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5)
+    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5, 30, 30, img.plasma)
+    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5,30, 30, img.plasma)
   }
 }
 
@@ -610,10 +610,10 @@ function bossGenerator () {
 
 function upgradeGenerator () {
   if (frameCount % 150 === 0 && player.hp > 0) {
-    enemy("upgrade1",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, img.potion)
+    enemy("upgrade1",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 30, 40, img.potion)
   }
   if (frameCount % 120 === 0 && player.hp > 0) {
-    enemy("upgrade2",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, img.speed)
+    enemy("upgrade2",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 30, 40, img.speed)
   }
 }
 

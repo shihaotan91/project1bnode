@@ -33,6 +33,8 @@ img.victree = new Image()
 img.victree.src = 'images/victree.png'
 img.potion = new Image()
 img.potion.src = 'images/potion.png'
+img.speed = new Image()
+img.speed.src = 'images/speed.png'
 img.fire = new Image()
 img.fire.src = 'images/fire.png'
 img.bluefire = new Image()
@@ -43,8 +45,6 @@ img.blast = new Image()
 img.blast.src = 'images/blast.png'
 img.gay = new Image()
 img.gay.src = 'images/gay.png'
-img.speed = new Image()
-img.speed.src = 'images/speed.png'
 img.lap = new Image()
 img.lap.src = 'images/lapras.png'
 img.mewtwo = new Image()
@@ -116,7 +116,7 @@ function pauseGhost () {
 
 // COUNTERS//
 var frameCount = 0
-var startTime = Date.now()
+// var startTime = Date.now()
 var health = 100
 var paused = false
 var boxPaused = false
@@ -183,210 +183,36 @@ function testCollision (object1, object2) {
 
 // ENEMY CONSTRUCTOR
 
-function enemy (id, x, y, spdX, spdY, width, height) {
+function enemy (type, id, x, y, spdX, spdY, width, height, img) {
   var enemy = {
+    type: type,
     x: x,
     spdX: spdX,
     y: y,
     spdY: spdY,
     id: id,
-    width: 40,
-    height: 40,
-    img: img.bellsprout
+    width: width,
+    height: height,
+    img: img
   }
+  if (enemy.type === "grass")
   enemyList[id] = enemy
+  if (enemy.type == "water")
+  enemyList2[id] = enemy
+  if (enemy.type == "psychic")
+  enemyList3[id] = enemy
+  if (enemy.type == "upgrade1")
+  upgradeList[id] = enemy
+  if (enemy.type == "upgrade2")
+  upgradeList2[id] = enemy
+  if (enemy.type == "fire")
+  fireList[id] = enemy
+  if (enemy.type == "plasma")
+  fireList2[id] = enemy
+  if (enemy.type == "party")
+  partyList[id] = enemy
 }
 
-function enemy2 (id, x, y, spdX, spdY, width, height) {
-  var enemy = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    width: 40,
-    height: 40,
-    img: img.weepin
-  }
-  enemyList[id] = enemy
-}
-
-function enemy3 (id, x, y, spdX, spdY, width, height) {
-  var enemy = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 60,
-    height: 60,
-    img: img.victree
-  }
-  enemyList[id] = enemy
-}
-
-function enemy4 (id, x, y, spdX, spdY, width, height) {
-  var enemy2 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 70,
-    height: 70,
-    img: img.blast
-  }
-  enemyList2[id] = enemy2
-}
-
-function enemy5 (id, x, y, spdX, spdY, width, height) {
-  var enemy2 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 70,
-    height: 70,
-    color: 'red',
-    img: img.gay
-  }
-  enemyList2[id] = enemy2
-}
-
-function enemy6 (id, x, y, spdX, spdY, width, height) {
-  var enemy3 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 70,
-    height: 70,
-    img: img.lap
-  }
-  enemyList2[id] = enemy3
-}
-
-function enemy7 (id, x, y, spdX, spdY, width, height) {
-  var enemy4 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 80,
-    height: 80,
-    img: img.mewtwo
-  }
-  enemyList3[id] = enemy4
-}
-
-// UPGRADE CONSTRUCTOR
-function upgrade (id, x, y, spdX, spdY) {
-  var upgrade = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 30,
-    height: 40,
-    img: img.potion
-  }
-  upgradeList[id] = upgrade
-}
-
-function atkSpd (id, x, y, spdX, spdY) {
-  var atkSpd = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 40,
-    height: 50,
-    img: img.speed
-  }
-  upgradeList2[id] = atkSpd
-}
-
-// FIRE CONSTRUCTOR
-function fire (id, x, y, spdX, spdY, width, height) {
-  var fire = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 30,
-    height: 30,
-    timer: 0,
-    img: img.fire
-  }
-  fireList[id] = fire
-}
-
-function plasmaFire (id, x, y, spdX, spdY, width, height) {
-  var plasma2 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 30,
-    height: 30,
-    img: img.plasma
-  }
-  fireList2[id] = plasma2
-}
-
-function blueFire (id, x, y, spdX, spdY, width, height) {
-  var blueFire = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 50,
-    height: 50,
-    img: img.bluefire
-  }
-  fireList[id] = blueFire
-}
-
-//PARTY CONSTRUCTOR
-
-function party1 (id, x, y, spdX, spdY) {
-  var party1 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 40,
-    height: 70,
-    img: img.party1
-  }
-  partyList[id] = party1
-}
-
-function party2 (id, x, y, spdX, spdY) {
-  var party2 = {
-    x: x,
-    spdX: spdX,
-    y: y,
-    spdY: spdY,
-    id: id,
-    width: 50,
-    height: 50,
-    img: img.party2
-  }
-  partyList[id] = party2
-}
-
-
-
-// ------------------------------------------------------------------
 
 // DRAW OBJECTS
 function drawPlayer (something) {
@@ -530,11 +356,6 @@ function update () {
   //GENERATE PARTY ITEMS
   partyGenerator ()
 
-  //DRAW PARTY ITEMS
-  for (var key in partyList) {
-    updateObject(partyList[key])
-  }
-
   // SHOW BOX MESSAGE
 
   if (player.lvl === 150 && waterCount === 0) {
@@ -563,21 +384,22 @@ function update () {
 
   // LOOP THROUGH LIST, DRAW THEM OUT, AND ASSIGN COLLISION LOGIC TO THEM
 
+  //DRAW PARTY ITEMS
+  for (var key in partyList) {
+    updateObject(partyList[key])
+  }
+
   // LOGIC OF FIRE HITTING ENEMIES
   for (var key in fireList) {
     updateObject(fireList[key])
 
     var toRemove = false
-    fireList[key].timer++
-    if (fireList[key].timer > 40) {
-      toRemove = true
-    }
 
     for (var key2 in enemyList) {
       var isColliding = testCollision(fireList[key], enemyList[key2])
       if (isColliding) {
         toRemove = true
-        player.lvl += 2
+        player.lvl += 1
         delete enemyList[key2]
       }
     }
@@ -719,7 +541,7 @@ function update () {
 
 function newGame () {
   player.hp = 100
-  startTime = Date.now()
+  // startTime = Date.now()
   frameCount = 0
   waterCount = 0
   psyCount = 0
@@ -746,27 +568,27 @@ function newGame () {
 
 function grassGenerator () {
   if (player.lvl < 500 && frameCount % 5 === 0) {
-    enemy(Math.random(), 0, Math.random() * HEIGHT - 10, 10, 0)
+    enemy("grass",Math.random(), 0, Math.random() * HEIGHT - 10, 10, 0, 40, 40, img.bellsprout)
   }
   if (player.lvl < 500 && player.lvl >= 20 && frameCount % 5 === 0) {
-    enemy2(Math.random(), Math.random() * WIDTH - 10, 0, 0, 15)
+    enemy("grass",Math.random(), Math.random() * WIDTH - 10, 0, 0, 15, 40, 40, img.weepin)
   }
   if (player.lvl < 500 && player.lvl >= 60 && frameCount % 3 === 0) {
-    enemy3(Math.random(), Math.random() * WIDTH, Math.random() * HEIGHT, 10, 10)
+    enemy("grass",Math.random(), Math.random() * WIDTH, Math.random() * HEIGHT, 10, 10, 40, 40, img.victree)
   }
 }
 
 function waterGenerator () {
   if (player.lvl < 500 && player.lvl >= 150 && frameCount % 60 === 0) {
-    enemy4(Math.random(), 0, 240, 5, 0)
-    enemy4(Math.random(), 690, 120, -5, 0)
+    enemy("water",Math.random(), 0, 240, 5, 0, 60, 60, img.blast)
+    enemy("water",Math.random(), 690, 120, -5, 0, 60, 60, img.blast)
   }
   if (player.lvl < 500 && player.lvl >= 250 && frameCount % 60 === 0) {
-    enemy5(Math.random(), 200, 380, 0, -5)
-    enemy5(Math.random(), 400, 0, 0, 5)
+    enemy("water",Math.random(), 200, 380, 0, -5, 60, 60, img.gay)
+    enemy("water",Math.random(), 400, 0, 0, 5, 60, 60, img.gay)
   }
   if (player.lvl < 500 && player.lvl >= 350 && frameCount % 10 === 0) {
-    enemy6(Math.random(), Math.random() * WIDTH, Math.random() * HEIGHT, 5, 5)
+    enemy("water",Math.random(), Math.random() * WIDTH, Math.random() * HEIGHT, 5, 5, 60, 60, img.lap)
   }
 }
 
@@ -776,11 +598,11 @@ function bossGenerator () {
     playBattleMew()
     player.hp = 100
     player.mewtwo++
-    enemy7(Math.random(), 300, 130, 5, 5)
+    enemy("psychic",Math.random(), 300, 130, 5, 5, 80, 80, img.mewtwo)
   }
   if (player.lvl >= 500 && frameCount % 30 === 0) {
-    plasmaFire(Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5)
-    plasmaFire(Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5)
+    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5)
+    enemy("plasma",Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5)
   }
 }
 
@@ -788,10 +610,10 @@ function bossGenerator () {
 
 function upgradeGenerator () {
   if (frameCount % 150 === 0 && player.hp > 0) {
-    upgrade(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
+    enemy("upgrade1",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, img.potion)
   }
   if (frameCount % 120 === 0 && player.hp > 0) {
-    atkSpd(Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0)
+    enemy("upgrade2",Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, img.speed)
   }
 }
 
@@ -799,29 +621,29 @@ function upgradeGenerator () {
 
 function fireGenerator () {
   if ((frameCount) % (30 - player.atkSpd) === 0 && player.hp > 0) {
-    fire(Math.random(), player.x, player.y, -10, 0)
+    enemy("fire",Math.random(), player.x, player.y, -10, 0, 30, 30, img.fire)
   }
   if (player.lvl >= 20 && player.hp > 0 && frameCount % (30 - player.atkSpd) === 0) {
-    fire(Math.random(), player.x, player.y, 0, -10)
+    enemy("fire",Math.random(), player.x, player.y, 0, -10, 30, 30, img.fire)
   }
   if (player.lvl >= 60 && player.hp > 0 && frameCount % (30 - player.atkSpd) === 0) {
-    fire(Math.random(), player.x, player.y, 10, 0)
-    fire(Math.random(), player.x, player.y, 0, 10)
+    enemy("fire",Math.random(), player.x, player.y, 10, 0, 30, 30, img.fire)
+    enemy("fire",Math.random(), player.x, player.y, 0, 10, 30, 30, img.fire)
   }
   if (player.lvl >= 120 && player.hp > 0 && frameCount % (30 - player.atkSpd) === 0) {
-    blueFire(Math.random(), player.x, player.y, 10, 10)
-    blueFire(Math.random(), player.x, player.y, -10, -10)
-    blueFire(Math.random(), player.x, player.y, 10, -10)
-    blueFire(Math.random(), player.x, player.y, -10, 10)
+    enemy("fire",Math.random(), player.x, player.y, 10, 10, 50, 50, img.bluefire)
+    enemy("fire",Math.random(), player.x, player.y, -10, -10, 50, 50, img.bluefire)
+    enemy("fire",Math.random(), player.x, player.y, 10, -10, 50, 50, img.bluefire)
+    enemy("fire",Math.random(), player.x, player.y, -10, 10, 50, 50, img.bluefire)
   }
 }
 
 function partyGenerator () {
   if (frameCount % 1 === 0 && health <= 0) {
-    party1(Math.random(), Math.random() * WIDTH, 380, 0, -10)
+    enemy("party",Math.random(), Math.random() * WIDTH, 380, 0, -10, 40, 70, img.party1)
   }
   if (frameCount % 1 === 0 && health <= 0) {
-    party2(Math.random(), Math.random() * WIDTH, 0, 0, 10)
+    enemy("party",Math.random(), Math.random() * WIDTH, 0, 0, 10, 50, 50, img.party2)
   }
 }
 

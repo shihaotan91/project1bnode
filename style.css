@@ -9,7 +9,7 @@
 }
 
 body {
-  background-image: url("images/background-final.png");
+  background-image: url("images/chabackground.png");
   background-size: cover;
 }
 
@@ -29,21 +29,21 @@ body {
   width: 600px;
   height: 800px;
   position: fixed;
-  left: 340px;
+  left: 320px;
   top: 90px;
   background-color: rgba(0, 0, 0, 0.7);;
   text-align: center;
   color: white;
   font-size: 13px;
   line-height: 20px;
-  padding: 20xp;
+  padding: 20px;
   /*display: none;*/
 }
 
 #waterwarn {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 200px;
+  height: 230px;
   position: fixed;
   left: 295px;
   top: 250px;
@@ -59,7 +59,7 @@ body {
 #psychicwarn {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 240px;
+  height: 280px;
   position: fixed;
   left: 295px;
   top: 250px;
@@ -91,7 +91,7 @@ body {
 #death1 {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 240px;
+  height: 230px;
   position: fixed;
   left: 295px;
   top: 250px;
@@ -107,10 +107,58 @@ body {
 #death2 {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 240px;
+  height: 230px;
   position: fixed;
   left: 295px;
   top: 250px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
+#evo {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 270px;
+  position: fixed;
+  left: 295px;
+  top: 250px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
+#mega {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 230px;
+  position: fixed;
+  left: 295px;
+  top: 250px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
+#mewBox {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 290px;
+  position: fixed;
+  left: 295px;
+  top: 240px;
   background-color: rgba(0, 0, 0, 0.8);;
   text-align: center;
   color: white;
@@ -129,5 +177,9 @@ body {
 }
 
 .purple {
-  color: rgb(251, 154, 227);
+  color: rgb(250, 80, 208);
+}
+
+.violet {
+  color: rgb(252, 216, 252);
 }

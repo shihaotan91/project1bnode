@@ -14,7 +14,6 @@
     </div>
 
     <div id="play">
-    <br>
     <p>Press <span class="red">'S'</span> to start and <span class="red">'P'</span> to pause</p>
     <p>Kill and avoid enemies by navigating Charmander with your cursor. You can also pick up powerups along the way!</p>
     <p>Enemies to kill</p>
@@ -28,7 +27,7 @@
     </div>
 
     <div id="waterwarn">
-    <br>
+    <p>In case you weren't paying attention earlier...</p>
     <img src="images/waterpoke.png" height="60" width="220">
     <p>The <span class="blue">water</span> Pokemons are coming out anytime now!</p>
     <p><span class="red">Fire</span> is ineffective against <span class="blue">water</span> so just focus on avoiding them!</p>
@@ -36,16 +35,17 @@
     </div>
 
     <div id="psychicwarn">
-    <br>
+    <!-- <br> -->
     <img src="images/mewtwo.png" height="80" width="80">
-    <p>Congrats on reaching Level 500!</p>
+    <p>Feeling invincible?</p>
     <p>Your final test to becoming a pokemon master is to defeat <span class="purple">MEWTWO</span>. Good Luck!</p>
-    <p>PROTIP: Do not touch <span class="purple">MEWTWO</span></p>
+    <p>You will be restored back to full health</p>
+    <p>PROTIP: Do not go too near to <span class="purple">MEWTWO</span></p>
     <p>Press 'C' to continue</p>
     </div>
 
     <div id="death1">
-    <br>
+    <!-- <br> -->
     <img src="images/sad.png" height="80" width="100">
     <p>You died before reaching the Boss level</p>
     <p>Try harder if you want to be a Pokemon master!</p>
@@ -53,7 +53,7 @@
     </div>
 
     <div id="death2">
-    <br>
+    <!-- <br> -->
     <img src="images/sad.png" height="80" width="100">
     <p>You died after an intense battle with <span class="purple">MEWTWO</span></p>
     <p>You were so close to becoming a Pokemon master!</p>
@@ -61,11 +61,37 @@
     </div>
 
     <div id="win">
-    <br>
+    <!-- <br> -->
     <img src="images/crown.png" height="100" width="100">
     <p>Congrats on defeating <span class="purple">MEWTWO</span>!</p>
     <p>You truly are a Pokemon master!</p>
     <p>Press 'R' to challenge yourself again</p>
+    </div>
+
+    <div id="evo">
+    <!-- <br> -->
+    <img src="images/dite.png" height="80" width="80">
+    <p>Good job on evolving to <span class="red">Charizard</span>!</p>
+    <p>However, leveling up alone won't make you evolve again, you need to collect <span class="red">FIVE</span> Charizardites!</p>
+    <p>PROTIP: Charizardites are unlike normal upgrades, they disappear if you don't collect them immediately</p>
+    <p>Press 'C' to continue</p>
+    </div>
+
+    <div id="mega">
+    <!-- <br> -->
+    <img src="images/mega-char.png" height="80" width="80">
+    <p>You did it! You evolved to <span class="blue">MEGA </span><span class="red">Charizard</span>!</p>
+    <p>Now you can deal with those pesky water Pokemons with your newly acquired <span class="blue"> FLAMES</span></p>
+    <p>Press 'C' to continue</p>
+    </div>
+
+    <div id="mewBox">
+    <p>Uh Oh...</p>
+    <img src="images/megamew.png" height="100" width="100">
+    <p>You've angered <span class="purple">MEWTWO</span></p>
+    <p><span class="purple">MEWTWO</span> evolves into <span class="violet">MEGA MEWTWO</span> and uses recover!</p>
+    <p><span class="violet">MEGA MEWTWO </span>stops all upgrades from spawning and disables all your movelist!</p>
+    <p>Press 'C' to continue</p>
     </div>
 
 
@@ -77,6 +103,142 @@
      <audio id="level" src="audio/level.mp3"></audio>
      <audio id="victory" src="audio/victory.mp3"></audio>
      <audio id="ghost" src="audio/ghost.mp3"></audio>
+     <audio id="getDite" src="audio/getDite.mp3"></audio>
+     <audio id="cry" src="audio/cry.mp3"></audio>
+     <audio id="last" src="audio/last.mp3"></audio>
+
+     <script>
+
+     var img = {}
+     img.char1 = new Image()
+     img.char1.src = 'images/char1.png'
+     img.char2 = new Image()
+     img.char2.src = 'images/char2.png'
+     img.char3 = new Image()
+     img.char3.src = 'images/char3.png'
+     img.bellsprout = new Image()
+     img.bellsprout.src = 'images/bell.png'
+     img.weepin = new Image()
+     img.weepin.src = 'images/weepin.png'
+     img.victree = new Image()
+     img.victree.src = 'images/victree.png'
+     img.potion = new Image()
+     img.potion.src = 'images/potion.png'
+     img.speed = new Image()
+     img.speed.src = 'images/speed.png'
+     img.fire = new Image()
+     img.fire.src = 'images/fire.png'
+     img.bluefire = new Image()
+     img.bluefire.src = 'images/bluefire.png'
+     img.mega = new Image()
+     img.mega.src = 'images/mega-char.png'
+     img.blast = new Image()
+     img.blast.src = 'images/blast.png'
+     img.gay = new Image()
+     img.gay.src = 'images/gay.png'
+     img.lap = new Image()
+     img.lap.src = 'images/lapras.png'
+     img.mewtwo = new Image()
+     img.mewtwo.src = 'images/mewtwo.png'
+     img.plasma = new Image()
+     img.plasma.src = 'images/plasma.png'
+     img.sad = new Image()
+     img.sad.src = 'images/sad.png'
+     img.crown = new Image()
+     img.crown.src = 'images/crown.png'
+     img.party1 = new Image()
+     img.party1.src = 'images/party1.png'
+     img.party2 = new Image()
+     img.party2.src = 'images/party2.png'
+     img.dite = new Image()
+     img.dite.src = 'images/dite.png'
+     img.redball = new Image()
+     img.redball.src = 'images/redball.png'
+     img.megamew = new Image()
+     img.megamew.src = 'images/megamew.png'
+
+     // AUDIO LIST
+
+     var battle = document.getElementById('battle')
+
+     function playBattle () {
+       battle.play()
+     }
+     function resetBattle () {
+       battle.pause()
+       battle.currentTime = 0
+     }
+     function pauseBattle () {
+       battle.pause()
+     }
+
+     var battlemew = document.getElementById('battlemew')
+
+     function playBattleMew () {
+       battlemew.play()
+     }
+     function resetBattleMew () {
+       battlemew.pause()
+       battlemew.currentTime = 0
+     }
+     function pauseBattleMew () {
+       battlemew.pause()
+     }
+
+     var level = document.getElementById('level')
+
+     function playLevel () {
+       level.play()
+     }
+
+     var victory = document.getElementById('victory')
+
+     function playVictory () {
+       victory.play()
+     }
+     function pauseVictory () {
+       victory.pause()
+       victory.currentTime = 0
+     }
+
+     var ghost = document.getElementById('ghost')
+
+     function playGhost () {
+       ghost.play()
+     }
+     function pauseGhost () {
+       ghost.pause()
+       ghost.currentTime = 0
+     }
+
+     var getDite = document.getElementById('getDite')
+
+     function playDite () {
+       getDite.play()
+     }
+
+     var cry = document.getElementById('cry')
+
+     function playCry () {
+       cry.play()
+     }
+
+     var last = document.getElementById('last')
+
+     function playLast () {
+       last.play()
+     }
+     function resetLast () {
+       last.pause()
+       last.currentTime = 0
+     }
+     function pauseLast () {
+       last.pause()
+     }
+
+
+
+     </script>
 
   <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
   <script src="new.js" charset="utf-8"></script>

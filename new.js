@@ -28,8 +28,6 @@ var waterCount = 0
 var psyCount = 0
 var boxCount = 0
 var evoCount = 0
-var diteTimer = 0
-var energyTimer = 0
 var diteCount = 0
 var megaCount = 0
 var megaMewCount = 0
@@ -53,6 +51,8 @@ var player = {
 var enemyList = {}
 var enemyList2 = {}
 var enemyList3 = {}
+var enemyList4 = {}
+var friendList = {}
 var upgradeList = {}
 var upgradeList2 = {}
 var upgradeList3 = {}
@@ -98,7 +98,7 @@ function enemy (type, id, x, y, spdX, spdY, width, height, img, timer) {
     width: width,
     height: height,
     img: img,
-    timer: timer
+    timer: 0
   }
   if (enemy.type === 'grass') {
     enemyList[id] = enemy
@@ -126,6 +126,9 @@ function enemy (type, id, x, y, spdX, spdY, width, height, img, timer) {
   }
   if (enemy.type === 'energy') {
     fireList3[id] = enemy
+  }
+  if (enemy.type === 'mega') {
+    enemyList4[id] = enemy
   }
   if (enemy.type === 'party') {
     partyList[id] = enemy
@@ -166,6 +169,11 @@ function drawObject (something) {
 }
 
 // ASSIGNING WHICH OBJECTS WILL INHERIT WHICH PHYSICS
+function updateObject3 (something) {
+  updatePosition3(something)
+  drawObject(something)
+}
+
 function updateObject2 (something) {
   updatePosition2(something)
   drawObject(something)
@@ -187,11 +195,24 @@ function updatePosition2 (something) {
   something.x += something.spdX
   something.y += something.spdY
 
-  if (something.x > 620 || something.x < 0) {
+  if (something.x > 640 || something.x < 0) {
     something.spdX = -something.spdX
   }
 
   if (something.y > 320 || something.y < 0) {
+    something.spdY = -something.spdY
+  }
+}
+
+function updatePosition3 (something) {
+  something.x += something.spdX
+  something.y += something.spdY
+
+  if (something.x > 660 || something.x < 0) {
+    something.spdX = -something.spdX
+  }
+
+  if (something.y > 350 || something.y < 0) {
     something.spdY = -something.spdY
   }
 }
@@ -374,7 +395,7 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 20))
+        health -= (Math.floor(Math.random() * 100))
 
         if (health <= 10) {
           delete enemyList3[key]
@@ -383,10 +404,42 @@ function update () {
         }
       }
     }
-    // for(var key2 in fireList){
     var isColliding = testCollision(player, enemyList3[key])
     if (isColliding) {
       player.hp -= 10
+    }
+  }
+
+  //LOGIC OF FIGHTING WITH MEGA MEWTWO
+
+  for (var key in enemyList4) {
+    updateObject(enemyList4[key])
+
+    var isColliding = testCollision(player, enemyList4[key])
+    if (isColliding) {
+      player.hp -= 10
+
+    }
+  }
+
+  //LOGIC OF ENERGY BALL
+
+  for (var key in fireList3) {
+    updateObject3(fireList3[key])
+
+    var toRemove = false;
+    fireList3[key].timer++;
+    if(fireList3[key].timer > 400) {
+    toRemove = true;
+    }
+
+    var isColliding = testCollision(player, fireList3[key])
+    if (isColliding) {
+      player.hp -= 2
+
+    }
+    if(toRemove){
+    delete fireList3[key];
     }
   }
 
@@ -428,8 +481,8 @@ function update () {
 
 
     var toRemove = false;
-    diteTimer++;
-    if(diteTimer > 30) {
+    upgradeList3[key].timer++;
+    if(upgradeList3[key].timer > 30) {
     toRemove = true;
     }
 
@@ -445,7 +498,6 @@ function update () {
       delete upgradeList3[key]
     }
     if(toRemove){
-    diteTimer = 0
     delete upgradeList3[key];
     }
   }
@@ -527,6 +579,7 @@ function update () {
 
   if (player.hp <= 0 && player.lvl >= 500) {
     resetBattleMew()
+    resetLast()
     playGhost()
   }
 }
@@ -613,7 +666,11 @@ function megaBossGenerator () {
     playLast()
     player.hp = 100
     player.mega++
-    enemy('psychic',Math.random(), 300, 150, 0, 0, 100, 100, img.megamew)
+    enemy('mega',Math.random(), 300, 150, 0, 0, 100, 100, img.megamew)
+  }
+  if (player.lvl >= 500 && health <= 10 && frameCount % 30 === 0){
+    enemy('energy',Math.random(), 340, 180, 1, 15, 40, 40, img.redball)
+    enemy('energy',Math.random(), 340, 180, -1, -15, 40, 40, img.redball)
   }
 }
 

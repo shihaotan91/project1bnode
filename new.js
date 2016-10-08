@@ -31,6 +31,7 @@ var evoCount = 0
 var diteCount = 0
 var megaCount = 0
 var megaMewCount = 0
+var mewCount = 0
 
 // PLAYER SPECS//
 var player = {
@@ -45,6 +46,7 @@ var player = {
   mewtwo: 0,
   dite: 0,
   mega : 0,
+  mew: 0
 }
 
 // LIST
@@ -129,6 +131,9 @@ function enemy (type, id, x, y, spdX, spdY, width, height, img, timer) {
   }
   if (enemy.type === 'mega') {
     enemyList4[id] = enemy
+  }
+  if (enemy.type === 'friend') {
+    friendList[id] = enemy
   }
   if (enemy.type === 'party') {
     partyList[id] = enemy
@@ -341,6 +346,13 @@ function update () {
     mewBox.style.display = 'block'
   }
 
+  if (player.lvl >= 500 && player.hp <= 10 && health <= 10 && mewCount === 0) {
+    boxPaused = true
+    mewCount++
+    player.hp = 100
+    mew151Box.style.display = 'block'
+  }
+
   if (megaHealth <= 0) {
     winBox.style.display = 'block'
   }
@@ -411,7 +423,6 @@ function update () {
   }
 
   //LOGIC OF FIGHTING WITH MEGA MEWTWO
-
   for (var key in enemyList4) {
     updateObject(enemyList4[key])
 
@@ -422,8 +433,17 @@ function update () {
     }
   }
 
-  //LOGIC OF ENERGY BALL
+  //LOGIC OF MEW
+  for (var key in friendList) {
+    updateObject2(friendList[key])
 
+    var isColliding = testCollision(player, friendList[key])
+    if (isColliding) {
+      player.hp += 3
+    }
+  }
+
+  //LOGIC OF ENERGY BALL
   for (var key in fireList3) {
     updateObject3(fireList3[key])
 
@@ -599,6 +619,7 @@ function newGame () {
   megaCount = 0
   diteCount = 0
   megaMewCount = 0
+  mewCount = 0
   player.lvl = 0
   player.atkSpd = 0
   player.mewtwo = 0
@@ -672,6 +693,10 @@ function megaBossGenerator () {
     enemy('energy',Math.random(), 340, 180, 1, 15, 40, 40, img.redball)
     enemy('energy',Math.random(), 340, 180, -1, -15, 40, 40, img.redball)
   }
+  if (player.lvl >= 500 && player.mew == 0 && health <= 10 && player.hp <= 10) {
+    player.mew++
+    enemy('friend',Math.random(), 70, 70, 15, 10, 50, 50, img.mew)
+  }
 }
 
 // GENERATE UPGRADES
@@ -731,6 +756,7 @@ var winBox = document.getElementById('win')
 var evoBox = document.getElementById('evo')
 var megaBox = document.getElementById('mega')
 var mewBox = document.getElementById('mewBox')
+var mew151Box = document.getElementById('mew151Box')
 
 document.onkeydown = function (event) {
   if (event.keyCode === 83 && start === 0) {
@@ -750,6 +776,7 @@ document.onkeydown = function (event) {
     evoBox.style.display = 'none'
     megaBox.style.display = 'none'
     mewBox.style.display = 'none'
+    mew151Box.style.display = 'none'
   }
   if (event.keyCode === 82) {
     newGame()

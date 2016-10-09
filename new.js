@@ -33,6 +33,7 @@ var megaCount = 0
 var megaMewCount = 0
 var mewCount = 0
 var fieldCount = 0
+var finalCount = 0
 
 // PLAYER SPECS//
 var player = {
@@ -164,7 +165,7 @@ function drawPlayer (something) {
     ctx.drawImage(img.char3, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
-  if (player.hp > 0 && player.dite >= 5 && health > 0) {
+  if (player.hp > 0 && player.dite >= 5) {
     ctx.drawImage(img.mega, something.x, something.y, something.width, something.height)
     ctx.fillStyle = 'black'
   }
@@ -272,7 +273,7 @@ function update () {
     playBattleMew()
   }
 
-  if (paused === false && player.lvl >= 500 && health <= 10 && megaHealth > 0) {
+  if (paused === false && player.lvl >= 500 && health <= 10 && megaHealth > 0 && finalCount === 0) {
     playLast()
   }
 
@@ -365,8 +366,9 @@ function update () {
     fieldBox.style.display = 'block'
   }
 
-  if (megaHealth <= 0 && winCount === 0) {
+  if (megaHealth <= 0 && winCount === 0 && finalCount === 0) {
     winCount++
+    finalCount++
     resetLast();
     playVictory()
     winBox.style.display = 'block'
@@ -433,7 +435,7 @@ function update () {
       var isColliding = testCollision(fireList4[key], fieldList[key4])
       if (isColliding) {
         toRemove = true
-        megaHealth += 2
+        megaHealth += 3
        }
      }
 
@@ -458,9 +460,9 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 200))
+        health -= (Math.floor(Math.random() * 20))
 
-        if (health <= 10 && megaHealth > 0) {
+        if (health <= 10 && megaHealth > 0 && finalCount === 0) {
           delete enemyList3[key]
           resetBattleMew()
           playLast()
@@ -494,7 +496,7 @@ function update () {
 
     var toRemove = false;
     fieldList[key].timer++;
-    if(fieldList[key].timer > 70) {
+    if(fieldList[key].timer > 25) {
     toRemove = true;
     }
 
@@ -529,8 +531,12 @@ function update () {
     }
 
     var isColliding = testCollision(player, fireList3[key])
-    if (isColliding && megaHealth > 0) {
-      player.hp -= 2
+    if (isColliding){
+    player.hp -= 2
+
+    if(megaHealth <= 0){
+    player.hp += 2
+    }
 
     }
     if(toRemove){
@@ -577,7 +583,7 @@ function update () {
 
     var toRemove = false;
     upgradeList3[key].timer++;
-    if(upgradeList3[key].timer > 30) {
+    if(upgradeList3[key].timer > 25) {
     toRemove = true;
     }
 
@@ -696,6 +702,7 @@ function newGame () {
   megaMewCount = 0
   mewCount = 0
   fieldCount = 0
+  finalCount = 0
   player.lvl = 0
   player.atkSpd = 0
   player.mewtwo = 0
@@ -711,6 +718,7 @@ function newGame () {
   fireList3 = {}
   fieldList = {}
   friendList = {}
+  fieldList = {}
   upgradeList = {}
   upgradeList2 = {}
   health = 100
@@ -786,7 +794,7 @@ function megaBossGenerator () {
     player.mew++
     enemy('friend',Math.random(), 70, 70, 13, 8, 50, 50, img.mew)
   }
-  if (player.lvl >= 500 && health <= 10 && megaHealth <= 50 && frameCount % 100 === 0) {
+  if (player.lvl >= 500 && health <= 10 && megaHealth <= 50 && frameCount % 80 === 0) {
     enemy('field',Math.random(), 290, 135, 0, 0, 120, 120, img.field)
     // && health <= 10 && megaHealth <= 50
   }

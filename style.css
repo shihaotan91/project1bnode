@@ -187,10 +187,10 @@ body {
 #fieldBox {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 270px;
+  height: 320px;
   position: fixed;
   left: 295px;
-  top: 250px;
+  top: 200px;
   background-color: rgba(0, 0, 0, 0.8);;
   text-align: center;
   color: white;

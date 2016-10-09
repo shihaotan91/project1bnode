@@ -763,7 +763,7 @@ function bossGenerator () {
     player.mewtwo++
     enemy('psychic',Math.random(), 300, 130, 5, 5, 80, 80, img.mewtwo)
   }
-  if (player.lvl >= 500 && frameCount % 30 === 0 && health > 10) {
+  if (player.lvl >= 500 && frameCount % 50 === 0 && health > 10) {
     enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5, 40, 32, img.plasma)
     enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5, 40, 32, img.plasma)
   }

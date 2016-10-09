@@ -1,7 +1,39 @@
 //FULLY LOAD CONTENT
 
-document.addEventListener("load", function(event) {
+document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
+
+    document.onkeydown = function (event) {
+      if (event.keyCode === 83 && start === 0) {
+        setInterval(update, 40)
+        // update()
+        playBattle()
+        playBox.style.display = 'none'
+        start++
+      }
+      else if (event.keyCode === 80) {
+        paused = !paused
+      }
+      else if (event.keyCode === 67) {
+        boxPaused = !boxPaused
+        waterBox.style.display = 'none'
+        psyBox.style.display = 'none'
+        evoBox.style.display = 'none'
+        megaBox.style.display = 'none'
+        mewBox.style.display = 'none'
+        mew151Box.style.display = 'none'
+        fieldBox.style.display = 'none'
+      }
+      else if (event.keyCode === 70) {
+        blastGenerator()
+      }
+      if (event.keyCode === 82) {
+        newGame()
+        deathBox.style.display = 'none'
+        death2Box.style.display = 'none'
+        winBox.style.display = 'none'
+      }
+    }
   });
 
 // INSTRUCTIONS HOVER
@@ -39,6 +71,7 @@ var megaCount = 0
 var megaMewCount = 0
 var mewCount = 0
 var fieldCount = 0
+var fieldCount2 = 0
 var finalCount = 0
 
 // PLAYER SPECS//
@@ -191,11 +224,6 @@ function updateObject3 (something) {
   drawObject(something)
 }
 
-function updateObject2 (something) {
-  updatePosition2(something)
-  drawObject(something)
-}
-
 function updateObject (something) {
   updatePosition(something)
   drawObject(something)
@@ -206,19 +234,6 @@ function updateObject (something) {
 function updatePosition (something) {
   something.x += something.spdX
   something.y += something.spdY
-}
-
-function updatePosition2 (something) {
-  something.x += something.spdX
-  something.y += something.spdY
-
-  if (something.x > 640 || something.x < 0) {
-    something.spdX = -something.spdX
-  }
-
-  if (something.y > 320 || something.y < 0) {
-    something.spdY = -something.spdY
-  }
 }
 
 function updatePosition3 (something) {
@@ -366,7 +381,7 @@ function update () {
     mew151Box.style.display = 'block'
   }
 
-  if (megaHealth <= 50 && fieldCount === 0) {
+  if (megaHealth <= 35 && fieldCount === 0) {
     boxPaused = true
     fieldCount++
     fieldBox.style.display = 'block'
@@ -375,6 +390,7 @@ function update () {
   if (megaHealth <= 0 && winCount === 0 && finalCount === 0) {
     winCount++
     finalCount++
+    fireList3 = {}
     resetLast();
     playVictory()
     winBox.style.display = 'block'
@@ -384,7 +400,7 @@ function update () {
     death2Box.style.display = 'block'
   }
 
-  if (player.lvl <= 500 && player.hp <= 0) {
+  if (player.lvl < 500 && player.hp <= 0) {
     deathBox.style.display = 'block'
   }
 
@@ -442,6 +458,7 @@ function update () {
       if (isColliding) {
         toRemove = true
         megaHealth += 3
+        player.hp -= 2
        }
      }
 
@@ -460,7 +477,7 @@ function update () {
 
   // LOGIC OF FIGHTING WITH MEWTWO
   for (var key in enemyList3) {
-    updateObject2(enemyList3[key])
+    updateObject3(enemyList3[key])
 
     for (var key2 in fireList) {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
@@ -502,7 +519,7 @@ function update () {
 
     var toRemove = false;
     fieldList[key].timer++;
-    if(fieldList[key].timer > 30) {
+    if(fieldList[key].timer > 20) {
     toRemove = true;
     }
 
@@ -513,11 +530,11 @@ function update () {
 
   //LOGIC OF MEW
   for (var key in friendList) {
-    updateObject2(friendList[key])
+    updateObject3(friendList[key])
 
     var isColliding = testCollision(player, friendList[key])
     if (isColliding) {
-      player.hp += 3
+      player.hp += 2
 
     if (player.hp > 100){
       player.hp = 100
@@ -585,7 +602,7 @@ function update () {
 
     var toRemove = false;
     upgradeList3[key].timer++;
-    if(upgradeList3[key].timer > 25) {
+    if(upgradeList3[key].timer > 30) {
     toRemove = true;
     }
 
@@ -639,16 +656,18 @@ function update () {
 
   // LOGIC TO PLASMA BALL
   for (var key in fireList2) {
-    updateObject2(fireList2[key])
+    updateObject3(fireList2[key])
 
     var toRemove = false;
+
     if(health <= 10) {
     toRemove = true;
     }
 
     var isColliding = testCollision(player, fireList2[key])
     if (isColliding && health > 0) {
-      player.hp -= 3
+      toRemove = true
+      player.hp -= 20
     }
 
     if(toRemove){
@@ -705,6 +724,7 @@ function newGame () {
   mewCount = 0
   fieldCount = 0
   finalCount = 0
+  fieldCount2 = 0
   player.lvl = 0
   player.atkSpd = 0
   player.mewtwo = 0
@@ -765,19 +785,23 @@ function bossGenerator () {
   if (player.lvl >= 500 && player.mewtwo == 0 && health > 10) {
     resetBattle()
     playBattleMew()
+    enemyList = {}
+    enemyList2 = {}
     player.hp = 100
     player.mewtwo++
     enemy('psychic',Math.random(), 300, 130, 5, 5, 80, 80, img.mewtwo)
   }
-  if (player.lvl >= 500 && frameCount % 90 === 0 && health > 10) {
-    enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5, 40, 32, img.plasma)
-    enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5, 40, 32, img.plasma)
+  if (player.lvl >= 500 && frameCount % 70 === 0 && health > 10) {
+    enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, 5, -5, 80, 65, img.plasma)
+    enemy('plasma',Math.random(), Math.random() * WIDTH - 30, Math.random() * HEIGHT - 30, -5, 5, 80, 65, img.plasma)
   }
 }
 
 function megaBossGenerator () {
   if (player.lvl >= 500 && player.mega == 0 && health <= 10) {
     resetBattleMew()
+    fireList2 = {}
+    enemyList3 = {}
     // playLast()
     player.hp = 100
     player.mega++
@@ -788,7 +812,7 @@ function megaBossGenerator () {
     enemy('energy',Math.random(), 335, 180, 1, 15, 40, 40, img.redball)
     enemy('energy',Math.random(), 335, 180, -1, -15, 40, 40, img.redball)
   }
-  if (mewCount >= 1 && frameCount % 5 === 0 && finalCount === 0){
+  if (mewCount >= 1 && frameCount % 4 === 0 && finalCount === 0){
     enemy('energy',Math.random(), 335, 180, 15, 1, 40, 40, img.redball)
     enemy('energy',Math.random(), 335, 180, -15, -1, 40, 40, img.redball)
   }
@@ -796,9 +820,13 @@ function megaBossGenerator () {
     player.mew++
     enemy('friend',Math.random(), 70, 70, 13, 8, 50, 50, img.mew)
   }
-  if (player.lvl >= 500 && health <= 10 && megaHealth <= 50 && frameCount % 80 === 0 && finalCount === 0) {
+  if (player.lvl >= 500 && health <= 10 && megaHealth <= 30 && frameCount % 50 === 0 && finalCount === 0) {
     enemy('field',Math.random(), 290, 135, 0, 0, 120, 120, img.field)
     // && health <= 10 && megaHealth <= 50
+  }
+  if (player.lvl >= 500 && health <= 10 && megaHealth <= 30 && frameCount % 10 === 0 && finalCount === 0 && fieldCount2 === 0) {
+    enemy('field',Math.random(), 290, 135, 0, 0, 120, 120, img.field)
+    fieldCount2++
   }
 }
 
@@ -811,7 +839,7 @@ function upgradeGenerator () {
   if (frameCount % 180 === 0 && player.hp > 0 && health > 10) {
     enemy('upgrade2',Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 45, 60, img.speed)
   }
-  if (player.lvl >= 70 && frameCount % 170 === 0 && player.hp > 0 && player.dite < 5) {
+  if (player.lvl >= 70 && frameCount % 180 === 0 && player.hp > 0 && player.dite < 5) {
     enemy('upgrade3',Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 50, 50, img.dite)
   }
 }
@@ -875,34 +903,34 @@ var mewBox = document.getElementById('mewBox')
 var mew151Box = document.getElementById('mew151Box')
 var fieldBpx = document.getElementById('fieldBox')
 
-document.onkeydown = function (event) {
-  if (event.keyCode === 83 && start === 0) {
-    setInterval(update, 40)
-    // update()
-    playBattle()
-    playBox.style.display = 'none'
-    start++
-  }
-  else if (event.keyCode === 80) {
-    paused = !paused
-  }
-  else if (event.keyCode === 67) {
-    boxPaused = !boxPaused
-    waterBox.style.display = 'none'
-    psyBox.style.display = 'none'
-    evoBox.style.display = 'none'
-    megaBox.style.display = 'none'
-    mewBox.style.display = 'none'
-    mew151Box.style.display = 'none'
-    fieldBox.style.display = 'none'
-  }
-  else if (event.keyCode === 70) {
-    blastGenerator()
-  }
-  if (event.keyCode === 82) {
-    newGame()
-    deathBox.style.display = 'none'
-    death2Box.style.display = 'none'
-    winBox.style.display = 'none'
-  }
-}
+// document.onkeydown = function (event) {
+//   if (event.keyCode === 83 && start === 0) {
+//     setInterval(update, 40)
+//     // update()
+//     playBattle()
+//     playBox.style.display = 'none'
+//     start++
+//   }
+//   else if (event.keyCode === 80) {
+//     paused = !paused
+//   }
+//   else if (event.keyCode === 67) {
+//     boxPaused = !boxPaused
+//     waterBox.style.display = 'none'
+//     psyBox.style.display = 'none'
+//     evoBox.style.display = 'none'
+//     megaBox.style.display = 'none'
+//     mewBox.style.display = 'none'
+//     mew151Box.style.display = 'none'
+//     fieldBox.style.display = 'none'
+//   }
+//   else if (event.keyCode === 70) {
+//     blastGenerator()
+//   }
+//   if (event.keyCode === 82) {
+//     newGame()
+//     deathBox.style.display = 'none'
+//     death2Box.style.display = 'none'
+//     winBox.style.display = 'none'
+//   }
+// }

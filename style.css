@@ -171,10 +171,26 @@ body {
 #mew151Box {
   font-family: 'Press Start 2P', cursive;
   width: 650px;
-  height: 310px;
+  height: 330px;
   position: fixed;
   left: 295px;
-  top: 220px;
+  top: 200px;
+  background-color: rgba(0, 0, 0, 0.8);;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  line-height: 20px;
+  display: none;
+  padding: 20px;
+}
+
+#fieldBox {
+  font-family: 'Press Start 2P', cursive;
+  width: 650px;
+  height: 270px;
+  position: fixed;
+  left: 295px;
+  top: 250px;
   background-color: rgba(0, 0, 0, 0.8);;
   text-align: center;
   color: white;

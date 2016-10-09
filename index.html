@@ -128,6 +128,10 @@
 
      <script>
 
+     document.addEventListener("load", function(event) {
+         console.log("DOM fully loaded and parsed");
+       });
+
      var img = {}
      img.char1 = new Image()
      img.char1.src = 'images/char1.png'

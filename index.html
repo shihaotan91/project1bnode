@@ -167,11 +167,12 @@
      img.megamew.src = 'images/megamew.png'
      img.mew = new Image()
      img.mew.src = 'images/mew.png'
+     img.fireblast = new Image()
+     img.fireblast.src = 'images/fireblast.png'
+
 
      // AUDIO LIST
-
      var battle = document.getElementById('battle')
-
      function playBattle () {
        battle.play()
      }
@@ -182,9 +183,7 @@
      function pauseBattle () {
        battle.pause()
      }
-
      var battlemew = document.getElementById('battlemew')
-
      function playBattleMew () {
        battlemew.play()
      }
@@ -195,15 +194,11 @@
      function pauseBattleMew () {
        battlemew.pause()
      }
-
      var level = document.getElementById('level')
-
      function playLevel () {
        level.play()
      }
-
      var victory = document.getElementById('victory')
-
      function playVictory () {
        victory.play()
      }
@@ -211,9 +206,7 @@
        victory.pause()
        victory.currentTime = 0
      }
-
      var ghost = document.getElementById('ghost')
-
      function playGhost () {
        ghost.play()
      }
@@ -221,21 +214,15 @@
        ghost.pause()
        ghost.currentTime = 0
      }
-
      var getDite = document.getElementById('getDite')
-
      function playDite () {
        getDite.play()
      }
-
      var cry = document.getElementById('cry')
-
      function playCry () {
        cry.play()
      }
-
      var last = document.getElementById('last')
-
      function playLast () {
        last.play()
      }
@@ -246,9 +233,6 @@
      function pauseLast () {
        last.pause()
      }
-
-
-
      </script>
 
   <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>

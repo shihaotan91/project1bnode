@@ -26,7 +26,7 @@ var paused = false
 var boxPaused = false
 var waterCount = 0
 var psyCount = 0
-var boxCount = 0
+var winCount = 0
 var evoCount = 0
 var diteCount = 0
 var megaCount = 0
@@ -61,6 +61,7 @@ var upgradeList3 = {}
 var fireList = {}
 var fireList2 = {}
 var fireList3 = {}
+var fireList4 = {}
 var partyList = {}
 
 // TEST FOR COLLISION. OLD COLLISION FORMULAR INSIDE
@@ -135,6 +136,9 @@ function enemy (type, id, x, y, spdX, spdY, width, height, img, timer) {
   if (enemy.type === 'friend') {
     friendList[id] = enemy
   }
+  if (enemy.type === 'blast') {
+    fireList4[id] = enemy
+  }
   if (enemy.type === 'party') {
     partyList[id] = enemy
   }
@@ -161,10 +165,6 @@ function drawPlayer (something) {
   }
   if (player.hp <= 0) {
     ctx.drawImage(img.sad, something.x, something.y, 100, 90)
-    ctx.fillStyle = 'black'
-  }
-  if (megaHealth <= 0) {
-    ctx.drawImage(img.crown, something.x, something.y, 100, 100)
     ctx.fillStyle = 'black'
   }
 }
@@ -267,7 +267,7 @@ function update () {
     playBattleMew()
   }
 
-  if (paused === false && player.lvl >= 500 && health <= 10) {
+  if (paused === false && player.lvl >= 500 && health <= 10 && megaHealth > 0) {
     playLast()
   }
 
@@ -310,6 +310,7 @@ function update () {
 
   // GENERATE PLAYER ATTACKS
   fireGenerator()
+  // blastGenerator()
 
   //GENERATE PARTY ITEMS
   partyGenerator ()
@@ -346,14 +347,17 @@ function update () {
     mewBox.style.display = 'block'
   }
 
-  if (player.lvl >= 500 && player.hp <= 10 && health <= 10 && mewCount === 0) {
+  if (player.lvl >= 500 && player.hp <= 20 && health <= 10 && mewCount === 0) {
     boxPaused = true
     mewCount++
     player.hp = 100
     mew151Box.style.display = 'block'
   }
 
-  if (megaHealth <= 0) {
+  if (megaHealth <= 0 && winCount === 0) {
+    winCount++
+    resetLast();
+    playVictory()
     winBox.style.display = 'block'
   }
 
@@ -399,6 +403,32 @@ function update () {
     }
   }
 
+  //LOGIC OF FIREBLAST HITTING ENEMIES
+
+  for (var key in fireList4) {
+    updateObject(fireList4[key])
+
+    var toRemove = false
+
+    for (var key2 in fireList3) {
+      var isColliding = testCollision(fireList4[key], fireList3[key2])
+      if (isColliding) {
+        toRemove = true
+        delete fireList3[key2]
+      }
+    }
+    for (var key3 in enemyList4) {
+      var isColliding = testCollision(fireList4[key], enemyList4[key3])
+      if (isColliding) {
+        toRemove = true
+        megaHealth -= (Math.round(Math.random() * 100))
+      }
+    }
+    if (toRemove) {
+      delete fireList4[key]
+    }
+  }
+
   // LOGIC OF FIGHTING WITH MEWTWO
   for (var key in enemyList3) {
     updateObject2(enemyList3[key])
@@ -407,9 +437,9 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 100))
+        health -= (Math.floor(Math.random() * 200))
 
-        if (health <= 10) {
+        if (health <= 10 && megaHealth > 0) {
           delete enemyList3[key]
           resetBattleMew()
           playLast()
@@ -426,6 +456,10 @@ function update () {
   for (var key in enemyList4) {
     updateObject(enemyList4[key])
 
+    if(megaHealth <= 0){
+     delete enemyList4[key]
+    }
+
     var isColliding = testCollision(player, enemyList4[key])
     if (isColliding) {
       player.hp -= 10
@@ -438,7 +472,7 @@ function update () {
     updateObject2(friendList[key])
 
     var isColliding = testCollision(player, friendList[key])
-    if (isColliding) {
+    if (isColliding && player.hp <= 100) {
       player.hp += 3
     }
   }
@@ -449,12 +483,12 @@ function update () {
 
     var toRemove = false;
     fireList3[key].timer++;
-    if(fireList3[key].timer > 400) {
+    if(fireList3[key].timer > 300) {
     toRemove = true;
     }
 
     var isColliding = testCollision(player, fireList3[key])
-    if (isColliding) {
+    if (isColliding && megaHealth > 0) {
       player.hp -= 2
 
     }
@@ -614,7 +648,7 @@ function newGame () {
   frameCount = 0
   waterCount = 0
   psyCount = 0
-  boxCount = 0
+  winCount = 0
   evoCount = 0
   megaCount = 0
   diteCount = 0
@@ -624,17 +658,24 @@ function newGame () {
   player.atkSpd = 0
   player.mewtwo = 0
   player.dite = 0
+  player.mega = 0
+  player.mew = 0
   enemyList = {}
   enemyList2 = {}
   enemyList3 = {}
+  enemyList4 = {}
   fireList = {}
   fireList2 = {}
+  fireList3 = {}
+  friendList = {}
   upgradeList = {}
   upgradeList2 = {}
   health = 100
+  megaHealth = 100
   resetBattle()
   pauseVictory()
   resetBattleMew()
+  resetLast()
   pauseGhost()
   playBattle()
 }
@@ -684,18 +725,22 @@ function bossGenerator () {
 function megaBossGenerator () {
   if (player.lvl >= 500 && player.mega == 0 && health <= 10) {
     resetBattleMew()
-    playLast()
+    // playLast()
     player.hp = 100
     player.mega++
     enemy('mega',Math.random(), 300, 150, 0, 0, 100, 100, img.megamew)
   }
-  if (player.lvl >= 500 && health <= 10 && frameCount % 30 === 0){
+  if (player.lvl >= 500 && health <= 10 && frameCount % 8 === 0 && megaHealth > 0){
     enemy('energy',Math.random(), 340, 180, 1, 15, 40, 40, img.redball)
     enemy('energy',Math.random(), 340, 180, -1, -15, 40, 40, img.redball)
   }
-  if (player.lvl >= 500 && player.mew == 0 && health <= 10 && player.hp <= 10) {
+  if (mewCount >= 1 && frameCount % 5 === 0 && megaHealth <= 70 && megaHealth > 0){
+    enemy('energy',Math.random(), 340, 180, 15, 1, 40, 40, img.redball)
+    enemy('energy',Math.random(), 340, 180, -15, -1, 40, 40, img.redball)
+  }
+  if (player.lvl >= 500 && player.mew == 0 && health <= 10 && player.hp <= 20) {
     player.mew++
-    enemy('friend',Math.random(), 70, 70, 15, 10, 50, 50, img.mew)
+    enemy('friend',Math.random(), 70, 70, 13, 8, 50, 50, img.mew)
   }
 }
 
@@ -733,6 +778,19 @@ function fireGenerator () {
     enemy('fire',Math.random(), player.x, player.y, -10, 10, 50, 50, img.bluefire)
   }
 }
+
+function blastGenerator() {
+  if (player.hp > 0 && mewCount >= 1) {
+    enemy('blast',Math.random(), player.x, player.y, 0, -15, 50, 50, img.fireblast)
+    enemy('blast',Math.random(), player.x, player.y, 15, -1, 50, 50, img.fireblast)
+    enemy('blast',Math.random(), player.x, player.y, -15, -1, 50, 50, img.fireblast)
+    enemy('blast',Math.random(), player.x, player.y, -15, 15, 50, 50, img.fireblast)
+    enemy('blast',Math.random(), player.x, player.y, 15, 15, 50, 50, img.fireblast)
+  }
+ }
+
+// player.hp > 0 && health <= 10 && mewCount >= 1 &&
+
 
 function partyGenerator () {
   if (frameCount % 1 === 0 && megaHealth <= 0) {
@@ -777,6 +835,9 @@ document.onkeydown = function (event) {
     megaBox.style.display = 'none'
     mewBox.style.display = 'none'
     mew151Box.style.display = 'none'
+  }
+  else if (event.keyCode === 70) {
+    blastGenerator()
   }
   if (event.keyCode === 82) {
     newGame()

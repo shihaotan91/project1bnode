@@ -399,7 +399,7 @@ function update () {
       var isColliding = testCollision(fireList[key], enemyList[key2])
       if (isColliding) {
         toRemove = true
-        player.lvl += 50
+        player.lvl += 1
         delete enemyList[key2]
       }
     }
@@ -407,7 +407,7 @@ function update () {
       var isColliding = testCollision(fireList[key], enemyList2[key2])
       if (isColliding && player.dite === 5) {
         toRemove = true
-        player.lvl += 50
+        player.lvl += 1
         delete enemyList2[key2]
       }
     }
@@ -460,7 +460,7 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 20))
+        health -= (Math.floor(Math.random() * 5))
 
         if (health <= 10 && megaHealth > 0 && finalCount === 0) {
           delete enemyList3[key]
@@ -496,7 +496,7 @@ function update () {
 
     var toRemove = false;
     fieldList[key].timer++;
-    if(fieldList[key].timer > 25) {
+    if(fieldList[key].timer > 30) {
     toRemove = true;
     }
 
@@ -531,12 +531,8 @@ function update () {
     }
 
     var isColliding = testCollision(player, fireList3[key])
-    if (isColliding){
+    if (isColliding & finalCount === 0){
     player.hp -= 2
-
-    if(megaHealth <= 0){
-    player.hp += 2
-    }
 
     }
     if(toRemove){
@@ -646,7 +642,7 @@ function update () {
 
     var isColliding = testCollision(player, fireList2[key])
     if (isColliding && health > 0) {
-      // player.hp -= 2
+      player.hp -= 2
     }
 
     if(toRemove){
@@ -782,11 +778,11 @@ function megaBossGenerator () {
     enemy('mega',Math.random(), 310, 155, 0, 0, 80, 80, img.megamew)
     // && health <= 10
   }
-  if (player.lvl >= 500 && health <= 10 && frameCount % 20 === 0 && megaHealth > 0){
+  if (player.lvl >= 500 && health <= 10 && frameCount % 8 === 0 && finalCount === 0){
     enemy('energy',Math.random(), 335, 180, 1, 15, 40, 40, img.redball)
     enemy('energy',Math.random(), 335, 180, -1, -15, 40, 40, img.redball)
   }
-  if (mewCount >= 1 && frameCount % 20 === 0 && megaHealth <= 70 && megaHealth > 0){
+  if (mewCount >= 1 && frameCount % 5 === 0 && finalCount === 0){
     enemy('energy',Math.random(), 335, 180, 15, 1, 40, 40, img.redball)
     enemy('energy',Math.random(), 335, 180, -15, -1, 40, 40, img.redball)
   }
@@ -794,7 +790,7 @@ function megaBossGenerator () {
     player.mew++
     enemy('friend',Math.random(), 70, 70, 13, 8, 50, 50, img.mew)
   }
-  if (player.lvl >= 500 && health <= 10 && megaHealth <= 50 && frameCount % 80 === 0) {
+  if (player.lvl >= 500 && health <= 10 && megaHealth <= 50 && frameCount % 80 === 0 && finalCount === 0) {
     enemy('field',Math.random(), 290, 135, 0, 0, 120, 120, img.field)
     // && health <= 10 && megaHealth <= 50
   }
@@ -809,7 +805,7 @@ function upgradeGenerator () {
   if (frameCount % 180 === 0 && player.hp > 0 && health > 10) {
     enemy('upgrade2',Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 45, 60, img.speed)
   }
-  if (player.lvl >= 70 && frameCount % 150 === 0 && player.hp > 0 && player.dite < 5) {
+  if (player.lvl >= 70 && frameCount % 170 === 0 && player.hp > 0 && player.dite < 5) {
     enemy('upgrade3',Math.random(), Math.random() * WIDTH - 20, Math.random() * HEIGHT - 20, 0, 0, 50, 50, img.dite)
   }
 }
@@ -849,10 +845,10 @@ function blastGenerator() {
 
 
 function partyGenerator () {
-  if (frameCount % 1 === 0 && megaHealth <= 0) {
+  if (frameCount % 1 === 0 && finalCount === 1) {
     enemy('party',Math.random(), Math.random() * WIDTH, 380, 0, -10, 40, 70, img.party1)
   }
-  if (frameCount % 1 === 0 && megaHealth <= 0) {
+  if (frameCount % 1 === 0 && finalCount === 1) {
     enemy('party',Math.random(), Math.random() * WIDTH, 0, 0, 10, 50, 50, img.party2)
   }
 }

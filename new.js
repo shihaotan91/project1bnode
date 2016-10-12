@@ -377,6 +377,7 @@ function update () {
   if (player.lvl >= 500 && player.hp <= 20 && health <= 10 && mewCount === 0) {
     boxPaused = true
     mewCount++
+    playMewHeal()
     player.hp = 100
     mew151Box.style.display = 'block'
   }
@@ -421,7 +422,7 @@ function update () {
       var isColliding = testCollision(fireList[key], enemyList[key2])
       if (isColliding) {
         toRemove = true
-        player.lvl += 1
+        player.lvl += 50
         delete enemyList[key2]
       }
     }
@@ -483,7 +484,7 @@ function update () {
       var isColliding = testCollision(fireList[key2], enemyList3[key])
       if (isColliding) {
         delete fireList[key2]
-        health -= (Math.floor(Math.random() * 5))
+        health -= (Math.floor(Math.random() * 500))
 
         if (health <= 10 && megaHealth > 0 && finalCount === 0) {
           delete enemyList3[key]

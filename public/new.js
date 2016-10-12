@@ -3,6 +3,131 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
 
+  //IMAGES
+
+    var img = {}
+    img.char1 = new Image()
+    img.char1.src = 'images/char1.png'
+    img.char2 = new Image()
+    img.char2.src = 'images/char2.png'
+    img.char3 = new Image()
+    img.char3.src = 'images/char3.png'
+    img.bellsprout = new Image()
+    img.bellsprout.src = 'images/bell.png'
+    img.weepin = new Image()
+    img.weepin.src = 'images/weepin.png'
+    img.victree = new Image()
+    img.victree.src = 'images/victree.png'
+    img.potion = new Image()
+    img.potion.src = 'images/potion.png'
+    img.speed = new Image()
+    img.speed.src = 'images/speed.png'
+    img.fire = new Image()
+    img.fire.src = 'images/fire.png'
+    img.bluefire = new Image()
+    img.bluefire.src = 'images/bluefire.png'
+    img.mega = new Image()
+    img.mega.src = 'images/mega-char.png'
+    img.blast = new Image()
+    img.blast.src = 'images/blast.png'
+    img.gay = new Image()
+    img.gay.src = 'images/gay.png'
+    img.lap = new Image()
+    img.lap.src = 'images/lapras.png'
+    img.mewtwo = new Image()
+    img.mewtwo.src = 'images/mewtwo.png'
+    img.plasma = new Image()
+    img.plasma.src = 'images/plasma.png'
+    img.sad = new Image()
+    img.sad.src = 'images/sad.png'
+    img.crown = new Image()
+    img.crown.src = 'images/crown.png'
+    img.party1 = new Image()
+    img.party1.src = 'images/party1.png'
+    img.party2 = new Image()
+    img.party2.src = 'images/party2.png'
+    img.dite = new Image()
+    img.dite.src = 'images/dite.png'
+    img.redball = new Image()
+    img.redball.src = 'images/redball.png'
+    img.megamew = new Image()
+    img.megamew.src = 'images/megamew.png'
+    img.mew = new Image()
+    img.mew.src = 'images/smallmew.png'
+    img.fireblast = new Image()
+    img.fireblast.src = 'images/fireblast.png'
+    img.field = new Image()
+    img.field.src = 'images/field.png'
+
+
+    // AUDIO LIST
+    var battle = document.getElementById('battle')
+    function playBattle () {
+      battle.play()
+    }
+    function resetBattle () {
+      battle.pause()
+      battle.currentTime = 0
+    }
+    function pauseBattle () {
+      battle.pause()
+    }
+    var battlemew = document.getElementById('battlemew')
+    function playBattleMew () {
+      battlemew.play()
+    }
+    function resetBattleMew () {
+      battlemew.pause()
+      battlemew.currentTime = 0
+    }
+    function pauseBattleMew () {
+      battlemew.pause()
+    }
+    var level = document.getElementById('level')
+    function playLevel () {
+      level.play()
+    }
+    var victory = document.getElementById('victory')
+    function playVictory () {
+      victory.play()
+    }
+    function pauseVictory () {
+      victory.pause()
+      victory.currentTime = 0
+    }
+    var ghost = document.getElementById('ghost')
+    function playGhost () {
+      ghost.play()
+    }
+    function pauseGhost () {
+      ghost.pause()
+      ghost.currentTime = 0
+    }
+    var getDite = document.getElementById('getDite')
+    function playDite () {
+      getDite.play()
+    }
+    var cry = document.getElementById('cry')
+    function playCry () {
+      cry.play()
+    }
+    var last = document.getElementById('last')
+    function playLast () {
+      last.play()
+    }
+    function resetLast () {
+      last.pause()
+      last.currentTime = 0
+    }
+    function pauseLast () {
+      last.pause()
+    }
+    var mewheal = document.getElementById('mewheal')
+    function playMewHeal () {
+      mewheal.play()
+    }
+
+
     document.onkeydown = function (event) {
       if (event.keyCode === 83 && start === 0) {
         setInterval(update, 40)
@@ -902,7 +1027,7 @@ var evoBox = document.getElementById('evo')
 var megaBox = document.getElementById('mega')
 var mewBox = document.getElementById('mewBox')
 var mew151Box = document.getElementById('mew151Box')
-var fieldBpx = document.getElementById('fieldBox')
+var fieldBox = document.getElementById('fieldBox')
 
 // document.onkeydown = function (event) {
 //   if (event.keyCode === 83 && start === 0) {

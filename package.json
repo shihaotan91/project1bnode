@@ -1,0 +1,25 @@
+{
+  "name": "project1bnode",
+  "version": "1.0.0",
+  "description": "This game was created during my WDI course with General Assembly. It is a classic plane shooting game repackaged with the theme of Pokemon. The game is written in Javascript, HTML and CSS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shihaotan91/project1bnode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shihaotan91/project1bnode/issues"
+  },
+  "homepage": "https://github.com/shihaotan91/project1bnode#readme",
+  "dependencies": {
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "install": "^0.8.1"
+  },
+  "devDependencies": {}
+}
